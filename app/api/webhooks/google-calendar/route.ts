@@ -1,4 +1,5 @@
 import { fetchGcalEvents, fetchGcalEventsSince } from "@/lib/google-calendar/client";
+import { getRedis } from "@/lib/redis";
 import { deleteFromNotion, syncGcalToNotion } from "@/lib/sync/engine";
 import { logWebhookEvent } from "@/lib/sync/logger";
 import { extractHeaders, gcalWebhookHeadersSchema, validateSafe } from "@/lib/validation";
@@ -8,11 +9,7 @@ import {
   getWebhookChannel,
   updateSyncState,
 } from "@/lib/webhook/channel-manager";
-import { Redis } from "@upstash/redis";
 import { type NextRequest, NextResponse } from "next/server";
-
-// Initialize Redis for deduplication
-const redis = Redis.fromEnv();
 
 // Deduplication key prefix
 const PROCESSED_MESSAGES_KEY = "webhook:processed:";
@@ -75,7 +72,7 @@ export async function POST(request: NextRequest) {
     // Deduplication: Check if we've already processed this message
     if (messageNumber) {
       const dedupeKey = `${PROCESSED_MESSAGES_KEY}${messageNumber}`;
-      const alreadyProcessed = await redis.get(dedupeKey);
+      const alreadyProcessed = await getRedis().get(dedupeKey);
 
       if (alreadyProcessed) {
         console.log(`✓ Message ${messageNumber} already processed, skipping`);
@@ -83,7 +80,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Mark message as processed with 5-minute TTL
-      await redis.set(dedupeKey, true, { ex: 300 });
+      await getRedis().set(dedupeKey, true, { ex: 300 });
     }
 
     // Resource state can be: 'sync', 'exists', 'not_exists'

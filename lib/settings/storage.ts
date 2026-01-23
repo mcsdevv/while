@@ -3,13 +3,10 @@
  * Handles encryption/decryption of sensitive fields automatically.
  */
 
-import { Redis } from "@upstash/redis";
+import { getRedis } from "@/lib/redis";
 import { safeDecrypt, safeEncrypt } from "./encryption";
 import type { AppSettings, GoogleSettings, NotionSettings } from "./types";
 import { DEFAULT_FIELD_MAPPING, ENCRYPTED_FIELDS } from "./types";
-
-// Initialize Redis client from environment variable
-const redis = Redis.fromEnv();
 
 // Storage key
 const SETTINGS_KEY = "app:settings";
@@ -86,7 +83,7 @@ function decryptSettings(stored: StoredSettings): AppSettings {
  * Returns null if no settings are stored.
  */
 export async function getSettings(): Promise<AppSettings | null> {
-  const stored = await redis.get<StoredSettings>(SETTINGS_KEY);
+  const stored = await getRedis().get<StoredSettings>(SETTINGS_KEY);
   if (!stored) {
     return null;
   }
@@ -98,7 +95,7 @@ export async function getSettings(): Promise<AppSettings | null> {
  */
 export async function saveSettings(settings: AppSettings): Promise<void> {
   const encrypted = encryptSettings(settings);
-  await redis.set(SETTINGS_KEY, encrypted);
+  await getRedis().set(SETTINGS_KEY, encrypted);
 }
 
 /**
@@ -131,14 +128,14 @@ export async function updateSettings(partial: Partial<AppSettings>): Promise<voi
  * Delete all settings from Redis.
  */
 export async function deleteSettings(): Promise<void> {
-  await redis.del(SETTINGS_KEY);
+  await getRedis().del(SETTINGS_KEY);
 }
 
 /**
  * Check if settings exist in Redis.
  */
 export async function hasSettings(): Promise<boolean> {
-  const exists = await redis.exists(SETTINGS_KEY);
+  const exists = await getRedis().exists(SETTINGS_KEY);
   return exists === 1;
 }
 

@@ -1,7 +1,4 @@
-import { Redis } from "@upstash/redis";
-
-// Initialize Redis client
-const redis = Redis.fromEnv();
+import { getRedis } from "@/lib/redis";
 
 // Storage keys
 const WEBHOOK_CHANNEL_KEY = "webhook:gcal:channel";
@@ -28,14 +25,14 @@ export interface SyncState {
  * Save webhook channel metadata to Redis
  */
 export async function saveWebhookChannel(channel: WebhookChannel): Promise<void> {
-  await redis.set(WEBHOOK_CHANNEL_KEY, channel);
+  await getRedis().set(WEBHOOK_CHANNEL_KEY, channel);
 }
 
 /**
  * Get webhook channel metadata from Redis
  */
 export async function getWebhookChannel(): Promise<WebhookChannel | null> {
-  const channel = await redis.get<WebhookChannel>(WEBHOOK_CHANNEL_KEY);
+  const channel = await getRedis().get<WebhookChannel>(WEBHOOK_CHANNEL_KEY);
   return channel;
 }
 
@@ -43,7 +40,7 @@ export async function getWebhookChannel(): Promise<WebhookChannel | null> {
  * Delete webhook channel metadata from Redis
  */
 export async function deleteWebhookChannel(): Promise<void> {
-  await redis.del(WEBHOOK_CHANNEL_KEY);
+  await getRedis().del(WEBHOOK_CHANNEL_KEY);
 }
 
 /**
@@ -76,14 +73,14 @@ export async function updateSyncState(syncToken?: string): Promise<void> {
     syncToken,
     lastSync: new Date(),
   };
-  await redis.set(WEBHOOK_SYNC_STATE_KEY, state);
+  await getRedis().set(WEBHOOK_SYNC_STATE_KEY, state);
 }
 
 /**
  * Get current sync state
  */
 export async function getSyncState(): Promise<SyncState> {
-  const state = await redis.get<SyncState>(WEBHOOK_SYNC_STATE_KEY);
+  const state = await getRedis().get<SyncState>(WEBHOOK_SYNC_STATE_KEY);
   return state || { syncToken: undefined, lastSync: null };
 }
 
@@ -91,7 +88,7 @@ export async function getSyncState(): Promise<SyncState> {
  * Clear sync state (force full sync on next webhook)
  */
 export async function clearSyncState(): Promise<void> {
-  await redis.del(WEBHOOK_SYNC_STATE_KEY);
+  await getRedis().del(WEBHOOK_SYNC_STATE_KEY);
 }
 
 // ============================================================
@@ -111,14 +108,14 @@ export interface NotionWebhookSubscription {
  * Save Notion webhook subscription metadata to Redis
  */
 export async function saveNotionWebhook(subscription: NotionWebhookSubscription): Promise<void> {
-  await redis.set(NOTION_WEBHOOK_KEY, subscription);
+  await getRedis().set(NOTION_WEBHOOK_KEY, subscription);
 }
 
 /**
  * Get Notion webhook subscription metadata from Redis
  */
 export async function getNotionWebhook(): Promise<NotionWebhookSubscription | null> {
-  const subscription = await redis.get<NotionWebhookSubscription>(NOTION_WEBHOOK_KEY);
+  const subscription = await getRedis().get<NotionWebhookSubscription>(NOTION_WEBHOOK_KEY);
   return subscription;
 }
 
@@ -126,7 +123,7 @@ export async function getNotionWebhook(): Promise<NotionWebhookSubscription | nu
  * Delete Notion webhook subscription metadata from Redis
  */
 export async function deleteNotionWebhook(): Promise<void> {
-  await redis.del(NOTION_WEBHOOK_KEY);
+  await getRedis().del(NOTION_WEBHOOK_KEY);
 }
 
 /**
