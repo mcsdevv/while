@@ -1,4 +1,4 @@
-import { SessionProvider } from "@/components/auth/session-provider";
+import { Providers } from "@/components/providers";
 import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -24,7 +24,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );

@@ -7,6 +7,7 @@ import { FieldMappingEditor } from "@/components/settings/field-mapping-editor";
 import { GoogleSettings } from "@/components/settings/google-settings";
 import { NotionSettings } from "@/components/settings/notion-settings";
 import { Button } from "@/components/ui/button";
+import { SkeletonSettingsPage } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -58,11 +59,7 @@ export default function SettingsPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-muted-foreground">Loading settings...</p>
-      </div>
-    );
+    return <SkeletonSettingsPage />;
   }
 
   if (error) {
@@ -77,10 +74,10 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-4 mb-2">
               <Link href="/">
@@ -103,7 +100,7 @@ export default function SettingsPage() {
                 </Button>
               </Link>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Settings</h1>
             <p className="text-muted-foreground mt-2">
               Manage your sync configuration and connections
             </p>

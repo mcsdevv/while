@@ -49,15 +49,15 @@ export function GoogleSettings({ settings }: GoogleSettingsProps) {
         {settings?.isConnected ? (
           <>
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Client ID</span>
-                <span className="font-mono">{settings.clientId || "Not configured"}</span>
+                <span className="font-mono truncate">{settings.clientId || "Not configured"}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Calendar</span>
-                <span>{settings.calendarId || "Not selected"}</span>
+                <span className="truncate">{settings.calendarId || "Not selected"}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Connected</span>
                 <span>{formatDate(settings.connectedAt)}</span>
               </div>

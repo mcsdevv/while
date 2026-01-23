@@ -69,7 +69,7 @@ export function DangerZone() {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Reset Field Mapping */}
-        <div className="flex items-center justify-between rounded-lg border border-destructive/30 p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-destructive/30 p-4">
           <div>
             <h4 className="text-sm font-medium">Reset Field Mapping</h4>
             <p className="text-xs text-muted-foreground">
@@ -77,8 +77,8 @@ export function DangerZone() {
             </p>
           </div>
           {confirmingReset === "mapping" ? (
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
                 Cancel
               </Button>
               <Button
@@ -86,6 +86,7 @@ export function DangerZone() {
                 size="sm"
                 onClick={() => handleReset("mapping")}
                 disabled={resetting === "mapping"}
+                className="w-full sm:w-auto"
               >
                 {resetting === "mapping" ? "Resetting..." : "Confirm"}
               </Button>
@@ -95,7 +96,7 @@ export function DangerZone() {
               variant="outline"
               size="sm"
               onClick={() => handleReset("mapping")}
-              className="border-destructive/50 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              className="border-destructive/50 text-destructive hover:bg-destructive hover:text-destructive-foreground w-full sm:w-auto"
             >
               Reset
             </Button>
@@ -103,7 +104,7 @@ export function DangerZone() {
         </div>
 
         {/* Clear Sync State */}
-        <div className="flex items-center justify-between rounded-lg border border-destructive/30 p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-destructive/30 p-4">
           <div>
             <h4 className="text-sm font-medium">Clear Sync State</h4>
             <p className="text-xs text-muted-foreground">
@@ -111,8 +112,8 @@ export function DangerZone() {
             </p>
           </div>
           {confirmingReset === "sync" ? (
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
                 Cancel
               </Button>
               <Button
@@ -120,6 +121,7 @@ export function DangerZone() {
                 size="sm"
                 onClick={() => handleReset("sync")}
                 disabled={resetting === "sync"}
+                className="w-full sm:w-auto"
               >
                 {resetting === "sync" ? "Clearing..." : "Confirm"}
               </Button>
@@ -129,7 +131,7 @@ export function DangerZone() {
               variant="outline"
               size="sm"
               onClick={() => handleReset("sync")}
-              className="border-destructive/50 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              className="border-destructive/50 text-destructive hover:bg-destructive hover:text-destructive-foreground w-full sm:w-auto"
             >
               Clear
             </Button>
@@ -137,7 +139,7 @@ export function DangerZone() {
         </div>
 
         {/* Reset Everything */}
-        <div className="flex items-center justify-between rounded-lg border border-destructive/30 p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-destructive/30 p-4">
           <div>
             <h4 className="text-sm font-medium">Reset Everything</h4>
             <p className="text-xs text-muted-foreground">
@@ -145,8 +147,8 @@ export function DangerZone() {
             </p>
           </div>
           {confirmingReset === "all" ? (
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
                 Cancel
               </Button>
               <Button
@@ -154,6 +156,7 @@ export function DangerZone() {
                 size="sm"
                 onClick={() => handleReset("all")}
                 disabled={resetting === "all"}
+                className="w-full sm:w-auto"
               >
                 {resetting === "all" ? "Resetting..." : "Confirm Delete"}
               </Button>
@@ -163,6 +166,7 @@ export function DangerZone() {
               variant="destructive"
               size="sm"
               onClick={() => handleReset("all")}
+              className="w-full sm:w-auto"
             >
               Delete All
             </Button>
