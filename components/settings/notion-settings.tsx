@@ -43,15 +43,15 @@ export function NotionSettings({ settings }: NotionSettingsProps) {
         {settings?.isConnected ? (
           <>
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Database</span>
-                <span>{settings.databaseName || "Not selected"}</span>
+                <span className="truncate">{settings.databaseName || "Not selected"}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Database ID</span>
                 <span className="font-mono">{maskDatabaseId(settings.databaseId)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">API Token</span>
                 <span className="text-green-600 dark:text-green-400">Configured</span>
               </div>
