@@ -1,5 +1,0 @@
-[test]
-
-# Exclude Playwright E2E tests from bun test
-# Run E2E tests separately with: bun run test:e2e
-exclude = ["e2e/**"]

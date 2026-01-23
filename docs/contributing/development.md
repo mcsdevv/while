@@ -4,7 +4,8 @@ This guide covers setting up a local development environment.
 
 ## Prerequisites
 
-- [Bun](https://bun.sh) v1.0+ (recommended) or Node.js 18+
+- [Node.js](https://nodejs.org) 22+ (see [.nvmrc](../../.nvmrc))
+- [pnpm](https://pnpm.io) 10+
 - [Git](https://git-scm.com)
 - A code editor (VS Code recommended)
 
@@ -20,7 +21,7 @@ cd notion-gcal-sync
 ### 2. Install Dependencies
 
 ```bash
-bun install
+pnpm install
 ```
 
 ### 3. Set Up Environment Variables
@@ -51,7 +52,7 @@ GOOGLE_CALENDAR_REFRESH_TOKEN=xxx
 ### 4. Start Development Server
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 The app will be available at `http://localhost:3000`.
@@ -89,15 +90,15 @@ notion-gcal-sync/
 
 | Command | Description |
 |---------|-------------|
-| `bun run dev` | Start development server |
-| `bun run build` | Build for production |
-| `bun run start` | Start production server |
-| `bun run test` | Run tests |
-| `bun run test:watch` | Run tests in watch mode |
-| `bun run typecheck` | Type check TypeScript |
-| `bun run lint` | Run linter |
-| `bun run lint:fix` | Fix lint errors |
-| `bun run format` | Format code |
+| `pnpm run dev` | Start development server |
+| `pnpm run build` | Build for production |
+| `pnpm run start` | Start production server |
+| `pnpm test` | Run tests |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm run typecheck` | Type check TypeScript |
+| `pnpm run lint` | Run linter |
+| `pnpm run lint:fix` | Fix lint errors |
+| `pnpm run format` | Format code |
 
 ## Code Style
 
@@ -117,14 +118,14 @@ Install the Biome extension and add to `.vscode/settings.json`:
 ### Manual Formatting
 
 ```bash
-bun run format
+pnpm run format
 ```
 
 ### Linting
 
 ```bash
-bun run lint
-bun run lint:fix  # Auto-fix issues
+pnpm run lint
+pnpm run lint:fix  # Auto-fix issues
 ```
 
 ## TypeScript
@@ -134,7 +135,7 @@ The project uses strict TypeScript configuration.
 ### Type Checking
 
 ```bash
-bun run typecheck
+pnpm run typecheck
 ```
 
 ### Key Type Files
@@ -154,13 +155,13 @@ Quick start:
 
 ```bash
 # Run all tests
-bun run test
+pnpm test
 
 # Run specific test file
-bun test __tests__/sync/core.test.ts
+pnpm test __tests__/sync/core.test.ts
 
 # Watch mode
-bun run test:watch
+pnpm test:watch
 ```
 
 ## API Development
@@ -254,7 +255,7 @@ Add to `.vscode/launch.json`:
 Start with debugging:
 
 ```bash
-NODE_OPTIONS='--inspect' bun run dev
+NODE_OPTIONS='--inspect' pnpm run dev
 ```
 
 ### Console Logging
@@ -301,14 +302,14 @@ test: Add webhook validation tests
 ### "Cannot find module" errors
 
 ```bash
-rm -rf node_modules bun.lockb
-bun install
+rm -rf node_modules pnpm-lock.yaml
+pnpm install
 ```
 
 ### Type errors after dependency update
 
 ```bash
-bun run typecheck
+pnpm run typecheck
 ```
 
 ### Redis connection issues

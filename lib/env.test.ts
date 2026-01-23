@@ -1,5 +1,4 @@
-import assert from "node:assert";
-import { test } from "node:test";
+import { expect, test } from "vitest";
 import { z } from "zod";
 
 // Test the schema validation logic without importing env
@@ -27,7 +26,7 @@ test("envSchema - validates required fields", () => {
   };
 
   const result = envSchema.safeParse(validEnv);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("envSchema - rejects missing required fields", () => {
@@ -37,7 +36,7 @@ test("envSchema - rejects missing required fields", () => {
   };
 
   const result = envSchema.safeParse(invalidEnv);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 test("envSchema - applies defaults", () => {
@@ -51,9 +50,9 @@ test("envSchema - applies defaults", () => {
 
   const result = envSchema.safeParse(validEnv);
   if (result.success) {
-    assert.strictEqual(result.data.NODE_ENV, "development");
-    assert.strictEqual(result.data.LOG_LEVEL, "info");
-    assert.strictEqual(result.data.GOOGLE_CALENDAR_CALENDAR_ID, "primary");
+    expect(result.data.NODE_ENV).toBe("development");
+    expect(result.data.LOG_LEVEL).toBe("info");
+    expect(result.data.GOOGLE_CALENDAR_CALENDAR_ID).toBe("primary");
   }
 });
 
@@ -68,7 +67,7 @@ test("envSchema - validates webhook URL format", () => {
   };
 
   const result = envSchema.safeParse(invalidEnv);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 test("envSchema - accepts valid webhook URL", () => {
@@ -82,5 +81,5 @@ test("envSchema - accepts valid webhook URL", () => {
   };
 
   const result = envSchema.safeParse(validEnv);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });

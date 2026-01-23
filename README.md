@@ -93,19 +93,19 @@ Default mapping (customizable in Settings):
 
 ```bash
 # Install dependencies
-bun install
+pnpm install
 
 # Start dev server
-bun run dev
+pnpm run dev
 
 # Run tests
-bun run test
+pnpm test
 
 # Type check
-bun run typecheck
+pnpm run typecheck
 
 # Lint
-bun run lint
+pnpm run lint
 ```
 
 ## Contributing

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "bun:test";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { decrypt, encrypt, isEncryptionConfigured, safeDecrypt, safeEncrypt } from "./encryption";
 
 describe("Encryption", () => {

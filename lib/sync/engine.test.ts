@@ -7,8 +7,7 @@
  * - Test 3 & 6: Event deletion (Notion↔GCal)
  */
 
-import { test } from "bun:test";
-import assert from "node:assert";
+import { expect, test } from "vitest";
 
 /**
  * These are placeholder tests that document the integration test coverage.
@@ -20,22 +19,22 @@ import assert from "node:assert";
 
 test("sync engine supports bidirectional sync", () => {
   // Verify sync functions exist and are exported
-  assert.ok(true, "Sync engine handles Notion→GCal and GCal→Notion");
+  expect(true).toBeTruthy();
 });
 
 test("sync engine prevents infinite loops via ID mapping", () => {
   // Events store cross-system IDs
   // - Notion stores gcalEventId
   // - GCal stores notionPageId
-  assert.ok(true, "ID mapping prevents sync loops");
+  expect(true).toBeTruthy();
 });
 
 test("sync engine excludes status field to prevent unwanted deletions", () => {
   // Status field removed from all sync operations
-  assert.ok(true, "Status field not synced");
+  expect(true).toBeTruthy();
 });
 
 test("sync engine handles create, update, and delete operations", () => {
   // All CRUD operations tested manually
-  assert.ok(true, "CRUD operations work in both directions");
+  expect(true).toBeTruthy();
 });

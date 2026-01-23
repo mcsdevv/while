@@ -6,16 +6,16 @@ This directory contains unit and integration tests for the Notion-GCal Sync appl
 
 ```bash
 # Run all tests
-bun test
+pnpm test
 
 # Run tests in watch mode
-bun test --watch
+pnpm test:watch
 
 # Run specific test file
-bun test __tests__/lib/auth.test.ts
+pnpm test __tests__/lib/auth.test.ts
 
-# Run tests with coverage (if configured)
-bun test --coverage
+# Run tests with coverage
+pnpm test:coverage
 ```
 
 ## Test Structure
@@ -75,7 +75,7 @@ When adding new features, ensure you:
 ### Example Test
 
 ```typescript
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 
 describe("Feature Name", () => {
   describe("Specific Functionality", () => {
@@ -136,14 +136,14 @@ it("should complete async operation", async () => {
 Ensure you're properly cleaning up mocks:
 
 ```typescript
-import { afterEach, beforeEach, mock } from "bun:test";
+import { afterEach, beforeEach, vi } from "vitest";
 
 describe("Tests with mocks", () => {
   let originalConsoleLog: typeof console.log;
 
   beforeEach(() => {
     originalConsoleLog = console.log;
-    console.log = mock(() => {});
+    console.log = vi.fn();
   });
 
   afterEach(() => {
@@ -154,6 +154,6 @@ describe("Tests with mocks", () => {
 
 ## Resources
 
-- [Bun Test Documentation](https://bun.sh/docs/cli/test)
+- [Vitest Documentation](https://vitest.dev/)
 - [NextAuth Testing](https://next-auth.js.org/getting-started/client#testing)
 - [Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices)
