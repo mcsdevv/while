@@ -5,6 +5,11 @@
 
 set -e
 
+# Skip in CI environments - no git hooks needed
+if [ -n "$CI" ]; then
+  exit 0
+fi
+
 echo "🔧 Setting up git hooks..."
 
 # Create hooks directory if it doesn't exist
