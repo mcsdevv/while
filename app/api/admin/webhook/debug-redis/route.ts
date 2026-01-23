@@ -1,7 +1,5 @@
-import { Redis } from "@upstash/redis";
+import { getRedis } from "@/lib/redis";
 import { type NextRequest, NextResponse } from "next/server";
-
-const redis = Redis.fromEnv();
 
 /**
  * Verify admin authorization
@@ -28,9 +26,9 @@ export async function GET(request: NextRequest) {
 
   try {
     // Get all webhook-related keys
-    const notionWebhook = await redis.get("webhook:notion:subscription");
-    const gcalChannel = await redis.get("webhook:gcal:channel");
-    const gcalSync = await redis.get("webhook:gcal:sync_state");
+    const notionWebhook = await getRedis().get("webhook:notion:subscription");
+    const gcalChannel = await getRedis().get("webhook:gcal:channel");
+    const gcalSync = await getRedis().get("webhook:gcal:sync_state");
 
     return NextResponse.json({
       redis: {
