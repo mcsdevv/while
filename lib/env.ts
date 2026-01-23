@@ -59,7 +59,7 @@ export function isAuthConfigured(): boolean {
     env.NEXTAUTH_SECRET &&
       env.AUTH_GOOGLE_ID &&
       env.AUTH_GOOGLE_SECRET &&
-      env.AUTHORIZED_EMAILS?.length
+      env.AUTHORIZED_EMAILS?.length,
   );
 }
 
@@ -82,7 +82,7 @@ export function requireAuthEnv(): {
   if (missing.length > 0) {
     throw new Error(
       `Auth not configured. Missing environment variables: ${missing.join(", ")}. ` +
-        "Please complete the setup wizard or set these variables in your environment."
+        "Please complete the setup wizard or set these variables in your environment.",
     );
   }
 

@@ -27,7 +27,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
      */
     async signIn({ user }) {
       if (!isAuthConfigured()) {
-        console.error("Auth not configured. Set AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.");
+        console.error(
+          "Auth not configured. Set AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.",
+        );
         return false;
       }
 

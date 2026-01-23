@@ -31,7 +31,10 @@ interface FieldMappingEditorProps {
   onSave?: () => void;
 }
 
-const FIELD_LABELS: Record<keyof FieldMapping, { label: string; description: string; required: boolean }> = {
+const FIELD_LABELS: Record<
+  keyof FieldMapping,
+  { label: string; description: string; required: boolean }
+> = {
   title: {
     label: "Event Title",
     description: "The Notion property for event titles",

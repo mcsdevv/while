@@ -3,12 +3,7 @@
  * POST: Reset specific sections of settings
  */
 
-import {
-  DEFAULT_FIELD_MAPPING,
-  deleteSettings,
-  getSettings,
-  updateSettings,
-} from "@/lib/settings";
+import { DEFAULT_FIELD_MAPPING, deleteSettings, getSettings, updateSettings } from "@/lib/settings";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
