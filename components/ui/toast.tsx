@@ -69,7 +69,7 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
           "bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900":
             variant === "success",
           "bg-destructive/10 border-destructive/50": variant === "destructive",
-        }
+        },
       )}
     >
       <div className="flex-1 space-y-1">

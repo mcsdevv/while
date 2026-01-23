@@ -1,16 +1,19 @@
-import { env } from "@/lib/env";
+import { env, isAuthConfigured } from "@/lib/env";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
 /**
  * NextAuth configuration
  * Uses Google OAuth with email whitelist for access control
+ *
+ * Note: Auth env vars are optional at build time. If not configured,
+ * sign-in attempts will fail gracefully with an error message.
  */
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
-      clientId: env.AUTH_GOOGLE_ID,
-      clientSecret: env.AUTH_GOOGLE_SECRET,
+      clientId: env.AUTH_GOOGLE_ID ?? "",
+      clientSecret: env.AUTH_GOOGLE_SECRET ?? "",
       authorization: {
         params: {
           prompt: "select_account",
@@ -23,10 +26,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
      * Check if user's email is in the authorized list
      */
     async signIn({ user }) {
+      if (!isAuthConfigured()) {
+        console.error(
+          "Auth not configured. Set AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.",
+        );
+        return false;
+      }
+
       const email = user.email?.toLowerCase();
       if (!email) return false;
 
-      const authorizedEmails = env.AUTHORIZED_EMAILS.map((e) => e.toLowerCase());
+      const authorizedEmails = (env.AUTHORIZED_EMAILS ?? []).map((e) => e.toLowerCase());
       const isAuthorized = authorizedEmails.includes(email);
 
       if (!isAuthorized) {
