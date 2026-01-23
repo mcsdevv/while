@@ -1,4 +1,4 @@
-import { env } from "@/lib/env";
+import { getFieldMapping, getNotionConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { Client } from "@notionhq/client";
 import type {
@@ -7,9 +7,45 @@ import type {
   UpdatePageParameters,
 } from "@notionhq/client/build/src/api-endpoints";
 
-export const notionClient = new Client({
-  auth: env.NOTION_API_TOKEN,
-});
+// Cached client and config (lazy initialization)
+let cachedNotionClient: Client | null = null;
+let cachedDatabaseId: string | null = null;
+
+/**
+ * Get or create the Notion client with credentials from settings or env vars.
+ */
+async function getClient(): Promise<Client> {
+  if (cachedNotionClient) {
+    return cachedNotionClient;
+  }
+
+  const config = await getNotionConfig();
+  cachedNotionClient = new Client({ auth: config.apiToken });
+  cachedDatabaseId = config.databaseId;
+
+  return cachedNotionClient;
+}
+
+/**
+ * Get the database ID from config.
+ */
+async function getDatabaseId(): Promise<string> {
+  if (cachedDatabaseId) {
+    return cachedDatabaseId;
+  }
+
+  const config = await getNotionConfig();
+  cachedDatabaseId = config.databaseId;
+  return cachedDatabaseId;
+}
+
+/**
+ * Reset cached client (useful when credentials change).
+ */
+export function resetNotionClient(): void {
+  cachedNotionClient = null;
+  cachedDatabaseId = null;
+}
 
 // Type guard for page object responses
 function isPageObjectResponse(page: unknown): page is PageObjectResponse {
@@ -44,17 +80,18 @@ function getPropertyValue(properties: PageObjectResponse["properties"], key: str
 }
 
 // Convert Notion page to Event
-export function notionPageToEvent(page: PageObjectResponse): Event | null {
+export async function notionPageToEvent(page: PageObjectResponse): Promise<Event | null> {
   try {
     const properties = page.properties;
+    const fieldMapping = await getFieldMapping();
 
-    const title = getPropertyValue(properties, "Title") as string;
-    const description = getPropertyValue(properties, "Description") as string | undefined;
-    const location = getPropertyValue(properties, "Location") as string | undefined;
-    const gcalEventId = getPropertyValue(properties, "GCal Event ID") as string | undefined;
-    const reminders = getPropertyValue(properties, "Reminders") as number | undefined;
+    const title = getPropertyValue(properties, fieldMapping.title) as string;
+    const description = getPropertyValue(properties, fieldMapping.description) as string | undefined;
+    const location = getPropertyValue(properties, fieldMapping.location) as string | undefined;
+    const gcalEventId = getPropertyValue(properties, fieldMapping.gcalEventId) as string | undefined;
+    const reminders = getPropertyValue(properties, fieldMapping.reminders) as number | undefined;
 
-    const dateRange = getPropertyValue(properties, "Date") as {
+    const dateRange = getPropertyValue(properties, fieldMapping.date) as {
       start?: string;
       end?: string;
     } | null;
@@ -93,10 +130,14 @@ export function notionPageToEvent(page: PageObjectResponse): Event | null {
 // Fetch all events from Notion database
 export async function fetchNotionEvents(): Promise<Event[]> {
   try {
-    const response: QueryDatabaseResponse = await notionClient.databases.query({
-      database_id: env.NOTION_DATABASE_ID,
+    const client = await getClient();
+    const databaseId = await getDatabaseId();
+    const fieldMapping = await getFieldMapping();
+
+    const response: QueryDatabaseResponse = await client.databases.query({
+      database_id: databaseId,
       filter: {
-        property: "Date",
+        property: fieldMapping.date,
         date: {
           is_not_empty: true,
         },
@@ -106,7 +147,7 @@ export async function fetchNotionEvents(): Promise<Event[]> {
     const events: Event[] = [];
     for (const result of response.results) {
       if (isPageObjectResponse(result)) {
-        const event = notionPageToEvent(result);
+        const event = await notionPageToEvent(result);
         if (event) {
           events.push(event);
         }
@@ -123,12 +164,16 @@ export async function fetchNotionEvents(): Promise<Event[]> {
 // Create a new event in Notion
 export async function createNotionEvent(event: Event): Promise<string> {
   try {
-    const response = await notionClient.pages.create({
+    const client = await getClient();
+    const databaseId = await getDatabaseId();
+    const fieldMapping = await getFieldMapping();
+
+    const response = await client.pages.create({
       parent: {
-        database_id: env.NOTION_DATABASE_ID,
+        database_id: databaseId,
       },
       properties: {
-        Title: {
+        [fieldMapping.title]: {
           title: [
             {
               text: {
@@ -137,14 +182,14 @@ export async function createNotionEvent(event: Event): Promise<string> {
             },
           ],
         },
-        Date: {
+        [fieldMapping.date]: {
           date: {
             start: event.startTime.toISOString(),
             end: event.endTime.toISOString(),
           },
         },
         ...(event.description && {
-          Description: {
+          [fieldMapping.description]: {
             rich_text: [
               {
                 text: {
@@ -155,7 +200,7 @@ export async function createNotionEvent(event: Event): Promise<string> {
           },
         }),
         ...(event.location && {
-          Location: {
+          [fieldMapping.location]: {
             rich_text: [
               {
                 text: {
@@ -173,12 +218,12 @@ export async function createNotionEvent(event: Event): Promise<string> {
           },
         }),
         ...(event.reminders !== undefined && {
-          Reminders: {
+          [fieldMapping.reminders]: {
             number: event.reminders,
           },
         }),
         ...(event.gcalEventId && {
-          "GCal Event ID": {
+          [fieldMapping.gcalEventId]: {
             rich_text: [
               {
                 text: {
@@ -201,23 +246,26 @@ export async function createNotionEvent(event: Event): Promise<string> {
 // Update an existing Notion event
 export async function updateNotionEvent(pageId: string, event: Partial<Event>): Promise<void> {
   try {
+    const client = await getClient();
+    const fieldMapping = await getFieldMapping();
+
     const properties: UpdatePageParameters["properties"] = {};
 
     if (event.title !== undefined) {
-      properties.Title = {
+      properties[fieldMapping.title] = {
         title: [{ text: { content: event.title } }],
       };
     }
 
     if (event.startTime && event.endTime) {
-      properties.Date = {
+      properties[fieldMapping.date] = {
         date: {
           start: event.startTime.toISOString(),
           end: event.endTime.toISOString(),
         },
       };
     } else if (event.startTime) {
-      properties.Date = {
+      properties[fieldMapping.date] = {
         date: {
           start: event.startTime.toISOString(),
         },
@@ -225,13 +273,13 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
     }
 
     if (event.description !== undefined) {
-      properties.Description = {
+      properties[fieldMapping.description] = {
         rich_text: [{ text: { content: event.description } }],
       };
     }
 
     if (event.location !== undefined) {
-      properties.Location = {
+      properties[fieldMapping.location] = {
         rich_text: [{ text: { content: event.location } }],
       };
     }
@@ -245,18 +293,18 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
     }
 
     if (event.reminders !== undefined) {
-      properties.Reminders = {
+      properties[fieldMapping.reminders] = {
         number: event.reminders,
       };
     }
 
     if (event.gcalEventId !== undefined) {
-      properties["GCal Event ID"] = {
+      properties[fieldMapping.gcalEventId] = {
         rich_text: [{ text: { content: event.gcalEventId } }],
       };
     }
 
-    await notionClient.pages.update({
+    await client.pages.update({
       page_id: pageId,
       properties,
     });
@@ -269,7 +317,9 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
 // Delete a Notion event (archive the page)
 export async function deleteNotionEvent(pageId: string): Promise<void> {
   try {
-    await notionClient.pages.update({
+    const client = await getClient();
+
+    await client.pages.update({
       page_id: pageId,
       archived: true,
     });
@@ -293,7 +343,9 @@ export async function deleteNotionEvent(pageId: string): Promise<void> {
 // Get a single event by page ID
 export async function getNotionEvent(pageId: string): Promise<Event | null> {
   try {
-    const page = await notionClient.pages.retrieve({
+    const client = await getClient();
+
+    const page = await client.pages.retrieve({
       page_id: pageId,
     });
 
@@ -332,10 +384,12 @@ interface WebhookResponse {
  */
 export async function createNotionWebhook(params: CreateWebhookParams): Promise<WebhookResponse> {
   try {
+    const config = await getNotionConfig();
+
     const response = await fetch("https://api.notion.com/v1/webhooks", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${env.NOTION_API_TOKEN}`,
+        Authorization: `Bearer ${config.apiToken}`,
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28",
       },
@@ -363,10 +417,12 @@ export async function createNotionWebhook(params: CreateWebhookParams): Promise<
  */
 export async function deleteNotionWebhook(webhookId: string): Promise<void> {
   try {
+    const config = await getNotionConfig();
+
     const response = await fetch(`https://api.notion.com/v1/webhooks/${webhookId}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${env.NOTION_API_TOKEN}`,
+        Authorization: `Bearer ${config.apiToken}`,
         "Notion-Version": "2022-06-28",
       },
     });
@@ -386,10 +442,12 @@ export async function deleteNotionWebhook(webhookId: string): Promise<void> {
  */
 export async function listNotionWebhooks(): Promise<WebhookResponse[]> {
   try {
+    const config = await getNotionConfig();
+
     const response = await fetch("https://api.notion.com/v1/webhooks", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${env.NOTION_API_TOKEN}`,
+        Authorization: `Bearer ${config.apiToken}`,
         "Notion-Version": "2022-06-28",
       },
     });

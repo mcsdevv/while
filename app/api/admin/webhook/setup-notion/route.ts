@@ -1,9 +1,9 @@
-import { env } from "@/lib/env";
 import {
   createNotionWebhook,
   deleteNotionWebhook as deleteNotionWebhookAPI,
   listNotionWebhooks,
 } from "@/lib/notion/client";
+import { getNotionConfig } from "@/lib/settings";
 import { logWebhookEvent } from "@/lib/sync/logger";
 import {
   deleteNotionWebhook,
@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json().catch(() => ({}));
+    const notionConfig = await getNotionConfig();
 
     // If subscriptionId and verificationToken are provided, just register the existing webhook
     if (body.subscriptionId && body.verificationToken) {
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
 
       await saveNotionWebhook({
         subscriptionId: body.subscriptionId,
-        databaseId: env.NOTION_DATABASE_ID,
+        databaseId: notionConfig.databaseId,
         verificationToken: body.verificationToken,
         createdAt: new Date(),
         verified: true, // Assume it's already verified if they're registering it
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
         message: "Existing webhook registered successfully",
         subscription: {
           subscriptionId: body.subscriptionId,
-          databaseId: env.NOTION_DATABASE_ID,
+          databaseId: notionConfig.databaseId,
           verified: true,
         },
       });
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
 
     // Get webhook URL from request or environment
     const webhookUrl =
-      body.webhookUrl || env.WEBHOOK_URL || `${request.nextUrl.origin}/api/webhooks/notion`;
+      body.webhookUrl || process.env.WEBHOOK_URL || `${request.nextUrl.origin}/api/webhooks/notion`;
 
     console.log(`🔧 Setting up Notion webhook to: ${webhookUrl}`);
 
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
     console.log("📝 Creating new Notion webhook subscription...");
     const webhookResponse = await createNotionWebhook({
       url: webhookUrl,
-      databaseId: env.NOTION_DATABASE_ID,
+      databaseId: notionConfig.databaseId,
       eventTypes: ["page.content_updated"],
     });
 
@@ -106,7 +107,7 @@ export async function POST(request: NextRequest) {
     // Save webhook metadata to Redis
     await saveNotionWebhook({
       subscriptionId: webhookResponse.id,
-      databaseId: env.NOTION_DATABASE_ID,
+      databaseId: notionConfig.databaseId,
       verificationToken,
       createdAt: new Date(),
       verified: false, // Will be set to true after manual verification in Notion UI

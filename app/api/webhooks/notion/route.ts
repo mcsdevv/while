@@ -1,8 +1,8 @@
 import crypto from "node:crypto";
-import { env } from "@/lib/env";
 import { findGcalEventByNotionId } from "@/lib/google-calendar/client";
 import { deleteGcalEvent } from "@/lib/google-calendar/client";
 import { getNotionEvent } from "@/lib/notion/client";
+import { getNotionConfig } from "@/lib/settings";
 import { syncNotionToGcal } from "@/lib/sync/engine";
 import { logWebhookEvent } from "@/lib/sync/logger";
 import { notionWebhookPayloadSchema, validateSafe } from "@/lib/validation";
@@ -67,10 +67,11 @@ export async function POST(request: NextRequest) {
         status: "success",
       });
 
-      // Save the verification token for future use
+      // Get database ID from config and save the verification token for future use
+      const notionConfig = await getNotionConfig();
       await saveNotionWebhook({
         subscriptionId: "pending", // Will be updated later
-        databaseId: env.NOTION_DATABASE_ID,
+        databaseId: notionConfig.databaseId,
         verificationToken: validatedBody.verification_token,
         createdAt: new Date(),
         verified: false,
