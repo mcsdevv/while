@@ -1,8 +1,9 @@
 import { getGoogleConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
-import { google } from "googleapis";
-import type { OAuth2Client } from "googleapis-common";
+import { google, type Auth } from "googleapis";
 import type { calendar_v3 } from "googleapis";
+
+type OAuth2Client = InstanceType<typeof google.auth.OAuth2>;
 
 // Suppress deprecation warning from googleapis library
 // This is a known issue in googleapis and will be fixed in a future version
