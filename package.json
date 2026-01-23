@@ -11,14 +11,7 @@
   "bugs": {
     "url": "https://github.com/mcsdevv/notion-gcal-sync/issues"
   },
-  "keywords": [
-    "notion",
-    "google-calendar",
-    "sync",
-    "automation",
-    "nextjs",
-    "vercel"
-  ],
+  "keywords": ["notion", "google-calendar", "sync", "automation", "nextjs", "vercel"],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -69,9 +62,6 @@
     "node": ">=18.0.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp"
-    ]
+    "onlyBuiltDependencies": ["@biomejs/biome", "sharp"]
   }
 }

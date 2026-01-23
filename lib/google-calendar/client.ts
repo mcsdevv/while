@@ -1,6 +1,6 @@
 import { getGoogleConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
-import { google, type Auth } from "googleapis";
+import { type Auth, google } from "googleapis";
 import type { calendar_v3 } from "googleapis";
 
 type OAuth2Client = InstanceType<typeof google.auth.OAuth2>;

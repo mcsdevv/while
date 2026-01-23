@@ -78,7 +78,12 @@ export function DangerZone() {
           </div>
           {confirmingReset === "mapping" ? (
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
               <Button
@@ -113,7 +118,12 @@ export function DangerZone() {
           </div>
           {confirmingReset === "sync" ? (
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
               <Button
@@ -148,7 +158,12 @@ export function DangerZone() {
           </div>
           {confirmingReset === "all" ? (
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Button variant="outline" size="sm" onClick={handleCancel} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
               <Button

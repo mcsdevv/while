@@ -82,7 +82,10 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
           <div className="rounded-lg border p-4 space-y-2">
             <div className="flex items-center justify-between">
               <span className="font-medium">Google Calendar</span>
-              <Badge variant={google?.isConnected ? "success" : "destructive"} className="whitespace-nowrap">
+              <Badge
+                variant={google?.isConnected ? "success" : "destructive"}
+                className="whitespace-nowrap"
+              >
                 {google?.isConnected ? "Connected" : "Not Connected"}
               </Badge>
             </div>
@@ -98,7 +101,10 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
           <div className="rounded-lg border p-4 space-y-2">
             <div className="flex items-center justify-between">
               <span className="font-medium">Notion</span>
-              <Badge variant={notion?.isConnected ? "success" : "destructive"} className="whitespace-nowrap">
+              <Badge
+                variant={notion?.isConnected ? "success" : "destructive"}
+                className="whitespace-nowrap"
+              >
                 {notion?.isConnected ? "Connected" : "Not Connected"}
               </Badge>
             </div>

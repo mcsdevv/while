@@ -86,9 +86,13 @@ export async function notionPageToEvent(page: PageObjectResponse): Promise<Event
     const fieldMapping = await getFieldMapping();
 
     const title = getPropertyValue(properties, fieldMapping.title) as string;
-    const description = getPropertyValue(properties, fieldMapping.description) as string | undefined;
+    const description = getPropertyValue(properties, fieldMapping.description) as
+      | string
+      | undefined;
     const location = getPropertyValue(properties, fieldMapping.location) as string | undefined;
-    const gcalEventId = getPropertyValue(properties, fieldMapping.gcalEventId) as string | undefined;
+    const gcalEventId = getPropertyValue(properties, fieldMapping.gcalEventId) as
+      | string
+      | undefined;
     const reminders = getPropertyValue(properties, fieldMapping.reminders) as number | undefined;
 
     const dateRange = getPropertyValue(properties, fieldMapping.date) as {

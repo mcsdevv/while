@@ -28,7 +28,11 @@ export interface NotionConfig {
 export async function getGoogleConfig(): Promise<GoogleConfig> {
   // Try settings first
   const settings = await getSettings();
-  if (settings?.google?.clientId && settings?.google?.clientSecret && settings?.google?.refreshToken) {
+  if (
+    settings?.google?.clientId &&
+    settings?.google?.clientSecret &&
+    settings?.google?.refreshToken
+  ) {
     return {
       clientId: settings.google.clientId,
       clientSecret: settings.google.clientSecret,

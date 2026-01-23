@@ -118,7 +118,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Field Mapping */}
-        <FieldMappingEditor initialMapping={settings?.fieldMapping ?? null} onSave={fetchSettings} />
+        <FieldMappingEditor
+          initialMapping={settings?.fieldMapping ?? null}
+          onSave={fetchSettings}
+        />
 
         {/* Danger Zone */}
         <DangerZone />
