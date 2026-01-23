@@ -1,5 +1,5 @@
 {
-  "name": "notion-gcal-sync",
+  "name": "gcal-notion-sync",
   "version": "0.1.0",
   "description": "Sync Google Calendar events with Notion databases",
   "license": "MIT",
