@@ -1,6 +1,7 @@
-import { env } from "@/lib/env";
+import { getGoogleConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { google } from "googleapis";
+import type { OAuth2Client } from "googleapis-common";
 import type { calendar_v3 } from "googleapis";
 
 // Suppress deprecation warning from googleapis library
@@ -18,22 +19,70 @@ process.emitWarning = (warning: any, ...args: any[]) => {
   return originalEmitWarning.call(process, warning, ...args);
 };
 
-// Initialize OAuth2 client
-const oauth2Client = new google.auth.OAuth2(
-  env.GOOGLE_CALENDAR_CLIENT_ID,
-  env.GOOGLE_CALENDAR_CLIENT_SECRET,
-);
+// Cached clients (lazy initialization)
+let cachedOAuth2Client: OAuth2Client | null = null;
+let cachedCalendarClient: calendar_v3.Calendar | null = null;
+let cachedCalendarId: string | null = null;
 
-// Set credentials with refresh token
-oauth2Client.setCredentials({
-  refresh_token: env.GOOGLE_CALENDAR_REFRESH_TOKEN,
-});
+/**
+ * Get or create the OAuth2 client with credentials from settings or env vars.
+ */
+async function getOAuth2Client(): Promise<OAuth2Client> {
+  if (cachedOAuth2Client) {
+    return cachedOAuth2Client;
+  }
 
-// Initialize Calendar API
-export const calendarClient = google.calendar({
-  version: "v3",
-  auth: oauth2Client,
-});
+  const config = await getGoogleConfig();
+
+  cachedOAuth2Client = new google.auth.OAuth2(config.clientId, config.clientSecret);
+  cachedOAuth2Client.setCredentials({
+    refresh_token: config.refreshToken,
+  });
+
+  // Cache the calendar ID too
+  cachedCalendarId = config.calendarId;
+
+  return cachedOAuth2Client;
+}
+
+/**
+ * Get or create the Calendar API client.
+ */
+async function getCalendarClient(): Promise<calendar_v3.Calendar> {
+  if (cachedCalendarClient) {
+    return cachedCalendarClient;
+  }
+
+  const auth = await getOAuth2Client();
+  cachedCalendarClient = google.calendar({
+    version: "v3",
+    auth,
+  });
+
+  return cachedCalendarClient;
+}
+
+/**
+ * Get the calendar ID from config.
+ */
+async function getCalendarId(): Promise<string> {
+  if (cachedCalendarId) {
+    return cachedCalendarId;
+  }
+
+  const config = await getGoogleConfig();
+  cachedCalendarId = config.calendarId;
+  return cachedCalendarId;
+}
+
+/**
+ * Reset cached clients (useful when credentials change).
+ */
+export function resetGcalClient(): void {
+  cachedOAuth2Client = null;
+  cachedCalendarClient = null;
+  cachedCalendarId = null;
+}
 
 // Helper to check if an event is all-day
 function isAllDayEvent(startTime: Date, endTime: Date): boolean {
@@ -113,12 +162,15 @@ export function gcalEventToEvent(gcalEvent: calendar_v3.Schema$Event): Event | n
 // Fetch all events from Google Calendar
 export async function fetchGcalEvents(timeMin?: Date, timeMax?: Date): Promise<Event[]> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     // Default to fetching events from now up to 1 year in the future
     const defaultTimeMin = timeMin || new Date();
     const defaultTimeMax = timeMax || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year from now
 
     const response = await calendarClient.events.list({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       timeMin: defaultTimeMin.toISOString(),
       timeMax: defaultTimeMax.toISOString(),
       singleEvents: true, // Expand recurring events into instances
@@ -147,8 +199,11 @@ export async function fetchGcalEventsSince(syncToken?: string): Promise<{
   invalidToken?: boolean;
 }> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     const response = await calendarClient.events.list({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       syncToken: syncToken,
       singleEvents: true,
       maxResults: 2500, // Maximum allowed by API
@@ -191,6 +246,9 @@ export async function fetchGcalEventsSince(syncToken?: string): Promise<{
 // Create a new event in Google Calendar
 export async function createGcalEvent(event: Event): Promise<string> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     // Check if this is an all-day event
     const isAllDay = isAllDayEvent(event.startTime, event.endTime);
 
@@ -227,7 +285,7 @@ export async function createGcalEvent(event: Event): Promise<string> {
     }
 
     const response = await calendarClient.events.insert({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       requestBody: gcalEvent,
     });
 
@@ -245,6 +303,9 @@ export async function createGcalEvent(event: Event): Promise<string> {
 // Update an existing Google Calendar event
 export async function updateGcalEvent(eventId: string, event: Partial<Event>): Promise<void> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     const gcalEvent: calendar_v3.Schema$Event = {};
 
     if (event.title !== undefined) {
@@ -321,7 +382,7 @@ export async function updateGcalEvent(eventId: string, event: Partial<Event>): P
 
     try {
       await calendarClient.events.patch({
-        calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+        calendarId,
         eventId,
         requestBody: gcalEvent,
       });
@@ -336,7 +397,7 @@ export async function updateGcalEvent(eventId: string, event: Partial<Event>): P
         );
         gcalEvent.extendedProperties = undefined;
         await calendarClient.events.patch({
-          calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+          calendarId,
           eventId,
           requestBody: gcalEvent,
         });
@@ -353,8 +414,11 @@ export async function updateGcalEvent(eventId: string, event: Partial<Event>): P
 // Delete a Google Calendar event
 export async function deleteGcalEvent(eventId: string): Promise<void> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     await calendarClient.events.delete({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       eventId,
     });
   } catch (error) {
@@ -388,8 +452,11 @@ export async function findGcalEventByNotionId(notionPageId: string): Promise<Eve
 // Get a single event by ID
 export async function getGcalEvent(eventId: string): Promise<Event | null> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     const response = await calendarClient.events.get({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       eventId,
     });
 
@@ -407,8 +474,11 @@ export async function setupGcalWebhook(webhookUrl: string): Promise<{
   expiration: number;
 }> {
   try {
+    const calendarClient = await getCalendarClient();
+    const calendarId = await getCalendarId();
+
     const response = await calendarClient.events.watch({
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId,
       requestBody: {
         id: `gcal-sync-${Date.now()}`, // Unique channel ID
         type: "web_hook",
@@ -430,6 +500,8 @@ export async function setupGcalWebhook(webhookUrl: string): Promise<{
 // Stop watching calendar changes
 export async function stopGcalWebhook(channelId: string, resourceId: string): Promise<void> {
   try {
+    const calendarClient = await getCalendarClient();
+
     await calendarClient.channels.stop({
       requestBody: {
         id: channelId,

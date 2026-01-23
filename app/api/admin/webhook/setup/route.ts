@@ -1,9 +1,9 @@
-import { env } from "@/lib/env";
 import {
   fetchGcalEventsSince,
   setupGcalWebhook,
   stopGcalWebhook,
 } from "@/lib/google-calendar/client";
+import { getGoogleConfig } from "@/lib/settings";
 import { authHeaderSchema, parseJsonBody, webhookSetupRequestSchema } from "@/lib/validation";
 import {
   deleteWebhookChannel,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     // Get webhook URL from request, environment, or construct from host
     const webhookUrl =
       requestUrl ||
-      env.WEBHOOK_URL ||
+      process.env.WEBHOOK_URL ||
       `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("host")}/api/webhooks/google-calendar`;
 
     console.log(`📍 Webhook URL: ${webhookUrl}`);
@@ -96,12 +96,15 @@ export async function POST(request: NextRequest) {
     console.log("🔗 Creating webhook channel...");
     const channelInfo = await setupGcalWebhook(webhookUrl);
 
+    // Get calendar ID from config
+    const googleConfig = await getGoogleConfig();
+
     // Save channel metadata to Redis
     await saveWebhookChannel({
       channelId: channelInfo.channelId,
       resourceId: channelInfo.resourceId,
       expiration: channelInfo.expiration,
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId: googleConfig.calendarId,
       createdAt: new Date(),
       lastRenewedAt: new Date(),
     });

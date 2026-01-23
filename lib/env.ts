@@ -1,15 +1,18 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  // Notion
-  NOTION_API_TOKEN: z.string().min(1, "Notion API token is required"),
-  NOTION_DATABASE_ID: z.string().min(1, "Notion database ID is required"),
+  // Notion (optional - can be configured via settings UI)
+  NOTION_API_TOKEN: z.string().optional(),
+  NOTION_DATABASE_ID: z.string().optional(),
 
-  // Google Calendar
-  GOOGLE_CALENDAR_CLIENT_ID: z.string().min(1, "Google Calendar client ID is required"),
-  GOOGLE_CALENDAR_CLIENT_SECRET: z.string().min(1, "Google Calendar client secret is required"),
-  GOOGLE_CALENDAR_REFRESH_TOKEN: z.string().min(1, "Google Calendar refresh token is required"),
-  GOOGLE_CALENDAR_CALENDAR_ID: z.string().default("primary"),
+  // Google Calendar (optional - can be configured via settings UI)
+  GOOGLE_CALENDAR_CLIENT_ID: z.string().optional(),
+  GOOGLE_CALENDAR_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_CALENDAR_REFRESH_TOKEN: z.string().optional(),
+  GOOGLE_CALENDAR_CALENDAR_ID: z.string().optional(),
+
+  // Settings encryption (required for storing credentials in Redis)
+  SETTINGS_ENCRYPTION_KEY: z.string().optional(),
 
   // Webhooks
   WEBHOOK_URL: z.string().url().optional(),

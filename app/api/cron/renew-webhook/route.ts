@@ -1,9 +1,9 @@
-import { env } from "@/lib/env";
 import {
   fetchGcalEventsSince,
   setupGcalWebhook,
   stopGcalWebhook,
 } from "@/lib/google-calendar/client";
+import { getGoogleConfig } from "@/lib/settings";
 import {
   getWebhookChannel,
   needsRenewal,
@@ -66,19 +66,22 @@ export async function GET(request: NextRequest) {
 
     // Get webhook URL
     const webhookUrl =
-      env.WEBHOOK_URL ||
+      process.env.WEBHOOK_URL ||
       `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("host")}/api/webhooks/google-calendar`;
 
     // Create new channel
     console.log("🔗 Creating new webhook channel...");
     const newChannelInfo = await setupGcalWebhook(webhookUrl);
 
+    // Get calendar ID from config
+    const googleConfig = await getGoogleConfig();
+
     // Save new channel metadata
     await saveWebhookChannel({
       channelId: newChannelInfo.channelId,
       resourceId: newChannelInfo.resourceId,
       expiration: newChannelInfo.expiration,
-      calendarId: env.GOOGLE_CALENDAR_CALENDAR_ID,
+      calendarId: googleConfig.calendarId,
       createdAt: channel.createdAt, // Keep original creation time
       lastRenewedAt: new Date(),
     });
