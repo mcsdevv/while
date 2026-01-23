@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <rect width="180" height="180" rx="40" fill="black"/>
+  <g transform="translate(45, 45)">
+    <!-- Top arrow (clockwise) -->
+    <path d="M45 11.25 L78.75 11.25 L78.75 0 L90 16.875 L78.75 33.75 L78.75 22.5 L45 22.5 C32.57 22.5 22.5 32.57 22.5 45 L22.5 50.625" stroke="white" stroke-width="8.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Bottom arrow (counter-clockwise) -->
+    <path d="M45 78.75 L11.25 78.75 L11.25 90 L0 73.125 L11.25 56.25 L11.25 67.5 L45 67.5 C57.43 67.5 67.5 57.43 67.5 45 L67.5 39.375" stroke="white" stroke-width="8.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
