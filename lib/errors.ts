@@ -1,5 +1,5 @@
 /**
- * Custom error classes for notion-gcal-sync
+ * Custom error classes for gcal-notion-sync
  *
  * Provides structured error handling with:
  * - Error codes for programmatic handling
