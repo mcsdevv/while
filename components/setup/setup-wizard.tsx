@@ -74,6 +74,8 @@ export function SetupWizard() {
 
   // Check URL params for OAuth callback results
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const params = new URLSearchParams(window.location.search);
     if (params.get("google") === "connected") {
       setCurrentStep(3); // Move to Notion step
