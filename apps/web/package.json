@@ -1,5 +1,5 @@
 {
-  "name": "@notion-gcal-sync/web",
+  "name": "@while/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@notion-gcal-sync/ui": "workspace:*",
+    "@while/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/mdx": "^2.0.13",
     "fumadocs-core": "^16.4.8",

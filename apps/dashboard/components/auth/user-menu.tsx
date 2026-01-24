@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@notion-gcal-sync/ui";
+} from "@while/ui";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 

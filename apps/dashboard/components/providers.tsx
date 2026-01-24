@@ -1,8 +1,8 @@
 "use client";
 
 import { SessionProvider } from "@/components/auth/session-provider";
-import { ToastProvider } from "@notion-gcal-sync/ui";
-import { Toaster } from "@notion-gcal-sync/ui";
+import { ToastProvider } from "@while/ui";
+import { Toaster } from "@while/ui";
 import type { Session } from "next-auth";
 import type { ReactNode } from "react";
 

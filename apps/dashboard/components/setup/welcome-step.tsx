@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 
 interface WelcomeStepProps {
   onNext: () => void;

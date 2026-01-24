@@ -1,5 +1,5 @@
 // Re-export cn from UI package
-export { cn } from "@notion-gcal-sync/ui";
+export { cn } from "@while/ui";
 
 export function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("en-US", {

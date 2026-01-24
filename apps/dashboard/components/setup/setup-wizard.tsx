@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@notion-gcal-sync/ui";
-import { SkeletonSetupWizard } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
+import { SkeletonSetupWizard } from "@while/ui";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 import { FieldMappingStep } from "./field-mapping-step";

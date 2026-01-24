@@ -3,8 +3,8 @@ import Link from "next/link";
 const links = {
   product: [
     { name: "Documentation", href: "/docs", external: false },
-    { name: "GitHub", href: "https://github.com/mcsdevv/gcal-notion-sync", external: true },
-    { name: "Issues", href: "https://github.com/mcsdevv/gcal-notion-sync/issues", external: true },
+    { name: "GitHub", href: "https://github.com/mcsdevv/while", external: true },
+    { name: "Issues", href: "https://github.com/mcsdevv/while/issues", external: true },
   ],
   resources: [
     { name: "Setup Guide", href: "/docs/quickstart", external: false },
@@ -24,7 +24,7 @@ export function Footer() {
               <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-muted">
                 <span className="text-sm font-medium text-foreground">N</span>
               </div>
-              <span className="font-medium">Notion-GCal Sync</span>
+              <span className="font-medium">While</span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               Open-source, self-hosted bidirectional sync between Notion and Google Calendar.
@@ -108,7 +108,7 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             Released under the{" "}
             <a
-              href="https://github.com/mcsdevv/gcal-notion-sync/blob/main/LICENSE"
+              href="https://github.com/mcsdevv/while/blob/main/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground"

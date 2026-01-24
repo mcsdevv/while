@@ -27,15 +27,15 @@ importers:
       '@googleapis/calendar':
         specifier: ^9.0.0
         version: 9.8.0
-      '@notion-gcal-sync/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@notionhq/client':
         specifier: ^2.2.15
         version: 2.3.0
       '@upstash/redis':
         specifier: ^1.36.0
         version: 1.36.1
+      '@while/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       google-auth-library:
         specifier: ^9.0.0
         version: 9.15.1
@@ -100,15 +100,15 @@ importers:
 
   apps/web:
     dependencies:
-      '@notion-gcal-sync/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.1.18
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
+      '@while/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       fumadocs-core:
         specifier: ^16.4.8
         version: 16.4.8(@types/react@19.2.9)(lucide-react@0.562.0(react@19.2.3))(next@16.1.4(@playwright/test@1.58.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(zod@4.3.6)

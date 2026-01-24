@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import { ArrowRight, BookOpen } from "lucide-react";
 
 const DEPLOY_URL =
-  "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fgcal-notion-sync%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY&envDescription=Required%20environment%20variables%20for%20the%20sync%20app&envLink=https%3A%2F%2Fnotion-gcal-sync.com%2Fdocs%2Fsetup%2Fvercel&project-name=notion-gcal-sync&repository-name=notion-gcal-sync";
+  "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while";
 
 export function Hero() {
   return (

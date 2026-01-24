@@ -7,9 +7,15 @@ export default function Layout({ children }: { children: ReactNode }) {
     <DocsLayout
       tree={source.getPageTree()}
       nav={{
-        title: "Notion-GCal Sync",
+        title: "While",
         url: "/",
       }}
+      links={[
+        {
+          text: "GitHub",
+          url: "https://github.com/mcsdevv/while",
+        },
+      ]}
     >
       {children}
     </DocsLayout>

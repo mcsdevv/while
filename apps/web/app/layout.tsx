@@ -5,7 +5,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Notion-Google Calendar Sync | Bidirectional Real-time Sync",
+  title: "While | Sync Notion & Google Calendar",
   description:
     "Keep your Notion calendar database and Google Calendar in perfect sync. Bidirectional, real-time, self-hosted. Free and open source.",
   keywords: [
@@ -16,25 +16,26 @@ export const metadata: Metadata = {
     "calendar sync",
     "bidirectional sync",
     "self-hosted",
+    "while",
   ],
   authors: [{ name: "mcsdevv" }],
   openGraph: {
-    title: "Notion-Google Calendar Sync",
+    title: "While | Sync Notion & Google Calendar",
     description: "Bidirectional, real-time sync between Notion and Google Calendar",
     type: "website",
-    url: "https://notion-gcal-sync.com",
+    url: "https://while.so",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Notion-Google Calendar Sync",
+        alt: "While",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Notion-Google Calendar Sync",
+    title: "While | Sync Notion & Google Calendar",
     description: "Bidirectional, real-time sync between Notion and Google Calendar",
     images: ["/og-image.png"],
   },

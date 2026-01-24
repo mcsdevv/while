@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface Props {

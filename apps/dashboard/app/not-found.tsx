@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import { FileQuestion } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

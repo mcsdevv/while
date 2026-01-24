@@ -6,8 +6,8 @@ import { DangerZone } from "@/components/settings/danger-zone";
 import { FieldMappingEditor } from "@/components/settings/field-mapping-editor";
 import { GoogleSettings } from "@/components/settings/google-settings";
 import { NotionSettings } from "@/components/settings/notion-settings";
-import { Button } from "@notion-gcal-sync/ui";
-import { SkeletonSettingsPage } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
+import { SkeletonSettingsPage } from "@while/ui";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

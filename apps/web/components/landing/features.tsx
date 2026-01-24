@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@notion-gcal-sync/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import {
   ArrowLeftRight,
   Gauge,

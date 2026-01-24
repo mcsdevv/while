@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import { ServerCrash } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
