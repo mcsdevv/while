@@ -83,7 +83,7 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
   return (
     <div
       className={cn(
-        "pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border p-4 shadow-lg transition-all",
+        "pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-none border p-4 shadow-lg transition-all",
         variant === "default"
           ? "bg-background border-border"
           : "bg-foreground/5 border-foreground/20",
@@ -105,7 +105,7 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
         type="button"
         onClick={() => removeToast(id)}
         aria-label="Dismiss notification"
-        className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+        className="inline-flex h-6 w-6 items-center justify-center rounded-none text-muted-foreground hover:text-foreground"
       >
         <svg
           aria-hidden="true"
