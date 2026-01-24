@@ -15,14 +15,12 @@ export function Hero() {
             <span className="text-muted-foreground">Open Source & Self-Hosted</span>
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
             Keep Notion and Google Calendar in{" "}
-            <span className="underline decoration-2 underline-offset-4">
-              Perfect Sync
-            </span>
+            <span className="text-foreground">Perfect Sync</span>
           </h1>
 
-          <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl">
+          <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg">
             Bidirectional, real-time synchronization between your Notion calendar database and
             Google Calendar. No more double-entry. No more missed events.
           </p>

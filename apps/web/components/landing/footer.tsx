@@ -15,16 +15,16 @@ const links = {
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/30">
+    <footer className="border-t border-border bg-muted/50">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           {/* Brand */}
           <div className="md:max-w-md">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <span className="text-sm font-bold text-primary-foreground">N</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-muted">
+                <span className="text-sm font-medium text-foreground">N</span>
               </div>
-              <span className="font-semibold">Notion-GCal Sync</span>
+              <span className="font-medium">Notion-GCal Sync</span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               Open-source, self-hosted bidirectional sync between Notion and Google Calendar.
@@ -36,7 +36,7 @@ export function Footer() {
           <div className="flex gap-12">
             {/* Product Links */}
             <div>
-              <h3 className="font-semibold">Product</h3>
+              <h3 className="font-medium">Product</h3>
               <ul className="mt-4 space-y-2">
                 {links.product.map((link) => (
                   <li key={link.name}>
@@ -64,7 +64,7 @@ export function Footer() {
 
             {/* Resources Links */}
             <div>
-              <h3 className="font-semibold">Resources</h3>
+              <h3 className="font-medium">Resources</h3>
               <ul className="mt-4 space-y-2">
                 {links.resources.map((link) => (
                   <li key={link.name}>

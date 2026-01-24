@@ -26,10 +26,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="border-y bg-muted/30 py-20 sm:py-32">
+    <section className="border-y border-border bg-muted/50 py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Up and running in 5 minutes
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -42,13 +42,13 @@ export function HowItWorks() {
             {steps.map((step, index) => (
               <div key={step.number} className="relative">
                 <div className="flex flex-col items-center text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-border bg-muted">
                     <step.icon className="h-8 w-8 text-primary" />
                   </div>
-                  <span className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                  <span className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     Step {step.number}
                   </span>
-                  <h3 className="mb-2 text-lg font-semibold">{step.title}</h3>
+                  <h3 className="mb-2 text-lg font-medium">{step.title}</h3>
                   <p className="text-sm text-muted-foreground">{step.description}</p>
                 </div>
                 {index < steps.length - 1 && (
