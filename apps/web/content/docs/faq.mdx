@@ -25,7 +25,7 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
     - You deploy to your own Vercel account
     - Credentials are encrypted with AES-256-GCM
-    - Data is stored in your own Upstash Redis instance
+    - Data is stored in Redis (via Vercel Marketplace)
     - No data ever passes through third-party servers
 
     You have complete control over your data.
@@ -34,8 +34,7 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
   <Accordion title="How much does it cost?">
     It's completely free for personal use:
 
-    - **Vercel**: Free tier is sufficient
-    - **Upstash Redis**: Free tier provides 10K commands/day
+    - **Vercel**: Free tier is sufficient (includes Redis via Marketplace)
     - **Google Calendar API**: Free for personal use
     - **Notion API**: Free
 
@@ -174,7 +173,7 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
   <Accordion title="What tech stack is this built with?">
     - **Framework**: Next.js 16 with App Router
     - **Runtime**: Vercel serverless functions
-    - **Storage**: Upstash Redis
+    - **Storage**: Redis (via Vercel Marketplace)
     - **UI**: React, Tailwind CSS, shadcn/ui
     - **Auth**: NextAuth.js
 

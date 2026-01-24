@@ -26,14 +26,6 @@ Sign up at [vercel.com](https://vercel.com) (free tier is sufficient)
 
 <Step>
 
-### Upstash Account
-
-Sign up at [upstash.com](https://upstash.com) and create a Redis database
-
-</Step>
-
-<Step>
-
 ### Google Cloud Project
 
 Create a project at [console.cloud.google.com](https://console.cloud.google.com)
@@ -97,8 +89,8 @@ During deployment, you'll need to provide these environment variables:
 | `NOTION_CLIENT_ID` | From Notion integration |
 | `NOTION_CLIENT_SECRET` | From Notion integration |
 | `ENCRYPTION_KEY` | 32-byte base64 key for credential encryption |
-| `UPSTASH_REDIS_REST_URL` | From Upstash dashboard |
-| `UPSTASH_REDIS_REST_TOKEN` | From Upstash dashboard |
+
+Redis storage is automatically configured when you add the Upstash integration from the Vercel Marketplace during deployment.
 
 <Callout type="info" title="Tip">
 Generate an encryption key with:

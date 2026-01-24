@@ -19,7 +19,7 @@ const faqs = [
   {
     question: "How much does it cost?",
     answer:
-      "It's completely free. The app runs on Vercel's free tier and uses Upstash Redis's free tier for storage. You own and control everything.",
+      "It's completely free. The app runs on Vercel's free tier with Redis storage included via Vercel Marketplace. You own and control everything.",
   },
   {
     question: "Why do my tokens expire after 7 days?",

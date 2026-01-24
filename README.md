@@ -44,8 +44,7 @@ Before deploying, you'll need:
 
 1. **Google Cloud Project** with Calendar API enabled ([Guide](https://docs.notion-gcal-sync.com/setup/google))
 2. **Notion Integration** with access to your calendar database ([Guide](https://docs.notion-gcal-sync.com/setup/notion))
-3. **Upstash Redis** database for settings storage (free tier works)
-4. **Vercel Account** for hosting
+3. **Vercel Account** for hosting (Redis storage is included via Vercel Marketplace)
 
 ## Configuration
 
@@ -59,8 +58,8 @@ Before deploying, you'll need:
 | `NOTION_CLIENT_ID` | Yes | Notion OAuth client ID |
 | `NOTION_CLIENT_SECRET` | Yes | Notion OAuth client secret |
 | `ENCRYPTION_KEY` | Yes | 32-byte base64 key for credential encryption |
-| `UPSTASH_REDIS_REST_URL` | Yes | Upstash Redis REST URL |
-| `UPSTASH_REDIS_REST_TOKEN` | Yes | Upstash Redis REST token |
+| `UPSTASH_REDIS_REST_URL` | Auto | Auto-configured via Vercel Marketplace |
+| `UPSTASH_REDIS_REST_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
 
 Generate encryption keys with:
 ```bash
@@ -86,7 +85,7 @@ Full documentation is available at [docs.notion-gcal-sync.com](https://docs.noti
 - **Language**: TypeScript
 - **UI**: shadcn/ui + Tailwind CSS
 - **APIs**: Notion SDK, Google Calendar API
-- **Storage**: Upstash Redis
+- **Storage**: Redis (via Vercel Marketplace)
 - **Hosting**: Vercel
 - **Docs**: Mintlify
 
