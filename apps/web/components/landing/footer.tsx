@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Github, ExternalLink } from "lucide-react";
 
 const links = {
   product: [
@@ -31,17 +30,6 @@ export function Footer() {
               Open-source, self-hosted bidirectional sync between Notion and Google Calendar.
               Built with privacy and reliability in mind.
             </p>
-            <div className="mt-4 flex gap-4">
-              <a
-                href="https://github.com/mcsdevv/gcal-notion-sync"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground"
-                aria-label="GitHub repository"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-            </div>
           </div>
 
           {/* Product Links */}
