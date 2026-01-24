@@ -1,7 +1,6 @@
 "use client";
 
 import { UserMenu } from "@/components/auth/user-menu";
-import { ActivityTimelineChart } from "@/components/dashboard/activity-timeline-chart";
 import { LogsViewer } from "@/components/dashboard/logs-viewer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +12,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { SyncMetrics } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+
+// Lazy load the chart component to code-split recharts (~40KB)
+const ActivityTimelineChart = dynamic(
+  () =>
+    import("@/components/dashboard/activity-timeline-chart").then(
+      (mod) => mod.ActivityTimelineChart,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-4 w-60" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-[300px] w-full" />
+        </CardContent>
+      </Card>
+    ),
+  },
+);
 
 type TimeWindow = "24h" | "7d" | "30d" | "90d";
 
@@ -40,8 +63,7 @@ export function Dashboard() {
           fetch("/api/status"),
         ]);
 
-        const metricsData = await metricsRes.json();
-        const statusData = await statusRes.json();
+        const [metricsData, statusData] = await Promise.all([metricsRes.json(), statusRes.json()]);
 
         setMetrics(metricsData);
         setStatus(statusData);

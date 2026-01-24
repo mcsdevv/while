@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface GoogleStepProps {
   status?: {
@@ -91,7 +91,7 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
     }
   };
 
-  const loadCalendars = async () => {
+  const loadCalendars = useCallback(async () => {
     setLoadingCalendars(true);
     try {
       const response = await fetch("/api/setup/google/calendars");
@@ -107,7 +107,7 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
     } finally {
       setLoadingCalendars(false);
     }
-  };
+  }, []);
 
   const handleSelectCalendar = async (calendarId: string) => {
     setSelectedCalendar(calendarId);
@@ -127,9 +127,11 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
   };
 
   // Load calendars if already connected
-  if (isConnected && calendars.length === 0 && !loadingCalendars) {
-    loadCalendars();
-  }
+  useEffect(() => {
+    if (isConnected && calendars.length === 0 && !loadingCalendars) {
+      loadCalendars();
+    }
+  }, [isConnected, calendars.length, loadingCalendars, loadCalendars]);
 
   return (
     <div className="space-y-6">

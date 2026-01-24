@@ -21,6 +21,18 @@ const ToastContext = React.createContext<ToastContextValue | undefined>(undefine
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
+  const timeoutRefs = React.useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  // Clear all timeouts on unmount
+  React.useEffect(() => {
+    const timeouts = timeoutRefs.current;
+    return () => {
+      for (const timeout of timeouts.values()) {
+        clearTimeout(timeout);
+      }
+      timeouts.clear();
+    };
+  }, []);
 
   const addToast = React.useCallback((toast: Omit<ToastProps, "id">) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -30,15 +42,23 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     // Auto-dismiss after duration (default 5 seconds)
     const duration = toast.duration ?? 5000;
     if (duration > 0) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
+        timeoutRefs.current.delete(id);
       }, duration);
+      timeoutRefs.current.set(id, timeoutId);
     }
 
     return id;
   }, []);
 
   const removeToast = React.useCallback((id: string) => {
+    // Clear timeout if manually dismissed
+    const timeoutId = timeoutRefs.current.get(id);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutRefs.current.delete(id);
+    }
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
@@ -99,9 +119,11 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
       <button
         type="button"
         onClick={() => removeToast(id)}
+        aria-label="Dismiss notification"
         className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
