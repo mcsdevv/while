@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://docs.notion-gcal-sync.com
+    about: Check the documentation for setup guides and troubleshooting
+  - name: Troubleshooting Guide
+    url: https://docs.notion-gcal-sync.com/guides/troubleshooting
+    about: Common issues and solutions
