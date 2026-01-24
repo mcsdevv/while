@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { Button } from "@notion-gcal-sync/ui";
 import { ArrowRight, BookOpen } from "lucide-react";
 
 const DEPLOY_URL =
-  "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fnotion-gcal-sync%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY&envDescription=Required%20environment%20variables%20for%20the%20sync%20app&envLink=https%3A%2F%2Fdocs.notion-gcal-sync.com%2Fsetup%2Fvercel&project-name=notion-gcal-sync&repository-name=notion-gcal-sync";
+  "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fgcal-notion-sync%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY&envDescription=Required%20environment%20variables%20for%20the%20sync%20app&envLink=https%3A%2F%2Fnotion-gcal-sync.com%2Fdocs%2Fsetup%2Fvercel&project-name=notion-gcal-sync&repository-name=notion-gcal-sync";
 
 export function Hero() {
   return (
@@ -35,10 +36,10 @@ export function Hero() {
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="gap-2">
-              <a href="https://docs.notion-gcal-sync.com" target="_blank" rel="noopener noreferrer">
+              <Link href="/docs">
                 <BookOpen className="h-4 w-4" />
                 View Documentation
-              </a>
+              </Link>
             </Button>
           </div>
 
