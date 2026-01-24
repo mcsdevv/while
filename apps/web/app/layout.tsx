@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -54,6 +56,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${GeistSans.className} flex flex-col min-h-screen antialiased`}>
         <RootProvider>{children}</RootProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
