@@ -31,7 +31,11 @@ const DEFAULT_METRICS = {
  * Get current metrics from Redis store
  */
 async function getMetricsFromRedis() {
-  const stored = await getRedis().get<typeof DEFAULT_METRICS>(METRICS_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return DEFAULT_METRICS;
+  }
+  const stored = await redis.get<typeof DEFAULT_METRICS>(METRICS_KEY);
   return stored || DEFAULT_METRICS;
 }
 
@@ -39,6 +43,11 @@ async function getMetricsFromRedis() {
  * Log a sync operation
  */
 export async function logSync(log: Omit<SyncLog, "id" | "timestamp">): Promise<void> {
+  const redis = getRedis();
+  if (!redis) {
+    return; // Silently skip logging when Redis is not configured
+  }
+
   const newLog: SyncLog = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     timestamp: new Date(),
@@ -46,10 +55,10 @@ export async function logSync(log: Omit<SyncLog, "id" | "timestamp">): Promise<v
   };
 
   // Add to logs list (Upstash Redis automatically serializes objects)
-  await getRedis().lpush(LOGS_KEY, newLog);
+  await redis.lpush(LOGS_KEY, newLog);
 
   // Trim to keep only MAX_LOGS entries
-  await getRedis().ltrim(LOGS_KEY, 0, MAX_LOGS - 1);
+  await redis.ltrim(LOGS_KEY, 0, MAX_LOGS - 1);
 
   // Update metrics
   const metrics = await getMetricsFromRedis();
@@ -83,14 +92,18 @@ export async function logSync(log: Omit<SyncLog, "id" | "timestamp">): Promise<v
   }
 
   // Save updated metrics
-  await getRedis().set(METRICS_KEY, metrics);
+  await redis.set(METRICS_KEY, metrics);
 }
 
 /**
  * Get recent sync logs
  */
 export async function getSyncLogs(limit = 100): Promise<SyncLog[]> {
-  const logs = await getRedis().lrange<SyncLog>(LOGS_KEY, 0, limit - 1);
+  const redis = getRedis();
+  if (!redis) {
+    return [];
+  }
+  const logs = await redis.lrange<SyncLog>(LOGS_KEY, 0, limit - 1);
   // Upstash Redis automatically deserializes JSON
   return logs;
 }
@@ -178,18 +191,26 @@ export async function getSyncMetrics(
  * Clear all logs and reset metrics
  */
 export async function clearLogs(): Promise<void> {
-  await getRedis().del(LOGS_KEY);
-  await getRedis().set(METRICS_KEY, DEFAULT_METRICS);
+  const redis = getRedis();
+  if (!redis) {
+    return;
+  }
+  await redis.del(LOGS_KEY);
+  await redis.set(METRICS_KEY, DEFAULT_METRICS);
 }
 
 /**
  * Reset API quota counters (call this daily)
  */
 export async function resetApiQuota(): Promise<void> {
+  const redis = getRedis();
+  if (!redis) {
+    return;
+  }
   const metrics = await getMetricsFromRedis();
   metrics.apiQuota.notion.used = 0;
   metrics.apiQuota.googleCalendar.used = 0;
-  await getRedis().set(METRICS_KEY, metrics);
+  await redis.set(METRICS_KEY, metrics);
 }
 
 // Webhook logging
@@ -236,6 +257,11 @@ const DEFAULT_WEBHOOK_METRICS: WebhookMetrics = {
  * Log a webhook event
  */
 export async function logWebhookEvent(log: Omit<WebhookLog, "id" | "timestamp">): Promise<void> {
+  const redis = getRedis();
+  if (!redis) {
+    return; // Silently skip logging when Redis is not configured
+  }
+
   const newLog: WebhookLog = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     timestamp: new Date(),
@@ -243,13 +269,13 @@ export async function logWebhookEvent(log: Omit<WebhookLog, "id" | "timestamp">)
   };
 
   // Add to logs list
-  await getRedis().lpush(WEBHOOK_LOGS_KEY, newLog);
+  await redis.lpush(WEBHOOK_LOGS_KEY, newLog);
 
   // Trim to keep only MAX_WEBHOOK_LOGS
-  await getRedis().ltrim(WEBHOOK_LOGS_KEY, 0, MAX_WEBHOOK_LOGS - 1);
+  await redis.ltrim(WEBHOOK_LOGS_KEY, 0, MAX_WEBHOOK_LOGS - 1);
 
   // Update webhook metrics
-  const metrics = (await getRedis().get<WebhookMetrics>(WEBHOOK_METRICS_KEY)) || DEFAULT_WEBHOOK_METRICS;
+  const metrics = (await redis.get<WebhookMetrics>(WEBHOOK_METRICS_KEY)) || DEFAULT_WEBHOOK_METRICS;
 
   if (log.type === "notification") {
     metrics.totalNotifications++;
@@ -271,14 +297,18 @@ export async function logWebhookEvent(log: Omit<WebhookLog, "id" | "timestamp">)
     metrics.errors++;
   }
 
-  await getRedis().set(WEBHOOK_METRICS_KEY, metrics);
+  await redis.set(WEBHOOK_METRICS_KEY, metrics);
 }
 
 /**
  * Get recent webhook logs
  */
 export async function getWebhookLogs(limit = 100): Promise<WebhookLog[]> {
-  const logs = await getRedis().lrange<WebhookLog>(WEBHOOK_LOGS_KEY, 0, limit - 1);
+  const redis = getRedis();
+  if (!redis) {
+    return [];
+  }
+  const logs = await redis.lrange<WebhookLog>(WEBHOOK_LOGS_KEY, 0, limit - 1);
   return logs;
 }
 
@@ -286,6 +316,10 @@ export async function getWebhookLogs(limit = 100): Promise<WebhookLog[]> {
  * Get webhook metrics
  */
 export async function getWebhookMetrics(): Promise<WebhookMetrics> {
-  const metrics = await getRedis().get<WebhookMetrics>(WEBHOOK_METRICS_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return DEFAULT_WEBHOOK_METRICS;
+  }
+  const metrics = await redis.get<WebhookMetrics>(WEBHOOK_METRICS_KEY);
   return metrics || DEFAULT_WEBHOOK_METRICS;
 }
