@@ -8,17 +8,16 @@ const DEPLOY_URL =
 export function Hero() {
   return (
     <section className="relative overflow-hidden py-20 sm:py-32">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_60%,rgba(59,130,246,0.12),transparent)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border bg-background/80 px-4 py-1.5 text-sm backdrop-blur">
-            <span className="flex h-2 w-2 rounded-full bg-green-500" />
+            <span className="flex h-2 w-2 rounded-full bg-foreground" />
             <span className="text-muted-foreground">Open Source & Self-Hosted</span>
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
             Keep Notion and Google Calendar in{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+            <span className="underline decoration-2 underline-offset-4">
               Perfect Sync
             </span>
           </h1>

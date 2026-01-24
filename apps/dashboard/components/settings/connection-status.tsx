@@ -124,15 +124,15 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
                 key={result.service}
                 className={`rounded-lg border p-3 ${
                   result.success
-                    ? "border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950"
-                    : "border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950"
+                    ? "border-foreground/10 bg-foreground/5"
+                    : "border-foreground/20 bg-foreground/5"
                 }`}
               >
                 <div className="flex items-center gap-2">
                   {result.success ? (
                     <svg
                       aria-hidden="true"
-                      className="h-4 w-4 text-green-600 dark:text-green-400"
+                      className="h-4 w-4 text-foreground"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -145,7 +145,7 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
                   ) : (
                     <svg
                       aria-hidden="true"
-                      className="h-4 w-4 text-red-600 dark:text-red-400"
+                      className="h-4 w-4 text-muted-foreground"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -159,21 +159,15 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
                   <span
                     className={`text-sm font-medium ${
                       result.success
-                        ? "text-green-700 dark:text-green-300"
-                        : "text-red-700 dark:text-red-300"
+                        ? "text-foreground"
+                        : "text-muted-foreground"
                     }`}
                   >
                     {result.service}: {result.message}
                   </span>
                 </div>
                 {result.details && (
-                  <p
-                    className={`mt-1 text-xs ${
-                      result.success
-                        ? "text-green-600 dark:text-green-400"
-                        : "text-red-600 dark:text-red-400"
-                    }`}
-                  >
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {result.details}
                   </p>
                 )}
