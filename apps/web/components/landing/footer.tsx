@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Github, ExternalLink } from "lucide-react";
 
 const links = {
   product: [
@@ -18,9 +17,9 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-muted/50">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="md:max-w-md">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-muted">
                 <span className="text-sm font-medium text-foreground">N</span>
@@ -31,73 +30,65 @@ export function Footer() {
               Open-source, self-hosted bidirectional sync between Notion and Google Calendar.
               Built with privacy and reliability in mind.
             </p>
-            <div className="mt-4 flex gap-4">
-              <a
-                href="https://github.com/mcsdevv/gcal-notion-sync"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground"
-                aria-label="GitHub repository"
-              >
-                <Github className="h-5 w-5" />
-              </a>
+          </div>
+
+          {/* Product and Resources - right aligned */}
+          <div className="flex gap-12">
+            {/* Product Links */}
+            <div>
+              <h3 className="font-medium">Product</h3>
+              <ul className="mt-4 space-y-2">
+                {links.product.map((link) => (
+                  <li key={link.name}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
 
-          {/* Product Links */}
-          <div>
-            <h3 className="font-medium">Product</h3>
-            <ul className="mt-4 space-y-2">
-              {links.product.map((link) => (
-                <li key={link.name}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources Links */}
-          <div>
-            <h3 className="font-medium">Resources</h3>
-            <ul className="mt-4 space-y-2">
-              {links.resources.map((link) => (
-                <li key={link.name}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {/* Resources Links */}
+            <div>
+              <h3 className="font-medium">Resources</h3>
+              <ul className="mt-4 space-y-2">
+                {links.resources.map((link) => (
+                  <li key={link.name}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -112,7 +103,7 @@ export function Footer() {
               className="hover:text-foreground"
             >
               Matthew Sweeney
-            </a>
+            </a>.
           </p>
           <p className="text-sm text-muted-foreground">
             Released under the{" "}
@@ -123,7 +114,7 @@ export function Footer() {
               className="hover:text-foreground"
             >
               MIT License
-            </a>
+            </a>.
           </p>
         </div>
       </div>
