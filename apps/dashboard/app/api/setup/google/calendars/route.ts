@@ -5,7 +5,8 @@
 
 import { resetGcalClient } from "@/lib/google-calendar/client";
 import { getSettings, updateSettings } from "@/lib/settings";
-import { google } from "googleapis";
+import { calendar } from "@googleapis/calendar";
+import { OAuth2Client } from "google-auth-library";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -25,15 +26,15 @@ export async function GET() {
     }
 
     // Create OAuth2 client
-    const oauth2Client = new google.auth.OAuth2(
+    const oauth2Client = new OAuth2Client(
       settings.google.clientId,
       settings.google.clientSecret,
     );
     oauth2Client.setCredentials({ refresh_token: settings.google.refreshToken });
 
     // Get calendar list
-    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-    const calendarList = await calendar.calendarList.list();
+    const calendarClient = calendar({ version: "v3", auth: oauth2Client });
+    const calendarList = await calendarClient.calendarList.list();
 
     const calendars = (calendarList.data.items || []).map((cal) => ({
       id: cal.id || "",

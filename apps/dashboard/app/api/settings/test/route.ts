@@ -7,7 +7,8 @@
 
 import { getSettings } from "@/lib/settings";
 import { Client } from "@notionhq/client";
-import { google } from "googleapis";
+import { calendar } from "@googleapis/calendar";
+import { OAuth2Client } from "google-auth-library";
 import { NextResponse } from "next/server";
 
 interface TestResult {
@@ -83,15 +84,15 @@ async function testGoogleConnection(
   }
 
   try {
-    const oauth2Client = new google.auth.OAuth2(
+    const oauth2Client = new OAuth2Client(
       settings.google.clientId,
       settings.google.clientSecret,
     );
     oauth2Client.setCredentials({ refresh_token: settings.google.refreshToken });
 
-    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+    const calendarClient = calendar({ version: "v3", auth: oauth2Client });
 
-    const calendarInfo = await calendar.calendars.get({
+    const calendarInfo = await calendarClient.calendars.get({
       calendarId: settings.google.calendarId,
     });
 

@@ -1,24 +1,7 @@
 import { getGoogleConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
-import { type Auth, google } from "googleapis";
-import type { calendar_v3 } from "googleapis";
-
-type OAuth2Client = InstanceType<typeof google.auth.OAuth2>;
-
-// Suppress deprecation warning from googleapis library
-// This is a known issue in googleapis and will be fixed in a future version
-// See: https://github.com/googleapis/google-api-nodejs-client/issues/3188
-process.removeAllListeners("warning");
-const originalEmitWarning = process.emitWarning;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-process.emitWarning = (warning: any, ...args: any[]) => {
-  // Suppress DEP0169 warning from googleapis
-  const warningStr = warning instanceof Error ? warning.message : warning?.toString() || "";
-  if (warningStr.includes("DEP0169")) {
-    return;
-  }
-  return originalEmitWarning.call(process, warning, ...args);
-};
+import { calendar, type calendar_v3 } from "@googleapis/calendar";
+import { OAuth2Client } from "google-auth-library";
 
 // Cached clients (lazy initialization)
 let cachedOAuth2Client: OAuth2Client | null = null;
@@ -35,7 +18,7 @@ async function getOAuth2Client(): Promise<OAuth2Client> {
 
   const config = await getGoogleConfig();
 
-  cachedOAuth2Client = new google.auth.OAuth2(config.clientId, config.clientSecret);
+  cachedOAuth2Client = new OAuth2Client(config.clientId, config.clientSecret);
   cachedOAuth2Client.setCredentials({
     refresh_token: config.refreshToken,
   });
@@ -55,7 +38,7 @@ async function getCalendarClient(): Promise<calendar_v3.Calendar> {
   }
 
   const auth = await getOAuth2Client();
-  cachedCalendarClient = google.calendar({
+  cachedCalendarClient = calendar({
     version: "v3",
     auth,
   });
