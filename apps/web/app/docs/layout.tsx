@@ -10,12 +10,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         title: "Notion-GCal Sync",
         url: "/",
       }}
-      links={[
-        {
-          text: "GitHub",
-          url: "https://github.com/mcsdevv/notion-gcal-sync",
-        },
-      ]}
     >
       {children}
     </DocsLayout>
