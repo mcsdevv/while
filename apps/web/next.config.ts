@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@while/ui"],
+  serverExternalPackages: ["mermaid"],
 };
 
 const withMDX = createMDX();
