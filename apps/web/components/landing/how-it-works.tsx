@@ -1,4 +1,33 @@
-import { ArrowRight, Calendar, CheckCircle2, Rocket } from "lucide-react";
+import { Calendar, CheckCircle2, Rocket } from "lucide-react";
+
+const StepArrow = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="text-muted-foreground/40"
+    aria-hidden="true"
+  >
+    <line
+      x1="5"
+      y1="12"
+      x2="17"
+      y2="12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <polyline
+      points="14,8 19,12 14,16"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  </svg>
+);
 
 const steps = [
   {
@@ -52,8 +81,8 @@ export function HowItWorks() {
                   <p className="text-sm text-muted-foreground">{step.description}</p>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="absolute right-0 top-8 hidden -translate-x-1/2 md:block">
-                    <ArrowRight className="h-6 w-6 text-muted-foreground/30" />
+                  <div className="absolute left-full top-7 hidden translate-x-1 md:block">
+                    <StepArrow />
                   </div>
                 )}
               </div>
