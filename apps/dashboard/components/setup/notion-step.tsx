@@ -149,7 +149,7 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
                   href="https://www.notion.so/my-integrations"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary underline hover:no-underline"
+                  className="text-primary underline"
                 >
                   Notion Integrations
                 </a>
