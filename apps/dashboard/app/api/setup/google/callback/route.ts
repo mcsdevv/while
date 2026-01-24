@@ -5,7 +5,8 @@
 
 import { resetGcalClient } from "@/lib/google-calendar/client";
 import { getSettings, updateSettings } from "@/lib/settings";
-import { google } from "googleapis";
+import { calendar } from "@googleapis/calendar";
+import { OAuth2Client } from "google-auth-library";
 import { type NextRequest, NextResponse } from "next/server";
 
 /**
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
     const callbackUrl = `${protocol}://${host}/api/setup/google/callback`;
 
     // Create OAuth2 client
-    const oauth2Client = new google.auth.OAuth2(
+    const oauth2Client = new OAuth2Client(
       settings.google.clientId,
       settings.google.clientSecret,
       callbackUrl,
@@ -58,8 +59,8 @@ export async function GET(request: NextRequest) {
 
     // Get list of calendars to let user choose
     oauth2Client.setCredentials(tokens);
-    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-    const calendarList = await calendar.calendarList.list();
+    const calendarClient = calendar({ version: "v3", auth: oauth2Client });
+    const calendarList = await calendarClient.calendarList.list();
 
     // Find primary calendar or first one
     const primaryCalendar = calendarList.data.items?.find((cal) => cal.primary);
