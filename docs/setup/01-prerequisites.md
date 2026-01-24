@@ -56,14 +56,8 @@ openssl rand -base64 32
 
 ### Using Node.js
 
-```javascript
-require('crypto').randomBytes(32).toString('base64')
-```
-
-### Using Bun
-
 ```bash
-bun -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
 Save this key securely - you'll need it for the `SETTINGS_ENCRYPTION_KEY` environment variable.

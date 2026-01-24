@@ -10,8 +10,7 @@
  * Test 6: Notion → GCal (delete event)
  */
 
-import { test } from "bun:test";
-import assert from "node:assert";
+import { expect, test } from "vitest";
 
 /**
  * Test 1 & 4: Event Creation
@@ -22,7 +21,7 @@ test("webhook should support event creation flow", () => {
   // - Notion webhook receives page.created event
   // - GCal webhook receives "exists" event with new event
   // - Both systems can create events
-  assert.ok(true, "Event creation flow is handled by syncNotionToGcal and syncGcalToNotion");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -34,7 +33,7 @@ test("webhook should support event update flow", () => {
   // - Notion webhook receives page.properties_updated event
   // - GCal webhook receives "exists" event with modified event
   // - Both systems can update existing events
-  assert.ok(true, "Event update flow is handled by syncNotionToGcal and syncGcalToNotion");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -47,7 +46,7 @@ test("webhook should support event deletion flow", () => {
   // - GCal webhook receives event with status="cancelled"
   // - Both systems can delete events
   // - Deletions cascade correctly
-  assert.ok(true, "Event deletion flow is handled by deleteFromNotion and deleteFromGcal");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -59,7 +58,7 @@ test("webhook should not trigger auto-deletions from status field", () => {
   // - Status field is excluded from Notion → GCal sync
   // - Events are not incorrectly marked as cancelled
   // - Deletion only happens when explicitly requested
-  assert.ok(true, "Status field has been removed from sync operations");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -75,7 +74,7 @@ test("webhook should log events with title, ID, and type", () => {
   // - eventId: Notion page ID or GCal event ID
   // - status: success or failure
   // - processingTime: Milliseconds
-  assert.ok(true, "Webhook logging includes all required fields");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -88,7 +87,7 @@ test("webhook should prevent infinite sync loops", () => {
   // - Notion stores gcalEventId
   // - GCal stores notionPageId in extended properties
   // - Updates check for existing IDs before creating
-  assert.ok(true, "Loop prevention is handled by ID mapping");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -100,7 +99,7 @@ test("webhook should provide real-time sync", () => {
   // - Webhooks trigger immediately on changes
   // - Processing completes in <5 seconds
   // - Much faster than 5-minute polling
-  assert.ok(true, "Webhook-based sync provides <5s latency");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -112,7 +111,7 @@ test("webhook should validate signatures", () => {
   // - Notion webhook validates x-notion-signature header
   // - GCal webhook validates channel ID
   // - Unauthorized requests are rejected
-  assert.ok(true, "Webhook signature validation is implemented");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -124,7 +123,7 @@ test("webhook should deduplicate messages", () => {
   // - GCal webhook tracks message numbers in Redis
   // - Duplicate messages are skipped
   // - 5-minute TTL on deduplication keys
-  assert.ok(true, "Webhook deduplication is handled via Redis");
+  expect(true).toBeTruthy();
 });
 
 /**
@@ -137,5 +136,5 @@ test("webhook should handle errors gracefully", () => {
   // - Non-retryable errors fail immediately
   // - All errors are logged with details
   // - Processing continues for other events
-  assert.ok(true, "Webhook error handling includes retry logic and logging");
+  expect(true).toBeTruthy();
 });

@@ -1,38 +1,37 @@
-import assert from "node:assert";
-import { test } from "node:test";
+import { expect, test } from "vitest";
 import { NetworkError, RateLimitError, ValidationError, isRetryableError } from "@/lib/errors";
 import { retryWithBackoff } from "./retry";
 
 test("isRetryableError - identifies network errors", () => {
   const networkError = new NetworkError("Connection failed");
-  assert.strictEqual(isRetryableError(networkError), true);
+  expect(isRetryableError(networkError)).toBe(true);
 
   const genericNetworkError = new Error("ECONNREFUSED");
-  assert.strictEqual(isRetryableError(genericNetworkError), true);
+  expect(isRetryableError(genericNetworkError)).toBe(true);
 });
 
 test("isRetryableError - identifies rate limit errors", () => {
   const rateLimitError = new RateLimitError("Too many requests");
-  assert.strictEqual(isRetryableError(rateLimitError), true);
+  expect(isRetryableError(rateLimitError)).toBe(true);
 
   const genericRateLimitError = new Error("Rate limit exceeded");
-  assert.strictEqual(isRetryableError(genericRateLimitError), true);
+  expect(isRetryableError(genericRateLimitError)).toBe(true);
 });
 
 test("isRetryableError - identifies timeout errors", () => {
   const timeoutError = new Error("Connection timeout");
-  assert.strictEqual(isRetryableError(timeoutError), true);
+  expect(isRetryableError(timeoutError)).toBe(true);
 
   const etimedoutError = new Error("ETIMEDOUT");
-  assert.strictEqual(isRetryableError(etimedoutError), true);
+  expect(isRetryableError(etimedoutError)).toBe(true);
 });
 
 test("isRetryableError - rejects non-retryable errors", () => {
   const validationError = new ValidationError("Invalid input");
-  assert.strictEqual(isRetryableError(validationError), false);
+  expect(isRetryableError(validationError)).toBe(false);
 
   const genericValidationError = new Error("Invalid input");
-  assert.strictEqual(isRetryableError(genericValidationError), false);
+  expect(isRetryableError(genericValidationError)).toBe(false);
 });
 
 test("retryWithBackoff - succeeds on first try", async () => {
@@ -43,8 +42,8 @@ test("retryWithBackoff - succeeds on first try", async () => {
   };
 
   const result = await retryWithBackoff(fn);
-  assert.strictEqual(result, "success");
-  assert.strictEqual(attempts, 1);
+  expect(result).toBe("success");
+  expect(attempts).toBe(1);
 });
 
 test("retryWithBackoff - retries on retryable error", async () => {
@@ -58,8 +57,8 @@ test("retryWithBackoff - retries on retryable error", async () => {
   };
 
   const result = await retryWithBackoff(fn, { maxRetries: 3, initialDelay: 10 });
-  assert.strictEqual(result, "success");
-  assert.strictEqual(attempts, 3);
+  expect(result).toBe("success");
+  expect(attempts).toBe(3);
 });
 
 test("retryWithBackoff - fails after max retries", async () => {
@@ -67,13 +66,8 @@ test("retryWithBackoff - fails after max retries", async () => {
     throw new Error("ECONNREFUSED");
   };
 
-  await assert.rejects(
-    async () => {
-      await retryWithBackoff(fn, { maxRetries: 2, initialDelay: 10 });
-    },
-    {
-      message: "ECONNREFUSED",
-    },
+  await expect(retryWithBackoff(fn, { maxRetries: 2, initialDelay: 10 })).rejects.toThrow(
+    "ECONNREFUSED",
   );
 });
 
@@ -84,13 +78,6 @@ test("retryWithBackoff - does not retry non-retryable errors", async () => {
     throw new Error("Invalid input");
   };
 
-  await assert.rejects(
-    async () => {
-      await retryWithBackoff(fn);
-    },
-    {
-      message: "Invalid input",
-    },
-  );
-  assert.strictEqual(attempts, 1);
+  await expect(retryWithBackoff(fn)).rejects.toThrow("Invalid input");
+  expect(attempts).toBe(1);
 });

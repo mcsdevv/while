@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
  * Tests for authentication configuration and email whitelist
@@ -126,7 +126,7 @@ describe("Authentication", () => {
 
   describe("Security", () => {
     it("should log unauthorized sign-in attempts", () => {
-      const consoleSpy = mock(() => {});
+      const consoleSpy = vi.fn();
       const originalWarn = console.warn;
       console.warn = consoleSpy;
 

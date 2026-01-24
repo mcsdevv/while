@@ -4,8 +4,7 @@
  * Tests for Zod schemas and validation helper functions
  */
 
-import { test } from "bun:test";
-import assert from "node:assert";
+import { expect, test } from "vitest";
 import {
   authHeaderSchema,
   eventDataSchema,
@@ -36,7 +35,7 @@ test("gcalWebhookHeadersSchema - validates valid headers", () => {
   };
 
   const result = gcalWebhookHeadersSchema.safeParse(validHeaders);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("gcalWebhookHeadersSchema - rejects invalid resource state", () => {
@@ -45,7 +44,7 @@ test("gcalWebhookHeadersSchema - rejects invalid resource state", () => {
   };
 
   const result = gcalWebhookHeadersSchema.safeParse(invalidHeaders);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 // Notion webhook validation
@@ -56,7 +55,7 @@ test("notionWebhookVerificationSchema - validates verification payload", () => {
   };
 
   const result = notionWebhookVerificationSchema.safeParse(verification);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("notionWebhookEventSchema - validates page.created event", () => {
@@ -68,7 +67,7 @@ test("notionWebhookEventSchema - validates page.created event", () => {
   };
 
   const result = notionWebhookEventSchema.safeParse(event);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("notionWebhookEventSchema - rejects invalid UUID", () => {
@@ -80,7 +79,7 @@ test("notionWebhookEventSchema - rejects invalid UUID", () => {
   };
 
   const result = notionWebhookEventSchema.safeParse(event);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 test("notionWebhookPayloadSchema - accepts verification or event", () => {
@@ -96,8 +95,8 @@ test("notionWebhookPayloadSchema - accepts verification or event", () => {
     },
   };
 
-  assert.strictEqual(notionWebhookPayloadSchema.safeParse(verification).success, true);
-  assert.strictEqual(notionWebhookPayloadSchema.safeParse(event).success, true);
+  expect(notionWebhookPayloadSchema.safeParse(verification).success).toBe(true);
+  expect(notionWebhookPayloadSchema.safeParse(event).success).toBe(true);
 });
 
 // Webhook setup validation
@@ -105,35 +104,35 @@ test("webhookSetupRequestSchema - validates optional URL", () => {
   const withUrl = { webhookUrl: "https://example.com/webhook" };
   const withoutUrl = {};
 
-  assert.strictEqual(webhookSetupRequestSchema.safeParse(withUrl).success, true);
-  assert.strictEqual(webhookSetupRequestSchema.safeParse(withoutUrl).success, true);
+  expect(webhookSetupRequestSchema.safeParse(withUrl).success).toBe(true);
+  expect(webhookSetupRequestSchema.safeParse(withoutUrl).success).toBe(true);
 });
 
 test("webhookSetupRequestSchema - rejects invalid URL", () => {
   const invalid = { webhookUrl: "not-a-url" };
   const result = webhookSetupRequestSchema.safeParse(invalid);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 // Authorization validation
 test("authHeaderSchema - validates Bearer token", () => {
   const valid = "Bearer secret-token-123";
   const result = authHeaderSchema.safeParse(valid);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("authHeaderSchema - rejects invalid format", () => {
   const invalid = "Token secret-token-123";
   const result = authHeaderSchema.safeParse(invalid);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 // Event data validation
 test("eventStatusSchema - validates event statuses", () => {
-  assert.strictEqual(eventStatusSchema.safeParse("confirmed").success, true);
-  assert.strictEqual(eventStatusSchema.safeParse("tentative").success, true);
-  assert.strictEqual(eventStatusSchema.safeParse("cancelled").success, true);
-  assert.strictEqual(eventStatusSchema.safeParse("invalid").success, false);
+  expect(eventStatusSchema.safeParse("confirmed").success).toBe(true);
+  expect(eventStatusSchema.safeParse("tentative").success).toBe(true);
+  expect(eventStatusSchema.safeParse("cancelled").success).toBe(true);
+  expect(eventStatusSchema.safeParse("invalid").success).toBe(false);
 });
 
 test("reminderSchema - validates reminder data", () => {
@@ -143,7 +142,7 @@ test("reminderSchema - validates reminder data", () => {
   };
 
   const result = reminderSchema.safeParse(validReminder);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("reminderSchema - rejects out-of-range minutes", () => {
@@ -153,7 +152,7 @@ test("reminderSchema - rejects out-of-range minutes", () => {
   };
 
   const result = reminderSchema.safeParse(invalidReminder);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 test("eventDataSchema - validates complete event", () => {
@@ -171,7 +170,7 @@ test("eventDataSchema - validates complete event", () => {
   };
 
   const result = eventDataSchema.safeParse(event);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("eventDataSchema - requires title", () => {
@@ -183,7 +182,7 @@ test("eventDataSchema - requires title", () => {
   };
 
   const result = eventDataSchema.safeParse(event);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 test("eventDataSchema - limits title length", () => {
@@ -195,22 +194,22 @@ test("eventDataSchema - limits title length", () => {
   };
 
   const result = eventDataSchema.safeParse(event);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 // Sync validation
 test("syncDirectionSchema - validates sync directions", () => {
-  assert.strictEqual(syncDirectionSchema.safeParse("notion_to_gcal").success, true);
-  assert.strictEqual(syncDirectionSchema.safeParse("gcal_to_notion").success, true);
-  assert.strictEqual(syncDirectionSchema.safeParse("bidirectional").success, true);
-  assert.strictEqual(syncDirectionSchema.safeParse("invalid").success, false);
+  expect(syncDirectionSchema.safeParse("notion_to_gcal").success).toBe(true);
+  expect(syncDirectionSchema.safeParse("gcal_to_notion").success).toBe(true);
+  expect(syncDirectionSchema.safeParse("bidirectional").success).toBe(true);
+  expect(syncDirectionSchema.safeParse("invalid").success).toBe(false);
 });
 
 test("syncOperationSchema - validates operations", () => {
-  assert.strictEqual(syncOperationSchema.safeParse("create").success, true);
-  assert.strictEqual(syncOperationSchema.safeParse("update").success, true);
-  assert.strictEqual(syncOperationSchema.safeParse("delete").success, true);
-  assert.strictEqual(syncOperationSchema.safeParse("invalid").success, false);
+  expect(syncOperationSchema.safeParse("create").success).toBe(true);
+  expect(syncOperationSchema.safeParse("update").success).toBe(true);
+  expect(syncOperationSchema.safeParse("delete").success).toBe(true);
+  expect(syncOperationSchema.safeParse("invalid").success).toBe(false);
 });
 
 // Webhook channel validation
@@ -225,7 +224,7 @@ test("webhookChannelSchema - validates channel metadata", () => {
   };
 
   const result = webhookChannelSchema.safeParse(channel);
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
 });
 
 test("webhookChannelSchema - rejects negative expiration", () => {
@@ -239,7 +238,7 @@ test("webhookChannelSchema - rejects negative expiration", () => {
   };
 
   const result = webhookChannelSchema.safeParse(channel);
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
 });
 
 // Helper function tests
@@ -247,26 +246,23 @@ test("validate - returns parsed data on success", () => {
   const data = { method: "email", minutes: 15 };
   const result = validate(reminderSchema, data);
 
-  assert.strictEqual(result.method, "email");
-  assert.strictEqual(result.minutes, 15);
+  expect(result.method).toBe("email");
+  expect(result.minutes).toBe(15);
 });
 
 test("validate - throws on validation error", () => {
   const data = { method: "invalid", minutes: 15 };
 
-  assert.throws(
-    () => validate(reminderSchema, data),
-    (error: Error) => error.message.includes("Validation failed"),
-  );
+  expect(() => validate(reminderSchema, data)).toThrow("Validation failed");
 });
 
 test("validateSafe - returns success result", () => {
   const data = { method: "popup", minutes: 60 };
   const result = validateSafe(reminderSchema, data);
 
-  assert.strictEqual(result.success, true);
+  expect(result.success).toBe(true);
   if (result.success) {
-    assert.strictEqual(result.data.method, "popup");
+    expect(result.data.method).toBe("popup");
   }
 });
 
@@ -274,9 +270,9 @@ test("validateSafe - returns error result", () => {
   const data = { method: "invalid", minutes: 60 };
   const result = validateSafe(reminderSchema, data);
 
-  assert.strictEqual(result.success, false);
+  expect(result.success).toBe(false);
   if (!result.success) {
-    assert.ok(result.error.includes("Invalid enum value"));
+    expect(result.error).toContain("Invalid enum value");
   }
 });
 
@@ -284,14 +280,14 @@ test("validateDateRange - validates end after start", () => {
   const start = new Date("2026-01-01T10:00:00Z");
   const end = new Date("2026-01-01T11:00:00Z");
 
-  assert.strictEqual(validateDateRange(start, end), true);
+  expect(validateDateRange(start, end)).toBe(true);
 });
 
 test("validateDateRange - rejects end before start", () => {
   const start = new Date("2026-01-01T11:00:00Z");
   const end = new Date("2026-01-01T10:00:00Z");
 
-  assert.strictEqual(validateDateRange(start, end), false);
+  expect(validateDateRange(start, end)).toBe(false);
 });
 
 test("validateEvent - accepts valid event", () => {
@@ -303,8 +299,8 @@ test("validateEvent - accepts valid event", () => {
   };
 
   const result = validateEvent(event);
-  assert.strictEqual(result.valid, true);
-  assert.strictEqual(result.errors.length, 0);
+  expect(result.valid).toBe(true);
+  expect(result.errors.length).toBe(0);
 });
 
 test("validateEvent - rejects end before start", () => {
@@ -316,8 +312,8 @@ test("validateEvent - rejects end before start", () => {
   };
 
   const result = validateEvent(event);
-  assert.strictEqual(result.valid, false);
-  assert.ok(result.errors.some((e) => e.includes("End time must be after start time")));
+  expect(result.valid).toBe(false);
+  expect(result.errors.some((e) => e.includes("End time must be after start time"))).toBe(true);
 });
 
 test("validateEvent - rejects events longer than 30 days", () => {
@@ -329,20 +325,20 @@ test("validateEvent - rejects events longer than 30 days", () => {
   };
 
   const result = validateEvent(event);
-  assert.strictEqual(result.valid, false);
-  assert.ok(result.errors.some((e) => e.includes("cannot exceed 30 days")));
+  expect(result.valid).toBe(false);
+  expect(result.errors.some((e) => e.includes("cannot exceed 30 days"))).toBe(true);
 });
 
 test("sanitizeString - trims and limits length", () => {
   const input = "  hello world  ";
   const result = sanitizeString(input, 5);
 
-  assert.strictEqual(result, "hello");
+  expect(result).toBe("hello");
 });
 
 test("sanitizeString - handles unicode correctly", () => {
   const input = "Hello 👋 World";
   const result = sanitizeString(input, 8);
 
-  assert.ok(result.length <= 8);
+  expect(result.length <= 8).toBe(true);
 });

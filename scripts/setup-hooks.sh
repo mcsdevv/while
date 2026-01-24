@@ -24,27 +24,25 @@ cat > .git/hooks/pre-commit << 'EOF'
 
 echo "🔍 Running pre-commit checks..."
 
-# Find bun executable
-BUN_CMD=""
-if command -v bun >/dev/null 2>&1; then
-  BUN_CMD="bun"
-elif [ -f "$HOME/.bun/bin/bun" ]; then
-  BUN_CMD="$HOME/.bun/bin/bun"
+# Find pnpm executable
+PNPM_CMD=""
+if command -v pnpm >/dev/null 2>&1; then
+  PNPM_CMD="pnpm"
 else
-  echo "❌ bun not found in PATH. Please install bun or ensure it's in your PATH."
+  echo "❌ pnpm not found in PATH. Please install pnpm or ensure it's in your PATH."
   exit 1
 fi
 
 # Run biome lint with auto-fix
 echo "📝 Formatting and linting code..."
-$BUN_CMD run lint:fix
+$PNPM_CMD run lint:fix
 
 # Stage any changes made by the formatter
 git add -u
 
 # Check if there are still linting errors
 echo "✅ Verifying lint status..."
-if ! $BUN_CMD run lint; then
+if ! $PNPM_CMD run lint; then
   echo "❌ Linting failed. Please fix the errors manually and try again."
   exit 1
 fi

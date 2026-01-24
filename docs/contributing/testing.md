@@ -4,7 +4,7 @@ This guide covers the testing strategy and how to write and run tests.
 
 ## Overview
 
-The project uses [Bun's built-in test runner](https://bun.sh/docs/cli/test) with a focus on:
+The project uses [Vitest](https://vitest.dev/) as the test runner with a focus on:
 
 - Unit tests for transformation and utility functions
 - Integration tests for API routes
@@ -15,31 +15,31 @@ The project uses [Bun's built-in test runner](https://bun.sh/docs/cli/test) with
 ### All Tests
 
 ```bash
-bun run test
+pnpm test
 ```
 
 ### Watch Mode
 
 ```bash
-bun run test:watch
+pnpm test:watch
 ```
 
 ### Specific File
 
 ```bash
-bun test __tests__/sync/core.test.ts
+pnpm test __tests__/sync/core.test.ts
 ```
 
 ### Pattern Matching
 
 ```bash
-bun test --filter "notion transform"
+pnpm test --filter "notion transform"
 ```
 
 ### Coverage
 
 ```bash
-bun test --coverage
+pnpm test:coverage
 ```
 
 ## Test Structure
@@ -75,7 +75,7 @@ __tests__/
 ### Basic Test Structure
 
 ```typescript
-import { describe, test, expect, beforeEach, mock } from 'bun:test';
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 
 describe('MyFunction', () => {
   beforeEach(() => {
@@ -105,9 +105,9 @@ test('should fetch data', async () => {
 ### Mocking
 
 ```typescript
-import { mock } from 'bun:test';
+import { vi } from 'vitest';
 
-const mockFetch = mock(() => Promise.resolve({ ok: true }));
+const mockFetch = vi.fn(() => Promise.resolve({ ok: true }));
 
 test('should call API', async () => {
   await callApi();
@@ -265,7 +265,7 @@ describe('Event Transformations', () => {
 ```typescript
 describe('Error Handling', () => {
   test('retries on network error', async () => {
-    const mockFetch = mock()
+    const mockFetch = vi.fn()
       .mockRejectedValueOnce(new Error('Network error'))
       .mockResolvedValueOnce({ ok: true });
 
@@ -275,7 +275,7 @@ describe('Error Handling', () => {
   });
 
   test('gives up after max retries', async () => {
-    const mockFetch = mock().mockRejectedValue(new Error('Network error'));
+    const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
 
     await expect(fetchWithRetry(mockFetch)).rejects.toThrow('Network error');
     expect(mockFetch).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
@@ -360,7 +360,7 @@ Tests run automatically on:
 ```yaml
 # .github/workflows/ci.yml
 - name: Run tests
-  run: bun run test
+  run: pnpm test
 ```
 
 ## Debugging Tests
@@ -368,13 +368,13 @@ Tests run automatically on:
 ### Verbose Output
 
 ```bash
-bun test --verbose
+pnpm test -- --reporter=verbose
 ```
 
 ### Single Test
 
 ```bash
-bun test -t "specific test name"
+pnpm test -t "specific test name"
 ```
 
 ### Debug Mode
@@ -382,7 +382,7 @@ bun test -t "specific test name"
 Add `debugger` statement and run:
 
 ```bash
-bun test --inspect-brk
+node --inspect-brk ./node_modules/.bin/vitest
 ```
 
 Then attach VS Code debugger.
