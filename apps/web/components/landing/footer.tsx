@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const links = {
@@ -21,9 +22,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:max-w-md">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-muted">
-                <span className="text-sm font-medium text-foreground">N</span>
-              </div>
+              <Image src="/icon-no-bg.svg" alt="While" width={32} height={32} />
               <span className="font-medium">While</span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
