@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent } from "@notion-gcal-sync/ui";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
@@ -49,14 +50,9 @@ export function FAQ() {
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Everything you need to know about the sync.{" "}
-            <a
-              href="https://docs.notion-gcal-sync.com/faq"
-              className="text-primary hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link href="/docs/faq" className="text-primary hover:underline">
               View full FAQ
-            </a>
+            </Link>
           </p>
         </div>
 
