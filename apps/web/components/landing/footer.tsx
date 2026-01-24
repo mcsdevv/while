@@ -112,7 +112,7 @@ export function Footer() {
               className="hover:text-foreground"
             >
               Matthew Sweeney
-            </a>
+            </a>.
           </p>
           <p className="text-sm text-muted-foreground">
             Released under the{" "}
@@ -123,7 +123,7 @@ export function Footer() {
               className="hover:text-foreground"
             >
               MIT License
-            </a>
+            </a>.
           </p>
         </div>
       </div>
