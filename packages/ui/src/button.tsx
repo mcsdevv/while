@@ -1,4 +1,4 @@
-import { Slot } from "@radix-ui/react-slot";
+import { useRender } from "@base-ui/react/use-render";
 import { tv, type VariantProps } from "tailwind-variants";
 import * as React from "react";
 
@@ -30,14 +30,48 @@ const buttonVariants = tv({
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  /**
+   * Render the button as a different element using the render prop pattern.
+   * Example: <Button render={<Link href="/contact" />}>Contact</Button>
+   */
+  render?: React.ReactElement;
+  /**
+   * @deprecated Use the `render` prop instead.
+   * Example: Instead of <Button asChild><Link href="/">Click</Link></Button>
+   * Use: <Button render={<Link href="/" />}>Click</Button>
+   */
   asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+  ({ className, variant, size, render, asChild = false, children, ...props }, ref) => {
+    const mergedClassName = buttonVariants({ variant, size, class: className });
+
+    // If render prop is provided, use Base UI's useRender
+    if (render) {
+      return useRender({
+        render,
+        props: { ...props, ref, className: mergedClassName, children },
+      });
+    }
+
+    // Legacy asChild support - extract child element and merge props
+    if (asChild && React.isValidElement(children)) {
+      const child = children as React.ReactElement<Record<string, unknown>>;
+      const childClassName = child.props.className as string | undefined;
+      return React.cloneElement(child, {
+        ...props,
+        ref,
+        className: childClassName
+          ? `${mergedClassName} ${childClassName}`
+          : mergedClassName,
+      });
+    }
+
     return (
-      <Comp className={buttonVariants({ variant, size, class: className })} ref={ref} {...props} />
+      <button className={mergedClassName} ref={ref} {...props}>
+        {children}
+      </button>
     );
   },
 );

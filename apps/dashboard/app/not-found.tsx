@@ -50,8 +50,8 @@ export default function NotFound() {
         <Button variant="ghost" onClick={() => router.back()}>
           Go Back
         </Button>
-        <Button asChild>
-          <Link href="/">Back to Dashboard</Link>
+        <Button render={<Link href="/" />}>
+          Back to Dashboard
         </Button>
       </div>
 
