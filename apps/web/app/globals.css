@@ -91,6 +91,11 @@
   }
 }
 
+/* Reduce sidebar left padding */
+[data-fd-sidebar] {
+  padding-left: 0.5rem;
+}
+
 /* Remove border-radius from fumadocs-ui components */
 [class*="fd-card"],
 [class*="fd-accordion"],
