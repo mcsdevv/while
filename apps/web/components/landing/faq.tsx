@@ -45,7 +45,7 @@ export function FAQ() {
     <section className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Frequently asked questions
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -67,7 +67,7 @@ export function FAQ() {
                 >
                   <span className="font-medium">{faq.question}</span>
                   <ChevronDown
-                    className={`h-5 w-5 text-muted-foreground transition-transform ${
+                    className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
                       openIndex === index ? "rotate-180" : ""
                     }`}
                   />

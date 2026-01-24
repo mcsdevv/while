@@ -124,7 +124,7 @@ export function Dashboard() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Notion-GCal Sync</h1>
+            <h1 className="text-4xl font-semibold tracking-tight">Notion-GCal Sync</h1>
             <p className="text-muted-foreground mt-2">
               Real-time bidirectional synchronization dashboard
             </p>
@@ -185,7 +185,7 @@ export function Dashboard() {
               </div>
 
               {!status?.healthy && metrics && (
-                <div className="rounded-lg bg-destructive/10 p-4 space-y-2">
+                <div className="rounded-md border border-border bg-muted p-4 space-y-2">
                   <p className="text-sm font-medium text-destructive">
                     {metrics.totalFailures} sync{" "}
                     {metrics.totalFailures === 1 ? "failure" : "failures"} detected
@@ -219,7 +219,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={`text-3xl font-bold ${getSuccessRateColor()}`}>{successRate}%</p>
+              <p className={`text-3xl font-semibold ${getSuccessRateColor()}`}>{successRate}%</p>
             </CardContent>
           </Card>
 
@@ -230,7 +230,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">{metrics?.totalSuccess || 0}</p>
+              <p className="text-3xl font-semibold">{metrics?.totalSuccess || 0}</p>
             </CardContent>
           </Card>
 
@@ -239,7 +239,7 @@ export function Dashboard() {
               <CardTitle className="text-sm font-medium text-muted-foreground">Failures</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">{metrics?.totalFailures || 0}</p>
+              <p className="text-3xl font-semibold">{metrics?.totalFailures || 0}</p>
             </CardContent>
           </Card>
 
@@ -250,7 +250,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">
+              <p className="text-3xl font-semibold">
                 {(metrics?.totalSuccess || 0) + (metrics?.totalFailures || 0)}
               </p>
             </CardContent>
