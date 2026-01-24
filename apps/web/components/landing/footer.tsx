@@ -17,9 +17,9 @@ export function Footer() {
   return (
     <footer className="border-t bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="md:max-w-md">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <span className="text-sm font-bold text-primary-foreground">N</span>
@@ -32,60 +32,63 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Product Links */}
-          <div>
-            <h3 className="font-semibold">Product</h3>
-            <ul className="mt-4 space-y-2">
-              {links.product.map((link) => (
-                <li key={link.name}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Product and Resources - right aligned */}
+          <div className="flex gap-12">
+            {/* Product Links */}
+            <div>
+              <h3 className="font-semibold">Product</h3>
+              <ul className="mt-4 space-y-2">
+                {links.product.map((link) => (
+                  <li key={link.name}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Resources Links */}
-          <div>
-            <h3 className="font-semibold">Resources</h3>
-            <ul className="mt-4 space-y-2">
-              {links.resources.map((link) => (
-                <li key={link.name}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {link.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {/* Resources Links */}
+            <div>
+              <h3 className="font-semibold">Resources</h3>
+              <ul className="mt-4 space-y-2">
+                {links.resources.map((link) => (
+                  <li key={link.name}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
