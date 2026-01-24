@@ -6,7 +6,7 @@
 set -e
 
 # Skip in CI environments - no git hooks needed
-if [ -n "$CI" ]; then
+if [ -n "$CI" ] || [ -n "$VERCEL" ] || [ -n "$GITHUB_ACTIONS" ] || [ -n "$GITLAB_CI" ] || [ -n "$CIRCLECI" ]; then
   exit 0
 fi
 
