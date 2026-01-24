@@ -90,3 +90,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Reduce sidebar left padding */
+[data-fd-sidebar] {
+  padding-left: 0.5rem;
+}
