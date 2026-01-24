@@ -95,3 +95,24 @@
 [data-fd-sidebar] {
   padding-left: 0.5rem;
 }
+
+/* Remove border-radius from fumadocs-ui components */
+[class*="fd-card"],
+[class*="fd-accordion"],
+[class*="fd-codeblock"],
+.prose pre,
+.prose [data-rehype-pretty-code-figure],
+.prose [class*="rounded-"] {
+  border-radius: 0 !important;
+}
+
+/* Fumadocs Cards */
+.grid > a[class*="rounded-"],
+.not-prose [class*="rounded-"] {
+  border-radius: 0 !important;
+}
+
+/* Fumadocs Accordion container */
+[class*="divide-y"][class*="rounded-"] {
+  border-radius: 0 !important;
+}
