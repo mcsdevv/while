@@ -48,8 +48,8 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
       {/* Actions */}
       <div className="flex gap-3">
-        <Button variant="ghost" asChild>
-          <Link href="/">Back to Dashboard</Link>
+        <Button variant="ghost" render={<Link href="/" />}>
+          Back to Dashboard
         </Button>
         <Button onClick={reset}>Try Again</Button>
       </div>

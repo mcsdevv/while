@@ -22,17 +22,17 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          {session.user.image && (
-            <img
-              src={session.user.image}
-              alt={session.user.name || "User"}
-              className="w-5 h-5 rounded-full"
-            />
-          )}
-          <span className="hidden sm:inline">{session.user.name}</span>
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" className="gap-2" />}
+      >
+        {session.user.image && (
+          <img
+            src={session.user.image}
+            alt={session.user.name || "User"}
+            className="w-5 h-5 rounded-full"
+          />
+        )}
+        <span className="hidden sm:inline">{session.user.name}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>
@@ -42,8 +42,8 @@ export function UserMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/settings">Settings</Link>
+        <DropdownMenuItem render={<Link href="/settings" />}>
+          Settings
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
