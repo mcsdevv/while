@@ -193,8 +193,8 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
         </>
       ) : (
         <>
-          <div className="rounded-lg border border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950 p-4">
-            <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+          <div className="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+            <div className="flex items-center gap-2 text-foreground">
               <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"

@@ -65,15 +65,15 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
               key={result.service}
               className={`rounded-lg border p-4 ${
                 result.success
-                  ? "border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950"
-                  : "border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950"
+                  ? "border-foreground/10 bg-foreground/5"
+                  : "border-foreground/20 bg-foreground/5"
               }`}
             >
               <div className="flex items-center gap-2">
                 {result.success ? (
                   <svg
                     aria-hidden="true"
-                    className="h-5 w-5 text-green-600 dark:text-green-400"
+                    className="h-5 w-5 text-foreground"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -86,7 +86,7 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
                 ) : (
                   <svg
                     aria-hidden="true"
-                    className="h-5 w-5 text-red-600 dark:text-red-400"
+                    className="h-5 w-5 text-muted-foreground"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -100,21 +100,15 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
                 <span
                   className={`font-medium ${
                     result.success
-                      ? "text-green-700 dark:text-green-300"
-                      : "text-red-700 dark:text-red-300"
+                      ? "text-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {result.service}: {result.message}
                 </span>
               </div>
               {result.details && (
-                <p
-                  className={`mt-1 text-sm ${
-                    result.success
-                      ? "text-green-600 dark:text-green-400"
-                      : "text-red-600 dark:text-red-400"
-                  }`}
-                >
+                <p className="mt-1 text-sm text-muted-foreground">
                   {result.details}
                 </p>
               )}
@@ -124,8 +118,8 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
       )}
 
       {allPassed && (
-        <div className="rounded-lg border border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950 p-4">
-          <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+        <div className="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+          <div className="flex items-center gap-2 text-foreground">
             <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -135,7 +129,7 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
             </svg>
             <span className="font-medium">Setup Complete!</span>
           </div>
-          <p className="mt-1 text-sm text-green-600 dark:text-green-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Your Notion-Google Calendar sync is ready to use.
           </p>
         </div>

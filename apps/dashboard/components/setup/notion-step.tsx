@@ -101,8 +101,8 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
   if (status?.databaseSelected && status?.databaseName) {
     return (
       <div className="space-y-6">
-        <div className="rounded-lg border border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950 p-4">
-          <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+        <div className="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+          <div className="flex items-center gap-2 text-foreground">
             <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -112,7 +112,7 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
             </svg>
             <span className="font-medium">Notion connected</span>
           </div>
-          <p className="mt-1 text-sm text-green-600 dark:text-green-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Database: {status.databaseName}
           </p>
         </div>
@@ -180,8 +180,8 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
         </>
       ) : (
         <>
-          <div className="rounded-lg border border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950 p-4">
-            <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+          <div className="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+            <div className="flex items-center gap-2 text-foreground">
               <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"

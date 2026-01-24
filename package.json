@@ -12,7 +12,15 @@
   "bugs": {
     "url": "https://github.com/mcsdevv/notion-gcal-sync/issues"
   },
-  "keywords": ["notion", "google-calendar", "sync", "automation", "nextjs", "vercel", "turborepo"],
+  "keywords": [
+    "notion",
+    "google-calendar",
+    "sync",
+    "automation",
+    "nextjs",
+    "vercel",
+    "turborepo"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -34,5 +42,8 @@
       "sharp"
     ]
   },
-  "packageManager": "pnpm@10.28.1"
+  "packageManager": "pnpm@10.28.1",
+  "dependencies": {
+    "geist": "^1.5.1"
+  }
 }

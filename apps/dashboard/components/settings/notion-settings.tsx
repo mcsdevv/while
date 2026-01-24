@@ -53,7 +53,7 @@ export function NotionSettings({ settings }: NotionSettingsProps) {
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">API Token</span>
-                <span className="text-green-600 dark:text-green-400">Configured</span>
+                <span className="text-foreground">Configured</span>
               </div>
             </div>
             <div className="pt-2">

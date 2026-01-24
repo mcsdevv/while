@@ -106,9 +106,9 @@ export function Dashboard() {
 
   const getSuccessRateColor = (): string => {
     if (successRateNumeric === null) return "";
-    if (successRateNumeric > 99) return "text-green-600 dark:text-green-400";
-    if (successRateNumeric >= 90) return "text-yellow-600 dark:text-yellow-400";
-    return "text-red-600 dark:text-red-400";
+    if (successRateNumeric > 99) return "text-foreground";
+    if (successRateNumeric >= 90) return "text-muted-foreground";
+    return "text-foreground/60";
   };
 
   const timeWindowLabels: Record<TimeWindow, string> = {

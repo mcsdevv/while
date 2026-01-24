@@ -193,7 +193,7 @@ export function DangerZone() {
         )}
 
         {success && (
-          <div className="rounded-lg border border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
+          <div className="rounded-lg border border-foreground/10 bg-foreground/5 p-3 text-sm text-foreground">
             {success}
           </div>
         )}

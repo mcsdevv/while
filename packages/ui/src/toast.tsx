@@ -84,34 +84,19 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
     <div
       className={cn(
         "pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border p-4 shadow-lg transition-all",
-        {
-          "bg-background border-border": variant === "default",
-          "bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900":
-            variant === "success",
-          "bg-destructive/10 border-destructive/50": variant === "destructive",
-        },
+        variant === "default"
+          ? "bg-background border-border"
+          : "bg-foreground/5 border-foreground/20",
       )}
     >
       <div className="flex-1 space-y-1">
         {title && (
-          <p
-            className={cn("text-sm font-medium", {
-              "text-foreground": variant === "default",
-              "text-green-700 dark:text-green-300": variant === "success",
-              "text-destructive": variant === "destructive",
-            })}
-          >
+          <p className="text-sm font-medium text-foreground">
             {title}
           </p>
         )}
         {description && (
-          <p
-            className={cn("text-sm", {
-              "text-muted-foreground": variant === "default",
-              "text-green-600 dark:text-green-400": variant === "success",
-              "text-destructive/80": variant === "destructive",
-            })}
-          >
+          <p className="text-sm text-muted-foreground">
             {description}
           </p>
         )}
