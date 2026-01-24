@@ -1,7 +1,11 @@
 ---
 title: Vercel Deployment
-description: "Deploy the sync app to Vercel"
+description: Deploy the sync app to Vercel
 ---
+
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps, Step } from "fumadocs-ui/components/steps";
 
 # Vercel Deployment
 
@@ -24,10 +28,10 @@ During deployment, you'll need to configure these environment variables:
 | Variable | Description | How to Get |
 |----------|-------------|------------|
 | `NEXTAUTH_SECRET` | Session encryption key | Generate with `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | [Google OAuth Setup](/setup/google) |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/setup/google) |
-| `NOTION_CLIENT_ID` | Notion OAuth client ID | [Notion Setup](/setup/notion) |
-| `NOTION_CLIENT_SECRET` | Notion OAuth client secret | [Notion Setup](/setup/notion) |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | [Google OAuth Setup](/docs/setup/google) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/docs/setup/google) |
+| `NOTION_CLIENT_ID` | Notion OAuth client ID | [Notion Setup](/docs/setup/notion) |
+| `NOTION_CLIENT_SECRET` | Notion OAuth client secret | [Notion Setup](/docs/setup/notion) |
 | `ENCRYPTION_KEY` | Credential encryption key | Generate with `openssl rand -base64 32` |
 | `UPSTASH_REDIS_REST_URL` | Redis REST API URL | [Upstash Dashboard](https://console.upstash.com) |
 | `UPSTASH_REDIS_REST_TOKEN` | Redis REST API token | [Upstash Dashboard](https://console.upstash.com) |
@@ -55,27 +59,39 @@ openssl rand -base64 32
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
-<Warning>
+<Callout type="warn">
 Generate separate keys for `NEXTAUTH_SECRET` and `ENCRYPTION_KEY`. Don't reuse the same key.
-</Warning>
+</Callout>
 
 ## Set Up Upstash Redis
 
 <Steps>
-  <Step title="Create Account">
-    Sign up at [upstash.com](https://upstash.com)
-  </Step>
-  <Step title="Create Database">
-    - Click **Create Database**
-    - Name: `notion-gcal-sync`
-    - Region: Choose closest to your users
-    - Type: Regional (free tier)
-  </Step>
-  <Step title="Get Credentials">
-    From the database details, copy:
-    - **REST URL** → `UPSTASH_REDIS_REST_URL`
-    - **REST Token** → `UPSTASH_REDIS_REST_TOKEN`
-  </Step>
+<Step>
+
+### Create Account
+
+Sign up at [upstash.com](https://upstash.com)
+
+</Step>
+<Step>
+
+### Create Database
+
+- Click **Create Database**
+- Name: `notion-gcal-sync`
+- Region: Choose closest to your users
+- Type: Regional (free tier)
+
+</Step>
+<Step>
+
+### Get Credentials
+
+From the database details, copy:
+- **REST URL** → `UPSTASH_REDIS_REST_URL`
+- **REST Token** → `UPSTASH_REDIS_REST_TOKEN`
+
+</Step>
 </Steps>
 
 ## Post-Deployment Steps
@@ -102,9 +118,9 @@ Vercel automatically runs cron jobs defined in `vercel.json`:
 - **Notion sync**: Every 2 minutes
 - **Webhook renewal**: Daily
 
-<Note>
+<Callout type="info" title="Note">
 Free Vercel accounts have cron job limitations. Check [Vercel pricing](https://vercel.com/pricing) for details.
-</Note>
+</Callout>
 
 ## Custom Domain (Optional)
 
@@ -118,7 +134,7 @@ To use a custom domain:
 
 ## Troubleshooting
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="Build Fails">
     - Check environment variables are set correctly
     - Verify all required variables are present
@@ -134,7 +150,7 @@ To use a custom domain:
     - Check the REST URL includes `https://`
     - Ensure the database is in a supported region
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Updating the App
 

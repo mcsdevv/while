@@ -1,7 +1,11 @@
 ---
 title: Field Mapping
-description: "Configure how Notion properties sync to Google Calendar fields"
+description: Configure how Notion properties sync to Google Calendar fields
 ---
+
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { Callout } from "fumadocs-ui/components/callout";
 
 # Field Mapping Guide
 
@@ -43,9 +47,9 @@ Google Calendar: Start/End DateTime
 Notion: Date property with time enabled
 ```
 
-<Warning>
+<Callout type="warn">
 If your Notion Date property doesn't include time, the sync cannot determine when events occur during the day.
-</Warning>
+</Callout>
 
 ## Optional Mappings
 
@@ -59,9 +63,9 @@ Google Calendar: Description
 Notion: Text or Rich Text property
 ```
 
-<Note>
+<Callout type="info" title="Note">
 Rich text formatting from Notion is converted to plain text in Google Calendar.
-</Note>
+</Callout>
 
 ### Location
 
@@ -117,9 +121,9 @@ The sync automatically creates and manages a special property:
 |----------|------|---------|
 | `gcal_event_id` | Text | Links events between Notion and Google Calendar |
 
-<Warning>
+<Callout type="warn">
 Do not modify or delete this property. It's how the sync knows which Notion pages correspond to which Google Calendar events.
-</Warning>
+</Callout>
 
 ### Hiding the Property
 
@@ -158,7 +162,7 @@ When you delete an event:
 
 ## Troubleshooting
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="Property not appearing in dropdown">
     - Ensure the property exists in your database
     - Check that the property type is compatible
@@ -174,21 +178,21 @@ When you delete an event:
     - Check timezone settings in both systems
     - Verify the date format in Notion
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Best Practices
 
-<CardGroup cols={2}>
-  <Card title="Use Clear Names" icon="tag">
+<Cards>
+  <Card title="Use Clear Names">
     Name your Notion properties clearly (e.g., "Event Date" not "Date1")
   </Card>
-  <Card title="Enable Time" icon="clock">
+  <Card title="Enable Time">
     Always enable time on your Date property for accurate scheduling
   </Card>
-  <Card title="Hide System Fields" icon="eye-slash">
+  <Card title="Hide System Fields">
     Hide the `gcal_event_id` property to keep views clean
   </Card>
-  <Card title="Test Changes" icon="flask">
+  <Card title="Test Changes">
     After changing mappings, create a test event to verify sync works
   </Card>
-</CardGroup>
+</Cards>

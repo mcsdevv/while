@@ -1,13 +1,16 @@
 ---
 title: FAQ
-description: "Frequently asked questions about Notion-Google Calendar Sync"
+description: Frequently asked questions about Notion-Google Calendar Sync
 ---
+
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
 # Frequently Asked Questions
 
 ## General
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="How does the sync work?">
     The sync uses two mechanisms:
 
@@ -42,11 +45,11 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
   <Accordion title="Is this project affiliated with Notion or Google?">
     No, this is an independent open-source project. It's not officially supported by or affiliated with Notion or Google.
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Setup
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="Why do my Google tokens expire after 7 days?">
     This happens when your Google OAuth app is in "Testing" mode. Google limits test apps to 7-day token expiration.
 
@@ -89,11 +92,11 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
 
     If you're using a custom domain and encounter issues, you may need to verify it in Google Search Console.
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Sync Behavior
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="How quickly do changes sync?">
     - **Google → Notion**: Nearly instant (via webhooks)
     - **Notion → Google**: Up to 2 minutes (polling interval)
@@ -129,11 +132,11 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
 
     For best results, create recurring events in Google Calendar.
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Troubleshooting
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="Events aren't syncing, what's wrong?">
     Check these common issues:
 
@@ -142,7 +145,7 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
     3. **Field mapping**: Ensure all required fields are mapped
     4. **Database connection**: Verify integration is connected to database
 
-    See the [Troubleshooting Guide](/guides/troubleshooting) for detailed steps.
+    See the [Troubleshooting Guide](/docs/guides/troubleshooting) for detailed steps.
   </Accordion>
 
   <Accordion title="Why are event times wrong?">
@@ -163,11 +166,11 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
 
     Note: This doesn't delete events, just the links between systems.
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Technical
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="What tech stack is this built with?">
     - **Framework**: Next.js 16 with App Router
     - **Runtime**: Vercel serverless functions
@@ -203,15 +206,15 @@ description: "Frequently asked questions about Notion-Google Calendar Sync"
 
     See [CONTRIBUTING.md](https://github.com/mcsdevv/notion-gcal-sync/blob/main/CONTRIBUTING.md) for guidelines.
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Still Have Questions?
 
-<CardGroup cols={2}>
-  <Card title="GitHub Discussions" icon="comments" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
+<Cards>
+  <Card title="GitHub Discussions" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
     Ask the community
   </Card>
-  <Card title="Report an Issue" icon="bug" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
+  <Card title="Report an Issue" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
     Found a bug?
   </Card>
-</CardGroup>
+</Cards>
