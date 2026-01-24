@@ -1,17 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm turbo build --filter=@notion-gcal-sync/dashboard",
-  "outputDirectory": "apps/dashboard/.next",
+  "buildCommand": "pnpm turbo build --filter=@notion-gcal-sync/web",
+  "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "installCommand": "pnpm install",
-  "crons": [
-    {
-      "path": "/api/cron/sync-notion",
-      "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/cron/renew-webhook",
-      "schedule": "0 12 * * *"
-    }
-  ]
+  "installCommand": "pnpm install --filter=@notion-gcal-sync/web..."
 }
