@@ -1,0 +1,77 @@
+---
+title: Introduction
+description: "Keep your Notion calendar database and Google Calendar in perfect sync"
+---
+
+# Notion-Google Calendar Sync
+
+A self-hosted, open-source solution for bidirectional synchronization between Notion and Google Calendar.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get up and running in 5 minutes
+  </Card>
+  <Card title="Architecture" icon="diagram-project" href="/architecture">
+    Learn how the sync works
+  </Card>
+</CardGroup>
+
+## Why This Project?
+
+Managing events across both Notion and Google Calendar often means:
+- Double-entering events manually
+- Forgetting to update one system when changes happen
+- Losing track of what's accurate
+
+This sync eliminates all of that by keeping both systems perfectly in sync.
+
+## Key Features
+
+<AccordionGroup>
+  <Accordion title="Bidirectional Sync" icon="arrows-left-right">
+    Changes made in either Notion or Google Calendar are automatically synced to the other.
+    Edit in whichever app you prefer - both stay current.
+  </Accordion>
+  <Accordion title="Real-time Updates" icon="bolt">
+    Google Calendar changes are captured via webhooks for instant updates.
+    Notion changes are detected through polling every 2 minutes.
+  </Accordion>
+  <Accordion title="Self-Hosted & Private" icon="lock">
+    Deploy to your own Vercel account. Your credentials are encrypted and stored in your own Redis instance.
+    No data passes through third-party servers.
+  </Accordion>
+  <Accordion title="Custom Field Mapping" icon="map">
+    Map any Notion property to Google Calendar fields.
+    Full control over how your data syncs between systems.
+  </Accordion>
+</AccordionGroup>
+
+## How It Works
+
+```mermaid
+graph LR
+    GC[Google Calendar] <-->|Webhooks| App[Sync App]
+    App <-->|API| N[Notion Database]
+```
+
+1. **Google → Notion**: Webhooks capture changes instantly
+2. **Notion → Google**: Polling detects changes every 2 minutes
+3. **Conflict Resolution**: Most recent change wins
+
+## Requirements
+
+- A [Vercel](https://vercel.com) account (free tier works)
+- An [Upstash](https://upstash.com) account (free tier works)
+- A Google account with Google Calendar
+- A Notion account with a calendar database
+
+## Getting Help
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/guides/troubleshooting">
+    Common issues and solutions
+  </Card>
+  <Card title="GitHub Issues" icon="github" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
+    Report bugs or request features
+  </Card>
+</CardGroup>

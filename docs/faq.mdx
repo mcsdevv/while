@@ -1,0 +1,217 @@
+---
+title: FAQ
+description: "Frequently asked questions about Notion-Google Calendar Sync"
+---
+
+# Frequently Asked Questions
+
+## General
+
+<AccordionGroup>
+  <Accordion title="How does the sync work?">
+    The sync uses two mechanisms:
+
+    - **Google → Notion**: Webhooks capture changes instantly when you modify events in Google Calendar
+    - **Notion → Google**: Polling checks for changes every 2 minutes
+
+    Both directions use intelligent conflict resolution where the most recent change wins.
+  </Accordion>
+
+  <Accordion title="Is my data secure?">
+    Yes, absolutely. This is a self-hosted solution:
+
+    - You deploy to your own Vercel account
+    - Credentials are encrypted with AES-256-GCM
+    - Data is stored in your own Upstash Redis instance
+    - No data ever passes through third-party servers
+
+    You have complete control over your data.
+  </Accordion>
+
+  <Accordion title="How much does it cost?">
+    It's completely free for personal use:
+
+    - **Vercel**: Free tier is sufficient
+    - **Upstash Redis**: Free tier provides 10K commands/day
+    - **Google Calendar API**: Free for personal use
+    - **Notion API**: Free
+
+    You might need paid tiers if you have high-volume usage.
+  </Accordion>
+
+  <Accordion title="Is this project affiliated with Notion or Google?">
+    No, this is an independent open-source project. It's not officially supported by or affiliated with Notion or Google.
+  </Accordion>
+</AccordionGroup>
+
+## Setup
+
+<AccordionGroup>
+  <Accordion title="Why do my Google tokens expire after 7 days?">
+    This happens when your Google OAuth app is in "Testing" mode. Google limits test apps to 7-day token expiration.
+
+    **To fix:**
+    1. Go to Google Cloud Console
+    2. Navigate to OAuth consent screen
+    3. Click "Publish App"
+
+    Published apps have longer-lived refresh tokens.
+  </Accordion>
+
+  <Accordion title="Can I sync multiple calendars?">
+    Each deployment syncs one Google Calendar with one Notion database. For multiple calendars:
+
+    1. Deploy a separate instance for each calendar
+    2. Use different Notion databases for each
+    3. Each instance runs independently
+
+    This keeps things simple and avoids conflicts.
+  </Accordion>
+
+  <Accordion title="What Notion properties are required?">
+    At minimum, you need:
+
+    | Property | Type | Notes |
+    |----------|------|-------|
+    | Title | Title | For event names |
+    | Date | Date | Must include time |
+
+    Optional but recommended:
+    - Description (Text)
+    - Location (Text)
+    - Reminders (Number)
+
+    The sync will also create a `gcal_event_id` property automatically.
+  </Accordion>
+
+  <Accordion title="Do I need to verify my domain with Google?">
+    For basic usage, no. The webhook endpoint on Vercel works without additional domain verification.
+
+    If you're using a custom domain and encounter issues, you may need to verify it in Google Search Console.
+  </Accordion>
+</AccordionGroup>
+
+## Sync Behavior
+
+<AccordionGroup>
+  <Accordion title="How quickly do changes sync?">
+    - **Google → Notion**: Nearly instant (via webhooks)
+    - **Notion → Google**: Up to 2 minutes (polling interval)
+
+    The 2-minute delay for Notion changes is due to API limitations - Notion doesn't support webhooks.
+  </Accordion>
+
+  <Accordion title="What happens if I delete an event?">
+    When you delete an event in either system:
+    1. The sync detects the deletion
+    2. The corresponding event in the other system is also deleted
+    3. The link between them is removed
+
+    This is bidirectional - deleting in Notion deletes in Google Calendar and vice versa.
+  </Accordion>
+
+  <Accordion title="How are conflicts handled?">
+    When the same event is modified in both systems simultaneously:
+
+    1. The sync compares modification timestamps
+    2. The most recent change wins
+    3. Both systems are updated to match
+
+    To avoid conflicts, try to edit events in only one system at a time.
+  </Accordion>
+
+  <Accordion title="Does it sync recurring events?">
+    Recurring events have limited support:
+
+    - Individual instances sync normally
+    - Modifying the recurrence pattern may cause unexpected behavior
+    - Creating recurring events from Notion is not fully supported
+
+    For best results, create recurring events in Google Calendar.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Events aren't syncing, what's wrong?">
+    Check these common issues:
+
+    1. **Dashboard errors**: Look for error messages in the logs
+    2. **Token expiration**: Re-authenticate if tokens expired
+    3. **Field mapping**: Ensure all required fields are mapped
+    4. **Database connection**: Verify integration is connected to database
+
+    See the [Troubleshooting Guide](/guides/troubleshooting) for detailed steps.
+  </Accordion>
+
+  <Accordion title="Why are event times wrong?">
+    Usually caused by:
+
+    1. **Notion date property**: Must have "Include time" enabled
+    2. **Timezone mismatch**: Check settings in both systems
+    3. **All-day events**: Handled differently than timed events
+
+    Ensure your Notion Date property includes time, not just date.
+  </Accordion>
+
+  <Accordion title="Can I reset and start fresh?">
+    Yes. Go to Settings > Danger Zone:
+
+    - **Reset Sync**: Clears sync state but keeps credentials
+    - **Clear All Data**: Removes everything, requires re-setup
+
+    Note: This doesn't delete events, just the links between systems.
+  </Accordion>
+</AccordionGroup>
+
+## Technical
+
+<AccordionGroup>
+  <Accordion title="What tech stack is this built with?">
+    - **Framework**: Next.js 16 with App Router
+    - **Runtime**: Vercel serverless functions
+    - **Storage**: Upstash Redis
+    - **UI**: React, Tailwind CSS, shadcn/ui
+    - **Auth**: NextAuth.js
+
+    It's a monorepo using Turborepo for builds.
+  </Accordion>
+
+  <Accordion title="Can I run this locally?">
+    Yes! For development:
+
+    ```bash
+    git clone https://github.com/mcsdevv/notion-gcal-sync
+    cd notion-gcal-sync
+    pnpm install
+    cp apps/dashboard/.env.example apps/dashboard/.env.local
+    # Configure environment variables
+    pnpm dev
+    ```
+
+    Note: Webhooks won't work locally unless you use a tunneling service like ngrok.
+  </Accordion>
+
+  <Accordion title="How do I contribute?">
+    Contributions are welcome!
+
+    1. Fork the repository
+    2. Create a feature branch
+    3. Make your changes
+    4. Submit a pull request
+
+    See [CONTRIBUTING.md](https://github.com/mcsdevv/notion-gcal-sync/blob/main/CONTRIBUTING.md) for guidelines.
+  </Accordion>
+</AccordionGroup>
+
+## Still Have Questions?
+
+<CardGroup cols={2}>
+  <Card title="GitHub Discussions" icon="comments" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
+    Ask the community
+  </Card>
+  <Card title="Report an Issue" icon="bug" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
+    Found a bug?
+  </Card>
+</CardGroup>

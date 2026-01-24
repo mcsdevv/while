@@ -1,0 +1,194 @@
+---
+title: Field Mapping
+description: "Configure how Notion properties sync to Google Calendar fields"
+---
+
+# Field Mapping Guide
+
+Field mapping determines how your Notion database properties correspond to Google Calendar event fields.
+
+## Overview
+
+The sync supports mapping between these fields:
+
+| Google Calendar | Notion Property Type | Notes |
+|-----------------|---------------------|-------|
+| Title | Title | Required |
+| Start/End Time | Date | Required, must include time |
+| Description | Text, Rich Text | Optional |
+| Location | Text | Optional |
+| Reminders | Number | Minutes before event |
+
+## Required Mappings
+
+### Title Property
+
+Every event needs a title. Map this to your Notion Title property.
+
+```
+Google Calendar: Summary (Title)
+↔
+Notion: Your title property (e.g., "Event Name", "Name", "Title")
+```
+
+### Date Property
+
+Events need a start time. Your Notion Date property must:
+- Include time (not just date)
+- Optionally include an end date/time
+
+```
+Google Calendar: Start/End DateTime
+↔
+Notion: Date property with time enabled
+```
+
+<Warning>
+If your Notion Date property doesn't include time, the sync cannot determine when events occur during the day.
+</Warning>
+
+## Optional Mappings
+
+### Description
+
+Sync event details between description fields.
+
+```
+Google Calendar: Description
+↔
+Notion: Text or Rich Text property
+```
+
+<Note>
+Rich text formatting from Notion is converted to plain text in Google Calendar.
+</Note>
+
+### Location
+
+Sync physical or virtual locations.
+
+```
+Google Calendar: Location
+↔
+Notion: Text property
+```
+
+### Reminders
+
+Set how many minutes before an event to trigger a reminder.
+
+```
+Google Calendar: Reminder (popup notification)
+↔
+Notion: Number property (minutes)
+```
+
+Example values:
+- `15` = 15 minutes before
+- `60` = 1 hour before
+- `1440` = 1 day before (60 × 24)
+
+## Configuring Mappings
+
+### During Setup
+
+The setup wizard automatically suggests mappings based on property names:
+
+1. Properties named "Title", "Name", or "Event" → Title
+2. Properties named "Date", "When", or "Time" → Date
+3. Properties named "Description", "Notes", or "Details" → Description
+4. Properties named "Location", "Where", or "Place" → Location
+
+### In Settings
+
+After setup, you can modify mappings in the Settings page:
+
+1. Go to your app dashboard
+2. Click **Settings**
+3. Find the **Field Mapping** section
+4. Select Notion properties for each Google Calendar field
+5. Click **Save**
+
+## GCal Event ID Property
+
+The sync automatically creates and manages a special property:
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| `gcal_event_id` | Text | Links events between Notion and Google Calendar |
+
+<Warning>
+Do not modify or delete this property. It's how the sync knows which Notion pages correspond to which Google Calendar events.
+</Warning>
+
+### Hiding the Property
+
+To keep your database clean:
+
+1. Open your Notion database
+2. Click the property header dropdown
+3. Select **Hide in view**
+
+The property remains functional but won't clutter your views.
+
+## Sync Behavior
+
+### New Events
+
+When you create an event in either system:
+
+1. Event is created in the other system
+2. Field mappings determine what data transfers
+3. `gcal_event_id` links them together
+
+### Updates
+
+When you modify an event:
+
+1. Change is detected (webhook for Google, polling for Notion)
+2. Corresponding event in other system is updated
+3. Only mapped fields are synced
+
+### Deletions
+
+When you delete an event:
+
+1. Corresponding event in other system is also deleted
+2. The link is removed
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Property not appearing in dropdown">
+    - Ensure the property exists in your database
+    - Check that the property type is compatible
+    - Refresh the settings page
+  </Accordion>
+  <Accordion title="Data not syncing for a field">
+    - Verify the mapping is configured
+    - Check the property types are compatible
+    - Look for errors in the dashboard logs
+  </Accordion>
+  <Accordion title="Times are wrong">
+    - Ensure your Notion date property includes time
+    - Check timezone settings in both systems
+    - Verify the date format in Notion
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Use Clear Names" icon="tag">
+    Name your Notion properties clearly (e.g., "Event Date" not "Date1")
+  </Card>
+  <Card title="Enable Time" icon="clock">
+    Always enable time on your Date property for accurate scheduling
+  </Card>
+  <Card title="Hide System Fields" icon="eye-slash">
+    Hide the `gcal_event_id` property to keep views clean
+  </Card>
+  <Card title="Test Changes" icon="flask">
+    After changing mappings, create a test event to verify sync works
+  </Card>
+</CardGroup>
