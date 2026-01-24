@@ -1,7 +1,11 @@
 ---
 title: Quickstart
-description: "Deploy and configure your sync in under 5 minutes"
+description: Deploy and configure your sync in under 5 minutes
 ---
+
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps, Step } from "fumadocs-ui/components/steps";
 
 # Quickstart Guide
 
@@ -12,18 +16,37 @@ This guide walks you through deploying your own Notion-Google Calendar Sync inst
 Before starting, you'll need:
 
 <Steps>
-  <Step title="Vercel Account">
-    Sign up at [vercel.com](https://vercel.com) (free tier is sufficient)
-  </Step>
-  <Step title="Upstash Account">
-    Sign up at [upstash.com](https://upstash.com) and create a Redis database
-  </Step>
-  <Step title="Google Cloud Project">
-    Create a project at [console.cloud.google.com](https://console.cloud.google.com)
-  </Step>
-  <Step title="Notion Integration">
-    Create an integration at [notion.so/my-integrations](https://www.notion.so/my-integrations)
-  </Step>
+<Step>
+
+### Vercel Account
+
+Sign up at [vercel.com](https://vercel.com) (free tier is sufficient)
+
+</Step>
+
+<Step>
+
+### Upstash Account
+
+Sign up at [upstash.com](https://upstash.com) and create a Redis database
+
+</Step>
+
+<Step>
+
+### Google Cloud Project
+
+Create a project at [console.cloud.google.com](https://console.cloud.google.com)
+
+</Step>
+
+<Step>
+
+### Notion Integration
+
+Create an integration at [notion.so/my-integrations](https://www.notion.so/my-integrations)
+
+</Step>
 </Steps>
 
 ## Step 1: Create Google OAuth Credentials
@@ -40,11 +63,11 @@ https://your-app.vercel.app/api/auth/callback/google
 https://your-app.vercel.app/api/setup/google-oauth/callback
 ```
 
-<Info>
+<Callout type="info">
 You'll update these URIs with your actual Vercel domain after deployment.
-</Info>
+</Callout>
 
-[Detailed Google OAuth Setup →](/setup/google)
+[Detailed Google OAuth Setup →](/docs/setup/google)
 
 ## Step 2: Create Notion Integration
 
@@ -54,7 +77,7 @@ You'll update these URIs with your actual Vercel domain after deployment.
 4. Copy the **Internal Integration Secret**
 5. Connect the integration to your calendar database
 
-[Detailed Notion Setup →](/setup/notion)
+[Detailed Notion Setup →](/docs/setup/notion)
 
 ## Step 3: Deploy to Vercel
 
@@ -77,14 +100,14 @@ During deployment, you'll need to provide these environment variables:
 | `UPSTASH_REDIS_REST_URL` | From Upstash dashboard |
 | `UPSTASH_REDIS_REST_TOKEN` | From Upstash dashboard |
 
-<Tip>
+<Callout type="info" title="Tip">
 Generate an encryption key with:
 ```bash
 openssl rand -base64 32
 ```
-</Tip>
+</Callout>
 
-[Detailed Deployment Guide →](/setup/vercel)
+[Detailed Deployment Guide →](/docs/setup/vercel)
 
 ## Step 4: Complete Setup Wizard
 
@@ -110,11 +133,11 @@ https://your-app-name.vercel.app/api/setup/google-oauth/callback
 
 Your events will now sync bidirectionally between Notion and Google Calendar.
 
-<CardGroup cols={2}>
-  <Card title="Field Mapping" icon="map" href="/guides/field-mapping">
+<Cards>
+  <Card title="Field Mapping" href="/docs/guides/field-mapping">
     Customize how properties sync
   </Card>
-  <Card title="Troubleshooting" icon="wrench" href="/guides/troubleshooting">
+  <Card title="Troubleshooting" href="/docs/guides/troubleshooting">
     Fix common issues
   </Card>
-</CardGroup>
+</Cards>

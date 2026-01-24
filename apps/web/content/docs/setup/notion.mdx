@@ -1,7 +1,11 @@
 ---
 title: Notion Integration Setup
-description: "Create a Notion integration and configure database access"
+description: Create a Notion integration and configure database access
 ---
+
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps, Step } from "fumadocs-ui/components/steps";
 
 # Notion Integration Setup
 
@@ -10,20 +14,36 @@ This guide walks through creating a Notion integration and connecting it to your
 ## Step 1: Create Integration
 
 <Steps>
-  <Step title="Open Integrations">
-    Go to [Notion Integrations](https://www.notion.so/my-integrations)
-  </Step>
-  <Step title="Create New">
-    Click **New integration**
-  </Step>
-  <Step title="Configure">
-    - **Name**: `Calendar Sync`
-    - **Associated workspace**: Select your workspace
-    - **Logo**: Optional
-  </Step>
-  <Step title="Submit">
-    Click **Submit** to create the integration
-  </Step>
+<Step>
+
+### Open Integrations
+
+Go to [Notion Integrations](https://www.notion.so/my-integrations)
+
+</Step>
+<Step>
+
+### Create New
+
+Click **New integration**
+
+</Step>
+<Step>
+
+### Configure
+
+- **Name**: `Calendar Sync`
+- **Associated workspace**: Select your workspace
+- **Logo**: Optional
+
+</Step>
+<Step>
+
+### Submit
+
+Click **Submit** to create the integration
+
+</Step>
 </Steps>
 
 ## Step 2: Configure Capabilities
@@ -52,30 +72,50 @@ Click **Save changes**.
 2. Click **Show** then **Copy**
 3. Save this token securely
 
-<Warning>
+<Callout type="warn">
 This token starts with `secret_` and is shown only once. If lost, you'll need to regenerate it.
-</Warning>
+</Callout>
 
 ## Step 4: Connect to Database
 
 The integration needs explicit access to your calendar database.
 
 <Steps>
-  <Step title="Open Database">
-    Open your Notion calendar database as a full page
-  </Step>
-  <Step title="Open Menu">
-    Click the **...** menu in the top right
-  </Step>
-  <Step title="Add Connection">
-    Go to **Connections** (or **Add connections**)
-  </Step>
-  <Step title="Select Integration">
-    Find and select your **Calendar Sync** integration
-  </Step>
-  <Step title="Confirm">
-    Click **Confirm** to grant access
-  </Step>
+<Step>
+
+### Open Database
+
+Open your Notion calendar database as a full page
+
+</Step>
+<Step>
+
+### Open Menu
+
+Click the **...** menu in the top right
+
+</Step>
+<Step>
+
+### Add Connection
+
+Go to **Connections** (or **Add connections**)
+
+</Step>
+<Step>
+
+### Select Integration
+
+Find and select your **Calendar Sync** integration
+
+</Step>
+<Step>
+
+### Confirm
+
+Click **Confirm** to grant access
+
+</Step>
 </Steps>
 
 ## Step 5: Get Database ID
@@ -99,9 +139,9 @@ URL: `https://notion.so/myworkspace/a1b2c3d4e5f6789012345678901234ab?v=...`
 
 Database ID: `a1b2c3d4e5f6789012345678901234ab`
 
-<Tip>
+<Callout type="info" title="Tip">
 The setup wizard accepts the database ID with or without dashes.
-</Tip>
+</Callout>
 
 ## Database Schema
 
@@ -125,9 +165,9 @@ The sync creates one additional property automatically:
 |----------|------|---------|
 | GCal Event ID | Text | Links events between systems |
 
-<Note>
+<Callout type="info" title="Note">
 You can create this manually or let the setup wizard create it. Hide it in your views for a cleaner look.
-</Note>
+</Callout>
 
 ## Environment Variables
 
@@ -140,7 +180,7 @@ After completing this setup, you'll have:
 
 ## Troubleshooting
 
-<AccordionGroup>
+<Accordions type="single">
   <Accordion title="Could not find database">
     - Ensure the integration is connected to the database
     - Check the database ID is correct
@@ -156,13 +196,13 @@ After completing this setup, you'll have:
     - Create missing properties in Notion if needed
     - Date property must support time (not just date)
   </Accordion>
-</AccordionGroup>
+</Accordions>
 
 ## Security Notes
 
-<Warning>
+<Callout type="warn">
 - Integration tokens have full access to connected pages
 - Only connect the integration to databases it needs
 - Don't share your integration token publicly
 - Regenerate the token if compromised
-</Warning>
+</Callout>

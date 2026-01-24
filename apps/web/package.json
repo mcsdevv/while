@@ -11,6 +11,11 @@
   },
   "dependencies": {
     "@notion-gcal-sync/ui": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/mdx": "^2.0.13",
+    "fumadocs-core": "^16.4.8",
+    "fumadocs-mdx": "^14.2.6",
+    "fumadocs-ui": "^16.4.8",
     "lucide-react": "^0.562.0",
     "next": "^16.1.1",
     "react": "^19.2.3",
@@ -23,7 +28,7 @@
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.1.18",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.3"
   }

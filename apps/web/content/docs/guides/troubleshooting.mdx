@@ -1,7 +1,11 @@
 ---
 title: Troubleshooting
-description: "Common issues and how to resolve them"
+description: Common issues and how to resolve them
 ---
+
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps, Step } from "fumadocs-ui/components/steps";
 
 # Troubleshooting Guide
 
@@ -19,20 +23,32 @@ This guide covers common issues and their solutions.
 **Solution:**
 
 <Steps>
-  <Step title="Check Token Status">
-    Go to Settings and look for Google connection status
-  </Step>
-  <Step title="Re-authenticate">
-    Click "Reconnect Google Account" and complete OAuth flow
-  </Step>
-  <Step title="Publish OAuth App (Optional)">
-    To avoid 7-day expiration, publish your Google OAuth app
-  </Step>
+<Step>
+
+### Check Token Status
+
+Go to Settings and look for Google connection status
+
+</Step>
+<Step>
+
+### Re-authenticate
+
+Click "Reconnect Google Account" and complete OAuth flow
+
+</Step>
+<Step>
+
+### Publish OAuth App (Optional)
+
+To avoid 7-day expiration, publish your Google OAuth app
+
+</Step>
 </Steps>
 
-<Note>
+<Callout type="info" title="Note">
 Google OAuth apps in "Testing" mode have tokens that expire after 7 days. Publish your app for longer-lived tokens.
-</Note>
+</Callout>
 
 ### Notion Integration Disconnected
 
@@ -63,18 +79,34 @@ If the integration was deleted:
 **Diagnostic Steps:**
 
 <Steps>
-  <Step title="Check Dashboard">
-    Look for error messages in the sync logs
-  </Step>
-  <Step title="Verify Connections">
-    Ensure both Google and Notion show as connected
-  </Step>
-  <Step title="Check Field Mappings">
-    Verify all required fields are mapped
-  </Step>
-  <Step title="Test Manually">
-    Use the "Test Sync" button in Settings
-  </Step>
+<Step>
+
+### Check Dashboard
+
+Look for error messages in the sync logs
+
+</Step>
+<Step>
+
+### Verify Connections
+
+Ensure both Google and Notion show as connected
+
+</Step>
+<Step>
+
+### Check Field Mappings
+
+Verify all required fields are mapped
+
+</Step>
+<Step>
+
+### Test Manually
+
+Use the "Test Sync" button in Settings
+
+</Step>
 </Steps>
 
 ### Duplicate Events
@@ -211,9 +243,9 @@ If the integration was deleted:
 
 If sync gets into a bad state:
 
-<Warning>
+<Callout type="warn">
 This will clear all sync data. Events won't be deleted but links between systems will be lost.
-</Warning>
+</Callout>
 
 1. Go to Settings > Danger Zone
 2. Click "Reset Sync"
@@ -236,14 +268,14 @@ For a complete fresh start:
 
 If you can't resolve an issue:
 
-<CardGroup cols={2}>
-  <Card title="GitHub Issues" icon="github" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
+<Cards>
+  <Card title="GitHub Issues" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
     Report bugs or search existing issues
   </Card>
-  <Card title="Discussions" icon="comments" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
+  <Card title="Discussions" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
     Ask questions and share solutions
   </Card>
-</CardGroup>
+</Cards>
 
 When reporting issues, include:
 - Error messages from the dashboard
