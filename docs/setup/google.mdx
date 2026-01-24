@@ -1,0 +1,130 @@
+---
+title: Google OAuth Setup
+description: "Configure Google Cloud for Calendar API access"
+---
+
+# Google OAuth Setup
+
+This guide walks through creating a Google Cloud project and configuring OAuth for Google Calendar access.
+
+## Step 1: Create Google Cloud Project
+
+<Steps>
+  <Step title="Open Console">
+    Go to [Google Cloud Console](https://console.cloud.google.com)
+  </Step>
+  <Step title="Create Project">
+    Click the project dropdown at the top, then **New Project**
+  </Step>
+  <Step title="Name Project">
+    Enter a name like `Notion Calendar Sync` and click **Create**
+  </Step>
+  <Step title="Select Project">
+    Wait for creation, then select your new project from the dropdown
+  </Step>
+</Steps>
+
+## Step 2: Enable Google Calendar API
+
+1. In the left sidebar, go to **APIs & Services** > **Library**
+2. Search for "Google Calendar API"
+3. Click on **Google Calendar API**
+4. Click **Enable**
+
+<Info>
+The API may take a few seconds to enable. Wait for the confirmation before proceeding.
+</Info>
+
+## Step 3: Configure OAuth Consent Screen
+
+<Steps>
+  <Step title="Open Consent Screen">
+    Go to **APIs & Services** > **OAuth consent screen**
+  </Step>
+  <Step title="Select User Type">
+    Choose **External** (unless you have Google Workspace, then choose Internal)
+  </Step>
+  <Step title="Configure App Info">
+    - **App name**: `Notion Calendar Sync`
+    - **User support email**: Your email
+    - **Developer contact email**: Your email
+  </Step>
+  <Step title="Add Scopes">
+    Click **Add or Remove Scopes** and select:
+    - `https://www.googleapis.com/auth/calendar`
+    - `https://www.googleapis.com/auth/calendar.events`
+  </Step>
+  <Step title="Add Test Users">
+    Add your Google email address as a test user
+  </Step>
+</Steps>
+
+## Step 4: Create OAuth Credentials
+
+1. Go to **APIs & Services** > **Credentials**
+2. Click **Create Credentials** > **OAuth client ID**
+3. Select **Web application**
+4. Enter name: `Notion Calendar Sync Web`
+
+### Authorized Redirect URIs
+
+Add these URIs (replace `your-app` with your Vercel domain):
+
+```
+https://your-app.vercel.app/api/auth/callback/google
+https://your-app.vercel.app/api/setup/google-oauth/callback
+```
+
+For local development, also add:
+
+```
+http://localhost:3000/api/auth/callback/google
+http://localhost:3000/api/setup/google-oauth/callback
+```
+
+5. Click **Create**
+6. Copy the **Client ID** and **Client Secret**
+
+<Warning>
+Keep your Client Secret secure. Never commit it to version control.
+</Warning>
+
+## Step 5: Publish App (Optional)
+
+While in "Testing" mode, OAuth tokens expire after 7 days. To avoid this:
+
+1. Go to **OAuth consent screen**
+2. Click **Publish App**
+3. Confirm the warning
+
+<Note>
+For personal use, keeping the app in "Testing" mode is fine. Just re-authenticate when tokens expire.
+</Note>
+
+## Environment Variables
+
+After completing this setup, you'll have:
+
+| Variable | Value |
+|----------|-------|
+| `GOOGLE_CLIENT_ID` | Your OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Your OAuth client secret |
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Access Blocked Error">
+    - Ensure your email is added as a test user
+    - Check that Calendar API is enabled
+    - Verify redirect URIs match exactly (including trailing slashes)
+  </Accordion>
+  <Accordion title="Invalid Client Error">
+    - Double-check Client ID and Secret
+    - Ensure credentials are for a Web application, not Desktop
+  </Accordion>
+  <Accordion title="Token Expiration">
+    - Test users get 7-day tokens
+    - Publish app for longer-lived tokens
+    - The app handles automatic refresh
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,168 @@
+---
+title: Notion Integration Setup
+description: "Create a Notion integration and configure database access"
+---
+
+# Notion Integration Setup
+
+This guide walks through creating a Notion integration and connecting it to your calendar database.
+
+## Step 1: Create Integration
+
+<Steps>
+  <Step title="Open Integrations">
+    Go to [Notion Integrations](https://www.notion.so/my-integrations)
+  </Step>
+  <Step title="Create New">
+    Click **New integration**
+  </Step>
+  <Step title="Configure">
+    - **Name**: `Calendar Sync`
+    - **Associated workspace**: Select your workspace
+    - **Logo**: Optional
+  </Step>
+  <Step title="Submit">
+    Click **Submit** to create the integration
+  </Step>
+</Steps>
+
+## Step 2: Configure Capabilities
+
+After creating the integration, configure its capabilities:
+
+### Content Capabilities
+| Capability | Status |
+|------------|--------|
+| Read content | **Enabled** (required) |
+| Update content | **Enabled** (required) |
+| Insert content | **Enabled** (required) |
+
+### Comment & User Capabilities
+| Capability | Status |
+|------------|--------|
+| Read comments | Disabled (not needed) |
+| Insert comments | Disabled (not needed) |
+| Read user information | Disabled (not needed) |
+
+Click **Save changes**.
+
+## Step 3: Copy Integration Token
+
+1. On the integration page, find **Internal Integration Secret**
+2. Click **Show** then **Copy**
+3. Save this token securely
+
+<Warning>
+This token starts with `secret_` and is shown only once. If lost, you'll need to regenerate it.
+</Warning>
+
+## Step 4: Connect to Database
+
+The integration needs explicit access to your calendar database.
+
+<Steps>
+  <Step title="Open Database">
+    Open your Notion calendar database as a full page
+  </Step>
+  <Step title="Open Menu">
+    Click the **...** menu in the top right
+  </Step>
+  <Step title="Add Connection">
+    Go to **Connections** (or **Add connections**)
+  </Step>
+  <Step title="Select Integration">
+    Find and select your **Calendar Sync** integration
+  </Step>
+  <Step title="Confirm">
+    Click **Confirm** to grant access
+  </Step>
+</Steps>
+
+## Step 5: Get Database ID
+
+You'll need your database ID for configuration.
+
+### From the URL
+
+1. Open your database in Notion (as a full page, not inline)
+2. Look at the URL:
+
+```
+https://notion.so/workspace/DATABASE_ID?v=VIEW_ID
+```
+
+3. The DATABASE_ID is the 32-character string before the `?`
+
+### Example
+
+URL: `https://notion.so/myworkspace/a1b2c3d4e5f6789012345678901234ab?v=...`
+
+Database ID: `a1b2c3d4e5f6789012345678901234ab`
+
+<Tip>
+The setup wizard accepts the database ID with or without dashes.
+</Tip>
+
+## Database Schema
+
+Your database should have properties for calendar events. The setup wizard will help map your existing properties.
+
+### Recommended Properties
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| Name/Title | Title | Event title (required) |
+| Date | Date | Event date/time with end date (required) |
+| Description | Text | Event details |
+| Location | Text | Event location |
+| Reminders | Number | Minutes before event for reminder |
+
+### Required Property for Sync
+
+The sync creates one additional property automatically:
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| GCal Event ID | Text | Links events between systems |
+
+<Note>
+You can create this manually or let the setup wizard create it. Hide it in your views for a cleaner look.
+</Note>
+
+## Environment Variables
+
+After completing this setup, you'll have:
+
+| Variable | Value |
+|----------|-------|
+| `NOTION_CLIENT_ID` | Your integration client ID |
+| `NOTION_CLIENT_SECRET` | Your integration secret (`secret_...`) |
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Could not find database">
+    - Ensure the integration is connected to the database
+    - Check the database ID is correct
+    - Verify the integration has read/write permissions
+  </Accordion>
+  <Accordion title="Unauthorized Error">
+    - Token may have been regenerated
+    - Check the token starts with `secret_`
+    - Ensure you're using the correct workspace
+  </Accordion>
+  <Accordion title="Missing Properties">
+    - The setup wizard shows available properties
+    - Create missing properties in Notion if needed
+    - Date property must support time (not just date)
+  </Accordion>
+</AccordionGroup>
+
+## Security Notes
+
+<Warning>
+- Integration tokens have full access to connected pages
+- Only connect the integration to databases it needs
+- Don't share your integration token publicly
+- Regenerate the token if compromised
+</Warning>

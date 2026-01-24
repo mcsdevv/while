@@ -1,0 +1,147 @@
+---
+title: Vercel Deployment
+description: "Deploy the sync app to Vercel"
+---
+
+# Vercel Deployment
+
+This guide walks through deploying the sync application to Vercel.
+
+## One-Click Deploy
+
+The easiest way to deploy is using the deploy button:
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fnotion-gcal-sync%2Ftree%2Fmain%2Fapps%2Fdashboard">
+  <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+</a>
+
+## Environment Variables
+
+During deployment, you'll need to configure these environment variables:
+
+### Required Variables
+
+| Variable | Description | How to Get |
+|----------|-------------|------------|
+| `NEXTAUTH_SECRET` | Session encryption key | Generate with `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | [Google OAuth Setup](/setup/google) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/setup/google) |
+| `NOTION_CLIENT_ID` | Notion OAuth client ID | [Notion Setup](/setup/notion) |
+| `NOTION_CLIENT_SECRET` | Notion OAuth client secret | [Notion Setup](/setup/notion) |
+| `ENCRYPTION_KEY` | Credential encryption key | Generate with `openssl rand -base64 32` |
+| `UPSTASH_REDIS_REST_URL` | Redis REST API URL | [Upstash Dashboard](https://console.upstash.com) |
+| `UPSTASH_REDIS_REST_TOKEN` | Redis REST API token | [Upstash Dashboard](https://console.upstash.com) |
+
+### Optional Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXTAUTH_URL` | App URL (auto-detected on Vercel) | Auto |
+| `LOG_LEVEL` | Logging verbosity | `info` |
+
+## Generate Encryption Keys
+
+Both `NEXTAUTH_SECRET` and `ENCRYPTION_KEY` should be random 32-byte keys.
+
+### Using OpenSSL (macOS/Linux)
+
+```bash
+openssl rand -base64 32
+```
+
+### Using Node.js
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+<Warning>
+Generate separate keys for `NEXTAUTH_SECRET` and `ENCRYPTION_KEY`. Don't reuse the same key.
+</Warning>
+
+## Set Up Upstash Redis
+
+<Steps>
+  <Step title="Create Account">
+    Sign up at [upstash.com](https://upstash.com)
+  </Step>
+  <Step title="Create Database">
+    - Click **Create Database**
+    - Name: `notion-gcal-sync`
+    - Region: Choose closest to your users
+    - Type: Regional (free tier)
+  </Step>
+  <Step title="Get Credentials">
+    From the database details, copy:
+    - **REST URL** → `UPSTASH_REDIS_REST_URL`
+    - **REST Token** → `UPSTASH_REDIS_REST_TOKEN`
+  </Step>
+</Steps>
+
+## Post-Deployment Steps
+
+### 1. Update Google OAuth Redirect URIs
+
+After deployment, update your Google OAuth credentials with your actual Vercel domain:
+
+```
+https://your-app-name.vercel.app/api/auth/callback/google
+https://your-app-name.vercel.app/api/setup/google-oauth/callback
+```
+
+### 2. Complete Setup Wizard
+
+1. Open your deployed app URL
+2. Follow the setup wizard to connect Google and Notion
+3. Configure field mappings
+4. Test the connection
+
+### 3. Enable Cron Jobs (Optional)
+
+Vercel automatically runs cron jobs defined in `vercel.json`:
+- **Notion sync**: Every 2 minutes
+- **Webhook renewal**: Daily
+
+<Note>
+Free Vercel accounts have cron job limitations. Check [Vercel pricing](https://vercel.com/pricing) for details.
+</Note>
+
+## Custom Domain (Optional)
+
+To use a custom domain:
+
+1. Go to your Vercel project settings
+2. Click **Domains**
+3. Add your domain
+4. Update DNS records as instructed
+5. Update Google OAuth redirect URIs to use your custom domain
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Build Fails">
+    - Check environment variables are set correctly
+    - Verify all required variables are present
+    - Check build logs for specific errors
+  </Accordion>
+  <Accordion title="OAuth Errors After Deploy">
+    - Update Google OAuth redirect URIs with your Vercel domain
+    - Ensure URIs match exactly (including https://)
+    - Clear browser cookies and try again
+  </Accordion>
+  <Accordion title="Redis Connection Failed">
+    - Verify Upstash credentials are correct
+    - Check the REST URL includes `https://`
+    - Ensure the database is in a supported region
+  </Accordion>
+</AccordionGroup>
+
+## Updating the App
+
+To update to the latest version:
+
+1. Go to your GitHub repository (created during deploy)
+2. Sync with the upstream repository
+3. Vercel will automatically redeploy
+
+Or manually trigger a redeploy from the Vercel dashboard.

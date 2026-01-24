@@ -1,0 +1,251 @@
+---
+title: Troubleshooting
+description: "Common issues and how to resolve them"
+---
+
+# Troubleshooting Guide
+
+This guide covers common issues and their solutions.
+
+## Authentication Issues
+
+### Google OAuth Token Expired
+
+**Symptoms:**
+- "Invalid credentials" error
+- Events stop syncing from Google Calendar
+- Dashboard shows authentication error
+
+**Solution:**
+
+<Steps>
+  <Step title="Check Token Status">
+    Go to Settings and look for Google connection status
+  </Step>
+  <Step title="Re-authenticate">
+    Click "Reconnect Google Account" and complete OAuth flow
+  </Step>
+  <Step title="Publish OAuth App (Optional)">
+    To avoid 7-day expiration, publish your Google OAuth app
+  </Step>
+</Steps>
+
+<Note>
+Google OAuth apps in "Testing" mode have tokens that expire after 7 days. Publish your app for longer-lived tokens.
+</Note>
+
+### Notion Integration Disconnected
+
+**Symptoms:**
+- "Unauthorized" errors for Notion
+- Events stop syncing to/from Notion
+- Dashboard shows Notion connection error
+
+**Solution:**
+
+1. Go to Settings
+2. Click "Reconnect Notion"
+3. Ensure the integration is still connected to your database
+
+If the integration was deleted:
+1. Create a new integration at [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Connect it to your database
+3. Update credentials in Settings
+
+## Sync Issues
+
+### Events Not Syncing
+
+**Symptoms:**
+- New events don't appear in the other system
+- Changes aren't propagating
+
+**Diagnostic Steps:**
+
+<Steps>
+  <Step title="Check Dashboard">
+    Look for error messages in the sync logs
+  </Step>
+  <Step title="Verify Connections">
+    Ensure both Google and Notion show as connected
+  </Step>
+  <Step title="Check Field Mappings">
+    Verify all required fields are mapped
+  </Step>
+  <Step title="Test Manually">
+    Use the "Test Sync" button in Settings
+  </Step>
+</Steps>
+
+### Duplicate Events
+
+**Symptoms:**
+- Same event appears multiple times
+- Events keep getting recreated
+
+**Causes:**
+- `gcal_event_id` property was deleted or modified
+- Database was duplicated without clearing sync data
+
+**Solution:**
+
+1. Identify duplicate events
+2. Delete duplicates from both systems
+3. Ensure `gcal_event_id` property exists and contains values
+4. If property was deleted, reset sync in Settings > Danger Zone
+
+### Wrong Times
+
+**Symptoms:**
+- Events appear at wrong times
+- All-day events showing as timed events
+
+**Causes:**
+- Notion date property doesn't include time
+- Timezone mismatch
+
+**Solution:**
+
+1. Open your Notion database
+2. Click on the Date property settings
+3. Enable "Include time"
+4. Verify timezone settings in both Google Calendar and Notion
+
+## Connection Issues
+
+### Redis Connection Failed
+
+**Symptoms:**
+- App fails to load
+- "Could not connect to Redis" error
+
+**Solution:**
+
+1. Check Upstash dashboard for database status
+2. Verify environment variables:
+   - `UPSTASH_REDIS_REST_URL` starts with `https://`
+   - `UPSTASH_REDIS_REST_TOKEN` is correct
+3. Redeploy the app if variables were changed
+
+### Webhook Registration Failed
+
+**Symptoms:**
+- Google Calendar changes not detected
+- "Webhook setup failed" error
+
+**Causes:**
+- Domain not verified with Google
+- Firewall blocking webhook calls
+
+**Solution:**
+
+1. Ensure your Vercel domain is publicly accessible
+2. Check Google Cloud Console for webhook errors
+3. Try triggering webhook renewal from Settings
+
+## Database Issues
+
+### "Database not found" Error
+
+**Symptoms:**
+- Setup wizard can't find database
+- Sync fails with database error
+
+**Solution:**
+
+1. Verify database ID is correct
+2. Ensure integration is connected to the database:
+   - Open database in Notion
+   - Click ... menu > Connections
+   - Add your integration if missing
+3. Check integration has read/write permissions
+
+### Properties Missing
+
+**Symptoms:**
+- Field mapping dropdown is empty
+- Required properties not available
+
+**Solution:**
+
+1. Open database in Notion
+2. Create missing properties:
+   - Title property (required)
+   - Date property with time (required)
+3. Refresh Settings page
+
+## Performance Issues
+
+### Slow Sync
+
+**Symptoms:**
+- Events take a long time to appear
+- Dashboard shows sync queue backlog
+
+**Causes:**
+- Large number of events
+- Rate limiting from APIs
+
+**Solution:**
+
+1. Check dashboard for rate limit warnings
+2. Reduce number of events if possible
+3. Events sync in batches - give it time to catch up
+
+### High Error Rate
+
+**Symptoms:**
+- Dashboard shows many failed syncs
+- Specific events repeatedly fail
+
+**Solution:**
+
+1. Check logs for specific error messages
+2. Identify problematic events (unusual characters, very long text)
+3. Fix or delete problematic events
+4. Reset sync if needed
+
+## Reset and Recovery
+
+### Reset Sync State
+
+If sync gets into a bad state:
+
+<Warning>
+This will clear all sync data. Events won't be deleted but links between systems will be lost.
+</Warning>
+
+1. Go to Settings > Danger Zone
+2. Click "Reset Sync"
+3. Confirm the action
+4. Re-run setup wizard
+
+### Clear All Data
+
+For a complete fresh start:
+
+1. Go to Settings > Danger Zone
+2. Click "Clear All Data"
+3. This removes:
+   - Stored credentials
+   - Field mappings
+   - Sync state
+4. You'll need to complete setup again
+
+## Getting Help
+
+If you can't resolve an issue:
+
+<CardGroup cols={2}>
+  <Card title="GitHub Issues" icon="github" href="https://github.com/mcsdevv/notion-gcal-sync/issues">
+    Report bugs or search existing issues
+  </Card>
+  <Card title="Discussions" icon="comments" href="https://github.com/mcsdevv/notion-gcal-sync/discussions">
+    Ask questions and share solutions
+  </Card>
+</CardGroup>
+
+When reporting issues, include:
+- Error messages from the dashboard
+- Steps to reproduce the problem
+- Your configuration (without secrets)

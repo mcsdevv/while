@@ -1,0 +1,244 @@
+---
+title: Architecture
+description: "Technical overview of how the sync works"
+---
+
+# Architecture Overview
+
+This document explains the technical architecture of Notion-Google Calendar Sync.
+
+## System Diagram
+
+```mermaid
+graph TB
+    subgraph "Your Vercel Deployment"
+        App[Next.js App]
+        API[API Routes]
+        Cron[Cron Jobs]
+    end
+
+    subgraph "External Services"
+        GCal[Google Calendar API]
+        Notion[Notion API]
+        Redis[(Upstash Redis)]
+    end
+
+    GCal -->|Webhooks| API
+    API <-->|REST| GCal
+    API <-->|REST| Notion
+    App <-->|Read/Write| Redis
+    Cron -->|Trigger| API
+```
+
+## Components
+
+### Next.js Application
+
+The app is built with Next.js App Router and runs on Vercel's serverless infrastructure.
+
+| Component | Purpose |
+|-----------|---------|
+| Dashboard | Monitor sync status and view logs |
+| Setup Wizard | Guide users through initial configuration |
+| Settings | Manage connections and field mappings |
+| API Routes | Handle sync operations and webhooks |
+
+### API Routes
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/webhooks/google-calendar` | POST | Receive Google Calendar change notifications |
+| `/api/cron/sync-notion` | GET | Poll Notion for changes |
+| `/api/cron/renew-webhook` | GET | Renew Google Calendar webhooks |
+| `/api/setup/*` | Various | Setup wizard endpoints |
+| `/api/settings/*` | Various | Settings management |
+
+### Redis Storage
+
+Upstash Redis stores application state with encryption.
+
+| Key Pattern | Purpose |
+|-------------|---------|
+| `settings:{userId}` | Encrypted credentials and configuration |
+| `sync:state:{userId}` | Current sync state and cursors |
+| `sync:logs:{userId}` | Recent sync operation logs |
+
+## Sync Flow
+
+### Google Calendar → Notion
+
+```mermaid
+sequenceDiagram
+    participant GCal as Google Calendar
+    participant Webhook as Webhook Handler
+    participant Sync as Sync Engine
+    participant Notion as Notion API
+
+    GCal->>Webhook: Change notification
+    Webhook->>GCal: Fetch changed events
+    GCal-->>Webhook: Event data
+    Webhook->>Sync: Process changes
+    Sync->>Notion: Create/Update/Delete pages
+    Notion-->>Sync: Confirmation
+```
+
+**Timing:** Near real-time (seconds)
+
+1. Google sends webhook when calendar changes
+2. App fetches changed events from Google
+3. Sync engine processes each change
+4. Corresponding Notion pages are updated
+
+### Notion → Google Calendar
+
+```mermaid
+sequenceDiagram
+    participant Cron as Cron Job
+    participant Notion as Notion API
+    participant Sync as Sync Engine
+    participant GCal as Google Calendar
+
+    Cron->>Notion: Query database (cursor)
+    Notion-->>Cron: Changed pages
+    Cron->>Sync: Process changes
+    Sync->>GCal: Create/Update/Delete events
+    GCal-->>Sync: Confirmation
+```
+
+**Timing:** Every 2 minutes (polling)
+
+1. Cron job triggers every 2 minutes
+2. App queries Notion for pages changed since last sync
+3. Sync engine processes each change
+4. Corresponding Google Calendar events are updated
+
+## Conflict Resolution
+
+When the same event is modified in both systems:
+
+1. **Most Recent Wins**: The change with the later timestamp takes precedence
+2. **Field-Level Merging**: Each field is compared independently
+3. **Deletion Priority**: If either system deletes an event, it's deleted in both
+
+```mermaid
+flowchart TD
+    A[Change Detected] --> B{Same event changed in both?}
+    B -->|No| C[Apply change normally]
+    B -->|Yes| D{Compare timestamps}
+    D --> E[Apply most recent change to both systems]
+```
+
+## Security
+
+### Credential Storage
+
+All sensitive credentials are encrypted before storage:
+
+```
+Credentials → AES-256-GCM Encryption → Upstash Redis
+```
+
+| What's Encrypted | Encryption |
+|------------------|------------|
+| Google OAuth tokens | AES-256-GCM |
+| Notion API token | AES-256-GCM |
+| Field mappings | Plaintext (no secrets) |
+
+### Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App
+    participant Google
+
+    User->>App: Click "Sign in with Google"
+    App->>Google: Redirect to OAuth
+    Google->>User: Consent screen
+    User->>Google: Approve
+    Google->>App: Auth code
+    App->>Google: Exchange for tokens
+    Google-->>App: Access + Refresh tokens
+    App->>App: Encrypt and store tokens
+```
+
+## Webhooks
+
+### Registration
+
+Google Calendar webhooks require:
+1. HTTPS endpoint (Vercel provides this)
+2. Domain verification (handled automatically)
+3. Periodic renewal (daily cron job)
+
+### Webhook Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Registered: Setup
+    Registered --> Active: Verified
+    Active --> Expired: 24 hours
+    Expired --> Registered: Renewal cron
+    Active --> [*]: User disconnects
+```
+
+## Cron Jobs
+
+Defined in `vercel.json`:
+
+```json
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-notion",
+      "schedule": "*/2 * * * *"
+    },
+    {
+      "path": "/api/cron/renew-webhook",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
+```
+
+| Job | Schedule | Purpose |
+|-----|----------|---------|
+| `sync-notion` | Every 2 min | Poll Notion for changes |
+| `renew-webhook` | Daily | Renew Google Calendar webhook |
+
+## Error Handling
+
+### Retry Strategy
+
+Failed sync operations are retried with exponential backoff:
+
+| Attempt | Delay |
+|---------|-------|
+| 1 | Immediate |
+| 2 | 1 second |
+| 3 | 2 seconds |
+| 4 | 4 seconds |
+| 5 | 8 seconds |
+
+After 5 failures, the operation is logged and skipped.
+
+### Rate Limiting
+
+Both APIs have rate limits:
+
+| API | Limit | Handling |
+|-----|-------|----------|
+| Google Calendar | 1M queries/day | Queue and batch |
+| Notion | 3 req/sec | Delay between requests |
+
+## Scaling Considerations
+
+The current architecture is designed for personal use (1-2 calendars):
+
+| Metric | Supported |
+|--------|-----------|
+| Events | Thousands |
+| Sync frequency | 2 minutes |
+| Concurrent users | 1 per deployment |
+
+For multiple calendars, deploy separate instances.
