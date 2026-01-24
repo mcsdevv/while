@@ -13,13 +13,6 @@ const links = {
   ],
 };
 
-const techStack = [
-  { name: "Next.js", href: "https://nextjs.org" },
-  { name: "Vercel", href: "https://vercel.com" },
-  { name: "Upstash", href: "https://upstash.com" },
-  { name: "Tailwind CSS", href: "https://tailwindcss.com" },
-];
-
 export function Footer() {
   return (
     <footer className="border-t bg-muted/30">
@@ -91,22 +84,17 @@ export function Footer() {
 
         {/* Tech Stack & License */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span>Built with</span>
-            {techStack.map((tech, index) => (
-              <span key={tech.name} className="flex items-center gap-1">
-                <a
-                  href={tech.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground"
-                >
-                  {tech.name}
-                </a>
-                {index < techStack.length - 1 && <span className="text-muted-foreground/50">·</span>}
-              </span>
-            ))}
-          </div>
+          <p className="text-sm text-muted-foreground">
+            A project by{" "}
+            <a
+              href="https://mcs.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground"
+            >
+              Matthew Sweeney
+            </a>
+          </p>
           <p className="text-sm text-muted-foreground">
             Released under the{" "}
             <a
