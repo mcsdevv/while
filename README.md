@@ -1,11 +1,10 @@
 # While
 
-[![CI](https://github.com/mcsdevv/while/actions/workflows/ci.yml/badge.svg)](https://github.com/mcsdevv/while/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Bidirectional, real-time sync between Notion calendar databases and Google Calendar. Built with Next.js and deployable to Vercel with one click.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fdocs.while.so%2Fsetup%2Fvercel&project-name=while&repository-name=while)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while)
 
 ## Features
 
@@ -26,7 +25,7 @@ This is a Turborepo monorepo with the following structure:
 │   └── web/           # Marketing site
 ├── packages/
 │   └── ui/            # Shared UI components
-└── docs/              # Mintlify documentation
+└── docs/              # Fumadocs documentation
 ```
 
 ## Quick Start
@@ -36,15 +35,15 @@ This is a Turborepo monorepo with the following structure:
 3. Complete the setup wizard at `/setup` after deployment
 4. Start creating events!
 
-For detailed setup instructions, see the [Documentation](https://docs.while.so).
+For detailed setup instructions, see the [Documentation](https://while.so/docs).
 
 ## Prerequisites
 
 Before deploying, you'll need:
 
-1. **Google Cloud Project** with Calendar API enabled ([Guide](https://docs.while.so/setup/google))
-2. **Notion Integration** with access to your calendar database ([Guide](https://docs.while.so/setup/notion))
-3. **Vercel Account** for hosting (Redis storage is included via Vercel Marketplace)
+1. **Google Cloud Project** with Calendar API enabled ([Guide](https://while.so/docs/setup/google))
+2. **Notion Integration** with access to your calendar database ([Guide](https://while.so/docs/setup/notion))
+3. **Vercel Account** for deployment (Redis storage is included via Vercel Marketplace)
 
 ## Configuration
 
@@ -68,15 +67,15 @@ openssl rand -base64 32
 
 ## Documentation
 
-Full documentation is available at [docs.while.so](https://docs.while.so):
+Full documentation is available at [while.so/docs](https://while.so/docs):
 
-- [Quickstart Guide](https://docs.while.so/quickstart)
-- [Google OAuth Setup](https://docs.while.so/setup/google)
-- [Notion Integration Setup](https://docs.while.so/setup/notion)
-- [Vercel Deployment](https://docs.while.so/setup/vercel)
-- [Field Mapping Guide](https://docs.while.so/guides/field-mapping)
-- [Troubleshooting](https://docs.while.so/guides/troubleshooting)
-- [Architecture](https://docs.while.so/architecture)
+- [Quickstart Guide](https://while.so/docs/quickstart)
+- [Google OAuth Setup](https://while.so/docs/setup/google)
+- [Notion Integration Setup](https://while.so/docs/setup/notion)
+- [Vercel Deployment](https://while.so/docs/setup/vercel)
+- [Field Mapping Guide](https://while.so/docs/guides/field-mapping)
+- [Troubleshooting](https://while.so/docs/guides/troubleshooting)
+- [Architecture](https://while.so/docs/architecture)
 
 ## Tech Stack
 
@@ -86,8 +85,7 @@ Full documentation is available at [docs.while.so](https://docs.while.so):
 - **UI**: shadcn/ui + Tailwind CSS
 - **APIs**: Notion SDK, Google Calendar API
 - **Storage**: Redis (via Vercel Marketplace)
-- **Hosting**: Vercel
-- **Docs**: Mintlify
+- **Deployment**: Vercel
 
 ## Development
 
@@ -135,4 +133,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## Support
 
 - [Open an issue](https://github.com/mcsdevv/while/issues) for bugs or feature requests
-- See [Troubleshooting](https://docs.while.so/guides/troubleshooting) for common issues
+- See [Troubleshooting](https://while.so/docs/guides/troubleshooting) for common issues
