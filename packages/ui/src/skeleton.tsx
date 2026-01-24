@@ -1,12 +1,12 @@
 import { cn } from "./utils";
 
 function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("animate-pulse rounded-md bg-muted", className)} {...props} />;
+  return <div className={cn("animate-pulse rounded-none bg-muted", className)} {...props} />;
 }
 
 function SkeletonCard({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("rounded-xl border bg-card p-6 space-y-4", className)} {...props}>
+    <div className={cn("rounded-none border bg-card p-6 space-y-4", className)} {...props}>
       <div className="space-y-2">
         <Skeleton className="h-5 w-1/3" />
         <Skeleton className="h-4 w-2/3" />
@@ -77,7 +77,7 @@ function SkeletonSetupWizard() {
         </div>
 
         {/* Card skeleton */}
-        <div className="rounded-xl border bg-card p-6 space-y-6">
+        <div className="rounded-none border bg-card p-6 space-y-6">
           <div className="text-center space-y-2">
             <Skeleton className="h-8 w-1/2 mx-auto" />
             <Skeleton className="h-4 w-3/4 mx-auto" />

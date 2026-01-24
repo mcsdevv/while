@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type * as React from "react";
 
 const badgeVariants = tv({
-  base: "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  base: "inline-flex items-center rounded-none border px-2.5 py-0.5 text-xs font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   variants: {
     variant: {
       default: "border-transparent bg-foreground text-background hover:bg-foreground/80",
