@@ -10,9 +10,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@while/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/mdx": "^2.0.13",
+    "@vercel/analytics": "^1.6.1",
+    "@vercel/speed-insights": "^1.3.1",
+    "@while/ui": "workspace:*",
     "fumadocs-core": "^16.4.8",
     "fumadocs-mdx": "^14.2.6",
     "fumadocs-ui": "^16.4.8",
