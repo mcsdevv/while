@@ -1,11 +1,11 @@
-# Notion-Google Calendar Sync
+# While
 
-[![CI](https://github.com/mcsdevv/notion-gcal-sync/actions/workflows/ci.yml/badge.svg)](https://github.com/mcsdevv/notion-gcal-sync/actions/workflows/ci.yml)
+[![CI](https://github.com/mcsdevv/while/actions/workflows/ci.yml/badge.svg)](https://github.com/mcsdevv/while/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Bidirectional, real-time sync between Notion calendar databases and Google Calendar. Built with Next.js and deployable to Vercel with one click.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fnotion-gcal-sync%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Required%20environment%20variables%20for%20the%20sync%20app&envLink=https%3A%2F%2Fdocs.notion-gcal-sync.com%2Fsetup%2Fvercel&project-name=notion-gcal-sync&repository-name=notion-gcal-sync)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fdocs.while.so%2Fsetup%2Fvercel&project-name=while&repository-name=while)
 
 ## Features
 
@@ -36,14 +36,14 @@ This is a Turborepo monorepo with the following structure:
 3. Complete the setup wizard at `/setup` after deployment
 4. Start creating events!
 
-For detailed setup instructions, see the [Documentation](https://docs.notion-gcal-sync.com).
+For detailed setup instructions, see the [Documentation](https://docs.while.so).
 
 ## Prerequisites
 
 Before deploying, you'll need:
 
-1. **Google Cloud Project** with Calendar API enabled ([Guide](https://docs.notion-gcal-sync.com/setup/google))
-2. **Notion Integration** with access to your calendar database ([Guide](https://docs.notion-gcal-sync.com/setup/notion))
+1. **Google Cloud Project** with Calendar API enabled ([Guide](https://docs.while.so/setup/google))
+2. **Notion Integration** with access to your calendar database ([Guide](https://docs.while.so/setup/notion))
 3. **Vercel Account** for hosting (Redis storage is included via Vercel Marketplace)
 
 ## Configuration
@@ -68,15 +68,15 @@ openssl rand -base64 32
 
 ## Documentation
 
-Full documentation is available at [docs.notion-gcal-sync.com](https://docs.notion-gcal-sync.com):
+Full documentation is available at [docs.while.so](https://docs.while.so):
 
-- [Quickstart Guide](https://docs.notion-gcal-sync.com/quickstart)
-- [Google OAuth Setup](https://docs.notion-gcal-sync.com/setup/google)
-- [Notion Integration Setup](https://docs.notion-gcal-sync.com/setup/notion)
-- [Vercel Deployment](https://docs.notion-gcal-sync.com/setup/vercel)
-- [Field Mapping Guide](https://docs.notion-gcal-sync.com/guides/field-mapping)
-- [Troubleshooting](https://docs.notion-gcal-sync.com/guides/troubleshooting)
-- [Architecture](https://docs.notion-gcal-sync.com/architecture)
+- [Quickstart Guide](https://docs.while.so/quickstart)
+- [Google OAuth Setup](https://docs.while.so/setup/google)
+- [Notion Integration Setup](https://docs.while.so/setup/notion)
+- [Vercel Deployment](https://docs.while.so/setup/vercel)
+- [Field Mapping Guide](https://docs.while.so/guides/field-mapping)
+- [Troubleshooting](https://docs.while.so/guides/troubleshooting)
+- [Architecture](https://docs.while.so/architecture)
 
 ## Tech Stack
 
@@ -115,13 +115,13 @@ pnpm lint
 
 ```bash
 # Run only the dashboard
-pnpm --filter @notion-gcal-sync/dashboard dev
+pnpm --filter @while/dashboard dev
 
 # Run only the marketing site
-pnpm --filter @notion-gcal-sync/web dev
+pnpm --filter @while/web dev
 
 # Build only the UI package
-pnpm --filter @notion-gcal-sync/ui build
+pnpm --filter @while/ui build
 ```
 
 ## Contributing
@@ -134,5 +134,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- [Open an issue](https://github.com/mcsdevv/notion-gcal-sync/issues) for bugs or feature requests
-- See [Troubleshooting](https://docs.notion-gcal-sync.com/guides/troubleshooting) for common issues
+- [Open an issue](https://github.com/mcsdevv/while/issues) for bugs or feature requests
+- See [Troubleshooting](https://docs.while.so/guides/troubleshooting) for common issues

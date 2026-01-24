@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent } from "@notion-gcal-sync/ui";
+import { Card, CardContent } from "@while/ui";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 

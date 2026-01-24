@@ -2,17 +2,17 @@
 
 import { UserMenu } from "@/components/auth/user-menu";
 import { LogsViewer } from "@/components/dashboard/logs-viewer";
-import { Badge } from "@notion-gcal-sync/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@notion-gcal-sync/ui";
+import { Badge } from "@while/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@notion-gcal-sync/ui";
-import { Separator } from "@notion-gcal-sync/ui";
-import { Skeleton } from "@notion-gcal-sync/ui";
+} from "@while/ui";
+import { Separator } from "@while/ui";
+import { Skeleton } from "@while/ui";
 import type { SyncMetrics } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import dynamic from "next/dynamic";
@@ -124,7 +124,7 @@ export function Dashboard() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-semibold tracking-tight">Notion-GCal Sync</h1>
+            <h1 className="text-4xl font-semibold tracking-tight">While</h1>
             <p className="text-muted-foreground mt-2">
               Real-time bidirectional synchronization dashboard
             </p>

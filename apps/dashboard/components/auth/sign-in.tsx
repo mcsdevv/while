@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { signIn } from "next-auth/react";
 
 /**
@@ -13,7 +13,7 @@ export function SignIn() {
     <div className="min-h-screen bg-background flex items-center justify-center p-8">
       <Card className="w-full max-w-md border-border/40">
         <CardHeader className="space-y-2 text-center pb-8">
-          <CardTitle className="text-3xl font-bold tracking-tight">Notion-GCal Sync</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tight">While</CardTitle>
           <CardDescription className="text-base">
             Real-time bidirectional synchronization
           </CardDescription>

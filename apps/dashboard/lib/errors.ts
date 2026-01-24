@@ -1,5 +1,5 @@
 /**
- * Custom error classes for gcal-notion-sync
+ * Custom error classes for While
  *
  * Provides structured error handling with:
  * - Error codes for programmatic handling

@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
-import { Input } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
+import { Input } from "@while/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@notion-gcal-sync/ui";
+} from "@while/ui";
 import { useCallback, useEffect, useState } from "react";
 
 interface GoogleStepProps {

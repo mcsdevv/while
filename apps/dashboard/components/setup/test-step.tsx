@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
+import { Button } from "@while/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -130,7 +130,7 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
             <span className="font-medium">Setup Complete!</span>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            Your Notion-Google Calendar sync is ready to use.
+            Your calendar sync is ready to use.
           </p>
         </div>
       )}

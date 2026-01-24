@@ -1,8 +1,8 @@
 "use client";
 
-import { Badge } from "@notion-gcal-sync/ui";
-import { Button } from "@notion-gcal-sync/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@notion-gcal-sync/ui";
+import { Badge } from "@while/ui";
+import { Button } from "@while/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { useRouter } from "next/navigation";
 
 interface NotionSettingsProps {
