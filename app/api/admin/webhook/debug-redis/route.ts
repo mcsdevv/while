@@ -25,10 +25,15 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const redis = getRedis();
+    if (!redis) {
+      return NextResponse.json({ error: "Redis not configured" }, { status: 503 });
+    }
+
     // Get all webhook-related keys
-    const notionWebhook = await getRedis().get("webhook:notion:subscription");
-    const gcalChannel = await getRedis().get("webhook:gcal:channel");
-    const gcalSync = await getRedis().get("webhook:gcal:sync_state");
+    const notionWebhook = await redis.get("webhook:notion:subscription");
+    const gcalChannel = await redis.get("webhook:gcal:channel");
+    const gcalSync = await redis.get("webhook:gcal:sync_state");
 
     return NextResponse.json({
       redis: {

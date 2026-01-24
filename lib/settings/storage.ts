@@ -80,10 +80,14 @@ function decryptSettings(stored: StoredSettings): AppSettings {
 
 /**
  * Get the current settings from Redis.
- * Returns null if no settings are stored.
+ * Returns null if no settings are stored or if Redis is not configured.
  */
 export async function getSettings(): Promise<AppSettings | null> {
-  const stored = await getRedis().get<StoredSettings>(SETTINGS_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return null;
+  }
+  const stored = await redis.get<StoredSettings>(SETTINGS_KEY);
   if (!stored) {
     return null;
   }
@@ -92,10 +96,15 @@ export async function getSettings(): Promise<AppSettings | null> {
 
 /**
  * Save settings to Redis (replaces all settings).
+ * Throws an error if Redis is not configured.
  */
 export async function saveSettings(settings: AppSettings): Promise<void> {
+  const redis = getRedis();
+  if (!redis) {
+    throw new Error("Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.");
+  }
   const encrypted = encryptSettings(settings);
-  await getRedis().set(SETTINGS_KEY, encrypted);
+  await redis.set(SETTINGS_KEY, encrypted);
 }
 
 /**
@@ -126,16 +135,26 @@ export async function updateSettings(partial: Partial<AppSettings>): Promise<voi
 
 /**
  * Delete all settings from Redis.
+ * Throws an error if Redis is not configured.
  */
 export async function deleteSettings(): Promise<void> {
-  await getRedis().del(SETTINGS_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    throw new Error("Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.");
+  }
+  await redis.del(SETTINGS_KEY);
 }
 
 /**
  * Check if settings exist in Redis.
+ * Returns false if Redis is not configured.
  */
 export async function hasSettings(): Promise<boolean> {
-  const exists = await getRedis().exists(SETTINGS_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return false;
+  }
+  const exists = await redis.exists(SETTINGS_KEY);
   return exists === 1;
 }
 

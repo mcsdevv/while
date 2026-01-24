@@ -70,9 +70,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Deduplication: Check if we've already processed this message
-    if (messageNumber) {
+    const redis = getRedis();
+    if (messageNumber && redis) {
       const dedupeKey = `${PROCESSED_MESSAGES_KEY}${messageNumber}`;
-      const alreadyProcessed = await getRedis().get(dedupeKey);
+      const alreadyProcessed = await redis.get(dedupeKey);
 
       if (alreadyProcessed) {
         console.log(`✓ Message ${messageNumber} already processed, skipping`);
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Mark message as processed with 5-minute TTL
-      await getRedis().set(dedupeKey, true, { ex: 300 });
+      await redis.set(dedupeKey, true, { ex: 300 });
     }
 
     // Resource state can be: 'sync', 'exists', 'not_exists'

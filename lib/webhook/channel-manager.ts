@@ -25,14 +25,22 @@ export interface SyncState {
  * Save webhook channel metadata to Redis
  */
 export async function saveWebhookChannel(channel: WebhookChannel): Promise<void> {
-  await getRedis().set(WEBHOOK_CHANNEL_KEY, channel);
+  const redis = getRedis();
+  if (!redis) {
+    throw new Error("Redis not configured");
+  }
+  await redis.set(WEBHOOK_CHANNEL_KEY, channel);
 }
 
 /**
  * Get webhook channel metadata from Redis
  */
 export async function getWebhookChannel(): Promise<WebhookChannel | null> {
-  const channel = await getRedis().get<WebhookChannel>(WEBHOOK_CHANNEL_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return null;
+  }
+  const channel = await redis.get<WebhookChannel>(WEBHOOK_CHANNEL_KEY);
   return channel;
 }
 
@@ -40,7 +48,11 @@ export async function getWebhookChannel(): Promise<WebhookChannel | null> {
  * Delete webhook channel metadata from Redis
  */
 export async function deleteWebhookChannel(): Promise<void> {
-  await getRedis().del(WEBHOOK_CHANNEL_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return;
+  }
+  await redis.del(WEBHOOK_CHANNEL_KEY);
 }
 
 /**
@@ -69,18 +81,26 @@ export function needsRenewal(channel: WebhookChannel): boolean {
  * Update sync state (sync token and last sync timestamp)
  */
 export async function updateSyncState(syncToken?: string): Promise<void> {
+  const redis = getRedis();
+  if (!redis) {
+    throw new Error("Redis not configured");
+  }
   const state: SyncState = {
     syncToken,
     lastSync: new Date(),
   };
-  await getRedis().set(WEBHOOK_SYNC_STATE_KEY, state);
+  await redis.set(WEBHOOK_SYNC_STATE_KEY, state);
 }
 
 /**
  * Get current sync state
  */
 export async function getSyncState(): Promise<SyncState> {
-  const state = await getRedis().get<SyncState>(WEBHOOK_SYNC_STATE_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return { syncToken: undefined, lastSync: null };
+  }
+  const state = await redis.get<SyncState>(WEBHOOK_SYNC_STATE_KEY);
   return state || { syncToken: undefined, lastSync: null };
 }
 
@@ -88,7 +108,11 @@ export async function getSyncState(): Promise<SyncState> {
  * Clear sync state (force full sync on next webhook)
  */
 export async function clearSyncState(): Promise<void> {
-  await getRedis().del(WEBHOOK_SYNC_STATE_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return;
+  }
+  await redis.del(WEBHOOK_SYNC_STATE_KEY);
 }
 
 // ============================================================
@@ -108,14 +132,22 @@ export interface NotionWebhookSubscription {
  * Save Notion webhook subscription metadata to Redis
  */
 export async function saveNotionWebhook(subscription: NotionWebhookSubscription): Promise<void> {
-  await getRedis().set(NOTION_WEBHOOK_KEY, subscription);
+  const redis = getRedis();
+  if (!redis) {
+    throw new Error("Redis not configured");
+  }
+  await redis.set(NOTION_WEBHOOK_KEY, subscription);
 }
 
 /**
  * Get Notion webhook subscription metadata from Redis
  */
 export async function getNotionWebhook(): Promise<NotionWebhookSubscription | null> {
-  const subscription = await getRedis().get<NotionWebhookSubscription>(NOTION_WEBHOOK_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return null;
+  }
+  const subscription = await redis.get<NotionWebhookSubscription>(NOTION_WEBHOOK_KEY);
   return subscription;
 }
 
@@ -123,7 +155,11 @@ export async function getNotionWebhook(): Promise<NotionWebhookSubscription | nu
  * Delete Notion webhook subscription metadata from Redis
  */
 export async function deleteNotionWebhook(): Promise<void> {
-  await getRedis().del(NOTION_WEBHOOK_KEY);
+  const redis = getRedis();
+  if (!redis) {
+    return;
+  }
+  await redis.del(NOTION_WEBHOOK_KEY);
 }
 
 /**
