@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@notion-gcal-sync/ui";
 import { ServerCrash } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -45,16 +44,25 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           Something went wrong
         </h1>
         <p className="text-muted-foreground text-base max-w-md mb-8">
-          An unexpected error occurred. We&apos;ve been notified and are looking
-          into it.
+          We encountered an unexpected error. Please try again or return to the
+          homepage.
         </p>
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Button variant="ghost" render={<Link href="/" />}>
-            Back to Dashboard
-          </Button>
-          <Button onClick={reset}>Try Again</Button>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            Go to Homepage
+          </Link>
+          <button
+            type="button"
+            onClick={reset}
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          >
+            Try Again
+          </button>
         </div>
 
         {/* Error digest */}

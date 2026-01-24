@@ -1,20 +1,7 @@
-"use client";
-
-import { Button } from "@notion-gcal-sync/ui";
-import { ServerCrash } from "lucide-react";
+import { FileQuestion } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 
-interface ErrorPageProps {
-  error: Error & { digest?: string };
-  reset: () => void;
-}
-
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
-  useEffect(() => {
-    console.error("Application error:", error);
-  }, [error]);
-
+export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background px-4 relative overflow-hidden">
       {/* Large background error code */}
@@ -23,7 +10,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         style={{ animation: "pulse-subtle 3s ease-in-out infinite" }}
       >
         <span className="text-[120px] sm:text-[180px] font-semibold tracking-tighter text-foreground/5">
-          500
+          404
         </span>
       </div>
 
@@ -37,36 +24,37 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           className="w-16 h-16 rounded-full border border-border flex items-center justify-center mb-6"
           style={{ animation: "float 4s ease-in-out infinite" }}
         >
-          <ServerCrash className="w-7 h-7 text-muted-foreground" />
+          <FileQuestion className="w-7 h-7 text-muted-foreground" />
         </div>
 
         {/* Text */}
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">
-          Something went wrong
+          Page not found
         </h1>
         <p className="text-muted-foreground text-base max-w-md mb-8">
-          An unexpected error occurred. We&apos;ve been notified and are looking
-          into it.
+          This page doesn&apos;t exist. It may have been moved or the URL might
+          be incorrect.
         </p>
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Button variant="ghost" render={<Link href="/" />}>
-            Back to Dashboard
-          </Button>
-          <Button onClick={reset}>Try Again</Button>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            Go to Homepage
+          </Link>
+          <Link
+            href="/docs"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          >
+            View Documentation
+          </Link>
         </div>
-
-        {/* Error digest */}
-        {error.digest && (
-          <p className="mt-6 text-xs text-muted-foreground font-mono">
-            Error ID: {error.digest}
-          </p>
-        )}
       </div>
 
       {/* Keyframe animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in-up {
           from {
             opacity: 0;
@@ -79,8 +67,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         }
 
         @keyframes float {
-          0%,
-          100% {
+          0%, 100% {
             transform: translateY(0);
           }
           50% {
@@ -89,8 +76,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         }
 
         @keyframes pulse-subtle {
-          0%,
-          100% {
+          0%, 100% {
             opacity: 1;
           }
           50% {

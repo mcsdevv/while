@@ -1,6 +1,6 @@
 "use client";
 
-import "@/app/globals.css";
+import "./globals.css";
 import { ServerCrash } from "lucide-react";
 
 interface GlobalErrorProps {
@@ -50,7 +50,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 href="/"
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
               >
-                Back to Dashboard
+                Go to Homepage
               </a>
               <button
                 type="button"
