@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm turbo build --filter=@notion-gcal-sync/web"
+  "installCommand": "cd ../.. && pnpm install --filter=@notion-gcal-sync/web...",
+  "buildCommand": "cd ../.. && pnpm turbo build --filter=@notion-gcal-sync/web"
 }
