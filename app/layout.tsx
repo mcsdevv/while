@@ -1,5 +1,6 @@
 import { Providers } from "@/components/providers";
 import { auth } from "@/lib/auth";
+import { isAuthConfigured } from "@/lib/env";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -19,7 +20,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const session = isAuthConfigured() ? await auth() : null;
 
   return (
     <html lang="en">

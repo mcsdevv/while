@@ -8,8 +8,15 @@ import Google from "next-auth/providers/google";
  *
  * Note: Auth env vars are optional at build time. If not configured,
  * sign-in attempts will fail gracefully with an error message.
+ *
+ * A placeholder secret is used when NEXTAUTH_SECRET is not configured
+ * to allow the setup wizard to load. Auth will still fail gracefully
+ * at sign-in time if not properly configured.
  */
+const PLACEHOLDER_SECRET = "placeholder-secret-for-setup-wizard-only";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: env.NEXTAUTH_SECRET || PLACEHOLDER_SECRET,
   providers: [
     Google({
       clientId: env.AUTH_GOOGLE_ID ?? "",
