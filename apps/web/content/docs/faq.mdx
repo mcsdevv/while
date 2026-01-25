@@ -10,33 +10,15 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 <FAQAccordion>
   <FAQAccordionItem title="How does the sync work?">
-    The sync uses webhooks for both directions:
-
-    - **Google → Notion**: Webhooks capture changes instantly when you modify events in Google Calendar
-    - **Notion → Google**: Webhooks capture changes instantly when you modify pages in Notion
-
-    A daily fallback sync runs to catch any missed webhooks (rare edge cases). Both directions use intelligent conflict resolution where the most recent change wins.
+    The sync uses webhooks for both directions. When you modify events in Google Calendar, webhooks capture changes instantly and sync them to Notion. Similarly, when you modify pages in Notion, webhooks capture those changes and sync them to Google Calendar. A daily fallback sync runs to catch any missed webhooks in rare edge cases. Both directions use intelligent conflict resolution where the most recent change wins.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Is my data secure?">
-    Yes, absolutely. This is a self-hosted solution:
-
-    - You deploy to your own Vercel account
-    - Credentials are encrypted with AES-256-GCM
-    - Data is stored in Redis (via Vercel Marketplace)
-    - No data ever passes through third-party servers
-
-    You have complete control over your data.
+    Yes, absolutely. This is a self-hosted solution where you deploy to your own Vercel account. Your credentials are encrypted with AES-256-GCM and data is stored in Redis via Vercel Marketplace. No data ever passes through third-party servers, giving you complete control over your data.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="How much does it cost?">
-    It's completely free for personal use:
-
-    - **Vercel**: Free tier is sufficient (includes Redis via Marketplace)
-    - **Google Calendar API**: Free for personal use
-    - **Notion API**: Free
-
-    You might need paid tiers if you have high-volume usage.
+    It's completely free for personal use. Vercel's free tier is sufficient and includes Redis via Marketplace. Both the Google Calendar API and Notion API are free for personal use. You might need paid tiers if you have high-volume usage.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Is this project affiliated with Notion or Google?">
@@ -63,13 +45,7 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Can I sync multiple calendars?">
-    Each deployment syncs one Google Calendar with one Notion database. For multiple calendars:
-
-    1. Deploy a separate instance for each calendar
-    2. Use different Notion databases for each
-    3. Each instance runs independently
-
-    This keeps things simple and avoids conflicts.
+    Each deployment syncs one Google Calendar with one Notion database. For multiple calendars, deploy a separate instance for each calendar with different Notion databases. Each instance runs independently, which keeps things simple and avoids conflicts.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="What Notion properties are required?">
@@ -99,39 +75,19 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 <FAQAccordion>
   <FAQAccordionItem title="How quickly do changes sync?">
-    - **Google → Notion**: Nearly instant (via webhooks)
-    - **Notion → Google**: Nearly instant (via webhooks)
-
-    A daily fallback sync also runs to catch any edge cases where webhooks might be missed.
+    Changes sync nearly instantly in both directions via webhooks. A daily fallback sync also runs to catch any edge cases where webhooks might be missed.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="What happens if I delete an event?">
-    When you delete an event in either system:
-    1. The sync detects the deletion
-    2. The corresponding event in the other system is also deleted
-    3. The link between them is removed
-
-    This is bidirectional - deleting in Notion deletes in Google Calendar and vice versa.
+    When you delete an event in either system, the sync detects the deletion and removes the corresponding event in the other system along with the link between them. This is bidirectional—deleting in Notion deletes in Google Calendar and vice versa.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="How are conflicts handled?">
-    When the same event is modified in both systems simultaneously:
-
-    1. The sync compares modification timestamps
-    2. The most recent change wins
-    3. Both systems are updated to match
-
-    To avoid conflicts, try to edit events in only one system at a time.
+    When the same event is modified in both systems simultaneously, the sync compares modification timestamps and the most recent change wins. Both systems are then updated to match. To avoid conflicts, try to edit events in only one system at a time.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Does it sync recurring events?">
-    Recurring events have limited support:
-
-    - Individual instances sync normally
-    - Modifying the recurrence pattern may cause unexpected behavior
-    - Creating recurring events from Notion is not fully supported
-
-    For best results, create recurring events in Google Calendar.
+    Recurring events have limited support. Individual instances sync normally, but modifying the recurrence pattern may cause unexpected behavior and creating recurring events from Notion is not fully supported. For best results, create recurring events in Google Calendar.
   </FAQAccordionItem>
 </FAQAccordion>
 
@@ -150,22 +106,11 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Why are event times wrong?">
-    Usually caused by:
-
-    1. **Notion date property**: Must have "Include time" enabled
-    2. **Timezone mismatch**: Check settings in both systems
-    3. **All-day events**: Handled differently than timed events
-
-    Ensure your Notion Date property includes time, not just date.
+    This is usually caused by the Notion date property not having "Include time" enabled, a timezone mismatch between systems, or all-day events being handled differently than timed events. Ensure your Notion Date property includes time, not just date.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Can I reset and start fresh?">
-    Yes. Go to Settings > Danger Zone:
-
-    - **Reset Sync**: Clears sync state but keeps credentials
-    - **Clear All Data**: Removes everything, requires re-setup
-
-    Note: This doesn't delete events, just the links between systems.
+    Yes. Go to Settings > Danger Zone where you can either Reset Sync (clears sync state but keeps credentials) or Clear All Data (removes everything, requires re-setup). Note that this doesn't delete events, just the links between systems.
   </FAQAccordionItem>
 </FAQAccordion>
 
