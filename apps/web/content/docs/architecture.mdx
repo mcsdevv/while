@@ -55,6 +55,10 @@ Server-side endpoints that handle webhooks, scheduled sync jobs, and app configu
 | `/api/setup/*` | Various | Setup wizard endpoints |
 | `/api/settings/*` | Various | Settings management |
 
+<Callout type="info" title="Note">
+Google Calendar doesn't need a separate fallback cron—its webhook handler includes built-in recovery that performs a full sync when the sync token becomes invalid.
+</Callout>
+
 ### Redis Storage
 
 Upstash Redis stores application state with encryption.
