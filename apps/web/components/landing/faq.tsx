@@ -9,7 +9,7 @@ const faqs = [
   {
     question: "How does the sync work?",
     answer:
-      "Google Calendar changes are captured via webhooks for instant updates. Notion changes are detected through polling every 2 minutes. Both directions use intelligent conflict resolution to ensure your data stays consistent.",
+      "Both Google Calendar and Notion changes are captured via webhooks for instant updates. A daily fallback sync ensures no changes are ever missed. Both directions use intelligent conflict resolution to ensure your data stays consistent.",
   },
   {
     question: "Is my data secure?",

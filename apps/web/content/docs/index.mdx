@@ -36,8 +36,8 @@ This sync eliminates all of that by keeping both systems perfectly in sync.
     Edit in whichever app you prefer - both stay current.
   </FAQAccordionItem>
   <FAQAccordionItem title="Real-time Updates">
-    Google Calendar changes are captured via webhooks for instant updates.
-    Notion changes are detected through polling every 2 minutes.
+    Both Google Calendar and Notion changes are captured via webhooks for instant updates.
+    A daily fallback sync ensures nothing is missed.
   </FAQAccordionItem>
   <FAQAccordionItem title="Self-Hosted & Private">
     Deploy to your own Vercel account. Your credentials are encrypted and stored in your own Redis instance.
@@ -54,12 +54,13 @@ This sync eliminates all of that by keeping both systems perfectly in sync.
 ```mermaid
 graph LR
     GC[Google Calendar] <-->|Webhooks| App[Sync App]
-    App <-->|API| N[Notion Database]
+    App <-->|Webhooks| N[Notion Database]
 ```
 
 1. **Google → Notion**: Webhooks capture changes instantly
-2. **Notion → Google**: Polling detects changes every 2 minutes
-3. **Conflict Resolution**: Most recent change wins
+2. **Notion → Google**: Webhooks capture changes instantly
+3. **Fallback Sync**: Daily cron catches any missed webhooks
+4. **Conflict Resolution**: Most recent change wins
 
 ## Requirements
 

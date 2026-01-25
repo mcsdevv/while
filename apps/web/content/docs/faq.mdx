@@ -10,12 +10,12 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 <FAQAccordion>
   <FAQAccordionItem title="How does the sync work?">
-    The sync uses two mechanisms:
+    The sync uses webhooks for both directions:
 
     - **Google → Notion**: Webhooks capture changes instantly when you modify events in Google Calendar
-    - **Notion → Google**: Polling checks for changes every 2 minutes
+    - **Notion → Google**: Webhooks capture changes instantly when you modify pages in Notion
 
-    Both directions use intelligent conflict resolution where the most recent change wins.
+    A daily fallback sync runs to catch any missed webhooks (rare edge cases). Both directions use intelligent conflict resolution where the most recent change wins.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Is my data secure?">
@@ -96,9 +96,9 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 <FAQAccordion>
   <FAQAccordionItem title="How quickly do changes sync?">
     - **Google → Notion**: Nearly instant (via webhooks)
-    - **Notion → Google**: Up to 2 minutes (polling interval)
+    - **Notion → Google**: Nearly instant (via webhooks)
 
-    The 2-minute delay for Notion changes is due to API limitations - Notion doesn't support webhooks.
+    A daily fallback sync also runs to catch any edge cases where webhooks might be missed.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="What happens if I delete an event?">
