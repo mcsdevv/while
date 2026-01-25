@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ThemeToggle } from "../theme-toggle";
 
 const links = {
   product: [
@@ -104,6 +105,7 @@ export function Footer() {
               Matthew Sweeney
             </a>.
           </p>
+          <ThemeToggle />
           <p className="text-sm text-muted-foreground">
             Released under the{" "}
             <a
