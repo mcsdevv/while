@@ -26,7 +26,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
                   href="https://console.cloud.google.com/apis/credentials"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary underline hover:no-underline"
+                  className="text-primary underline"
                 >
                   Create credentials
                 </a>
@@ -40,7 +40,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
                   href="https://www.notion.so/my-integrations"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary underline hover:no-underline"
+                  className="text-primary underline"
                 >
                   Create integration
                 </a>

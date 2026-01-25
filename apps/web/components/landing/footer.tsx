@@ -44,14 +44,14 @@ export function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-foreground"
+                        className="text-sm underline text-muted-foreground hover:text-foreground"
                       >
                         {link.name}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
+                        className="text-sm underline text-muted-foreground hover:text-foreground"
                       >
                         {link.name}
                       </Link>
@@ -72,14 +72,14 @@ export function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-foreground"
+                        className="text-sm underline text-muted-foreground hover:text-foreground"
                       >
                         {link.name}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
+                        className="text-sm underline text-muted-foreground hover:text-foreground"
                       >
                         {link.name}
                       </Link>
@@ -99,7 +99,7 @@ export function Footer() {
               href="https://mcs.dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground"
+              className="underline hover:text-foreground"
             >
               Matthew Sweeney
             </a>.
@@ -110,7 +110,7 @@ export function Footer() {
               href="https://github.com/mcsdevv/while/blob/main/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground"
+              className="underline hover:text-foreground"
             >
               MIT License
             </a>.

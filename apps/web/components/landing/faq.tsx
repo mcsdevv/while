@@ -50,7 +50,7 @@ export function FAQ() {
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Everything you need to know about the sync.{" "}
-            <Link href="/docs/faq" className="text-primary hover:underline">
+            <Link href="/docs/faq" className="text-primary underline">
               View full FAQ
             </Link>
           </p>
