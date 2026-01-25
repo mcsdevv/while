@@ -3,7 +3,7 @@ title: Google OAuth Setup
 description: Configure Google Cloud for Calendar API access
 ---
 
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
@@ -152,19 +152,19 @@ After completing this setup, you'll have:
 
 ## Troubleshooting
 
-<Accordions type="single">
-  <Accordion title="Access Blocked Error">
+<FAQAccordion>
+  <FAQAccordionItem title="Access Blocked Error">
     - Ensure your email is added as a test user
     - Check that Calendar API is enabled
     - Verify redirect URIs match exactly (including trailing slashes)
-  </Accordion>
-  <Accordion title="Invalid Client Error">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Invalid Client Error">
     - Double-check Client ID and Secret
     - Ensure credentials are for a Web application, not Desktop
-  </Accordion>
-  <Accordion title="Token Expiration">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Token Expiration">
     - Test users get 7-day tokens
     - Publish app for longer-lived tokens
     - The app handles automatic refresh
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
