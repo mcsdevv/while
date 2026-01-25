@@ -25,6 +25,7 @@ graph TB
 
     GCal -->|Webhooks| API
     API <-->|REST| GCal
+    Notion -->|Webhooks| API
     API <-->|REST| Notion
     App <-->|Read/Write| Redis
     Cron -->|Trigger| API
@@ -50,7 +51,8 @@ Server-side endpoints that handle webhooks, scheduled sync jobs, and app configu
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/api/webhooks/google-calendar` | POST | Receive Google Calendar change notifications |
-| `/api/cron/sync-notion` | GET | Poll Notion for changes |
+| `/api/webhooks/notion` | POST | Receive Notion webhook notifications |
+| `/api/cron/sync-notion` | GET | Daily fallback sync (catches missed webhooks) |
 | `/api/cron/renew-webhook` | GET | Renew Google Calendar webhooks |
 | `/api/setup/*` | Various | Setup wizard endpoints |
 | `/api/settings/*` | Various | Settings management |
@@ -95,24 +97,29 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Cron as Cron Job
-    participant Notion as Notion API
+    participant Notion as Notion
+    participant Webhook as Webhook Handler
     participant Sync as Sync Engine
     participant GCal as Google Calendar
 
-    Cron->>Notion: Query database (cursor)
-    Notion-->>Cron: Changed pages
-    Cron->>Sync: Process changes
+    Notion->>Webhook: Page change notification
+    Webhook->>Webhook: Validate HMAC signature
+    Webhook->>Notion: Fetch page details
+    Notion-->>Webhook: Page data
+    Webhook->>Sync: Process changes
     Sync->>GCal: Create/Update/Delete events
     GCal-->>Sync: Confirmation
 ```
 
-**Timing:** Every 2 minutes (polling)
+**Timing:** Near real-time (seconds)
 
-1. Cron job triggers every 2 minutes
-2. App queries Notion for pages changed since last sync
-3. Sync engine processes each change
-4. Corresponding Google Calendar events are updated
+1. Notion sends webhook when page changes (created/updated/deleted)
+2. App validates HMAC signature
+3. App fetches page details from Notion
+4. Sync engine processes changes
+5. Corresponding Google Calendar events are updated
+
+A daily cron job runs as fallback to catch any missed webhooks.
 
 ## Conflict Resolution
 
@@ -166,14 +173,14 @@ sequenceDiagram
 
 ## Webhooks
 
-### Registration
+### Google Calendar Webhooks
 
 Google Calendar webhooks require:
 1. HTTPS endpoint (Vercel provides this)
 2. Domain verification (handled automatically)
 3. Periodic renewal (daily cron job)
 
-### Webhook Lifecycle
+**Lifecycle:**
 
 ```mermaid
 stateDiagram-v2
@@ -184,6 +191,22 @@ stateDiagram-v2
     Active --> [*]: User disconnects
 ```
 
+### Notion Webhooks
+
+Notion webhooks require:
+1. HTTPS endpoint (Vercel provides this)
+2. Manual verification in Notion UI
+3. HMAC-SHA256 signature validation
+
+**Event types handled:**
+
+| Event | Action |
+|-------|--------|
+| `page.created` | New page synced to GCal |
+| `page.content_updated` | Content changes synced |
+| `page.properties_updated` | Property changes synced |
+| `page.deleted` | Corresponding GCal event deleted |
+
 ## Cron Jobs
 
 Defined in `vercel.json`:
@@ -193,11 +216,11 @@ Defined in `vercel.json`:
   "crons": [
     {
       "path": "/api/cron/sync-notion",
-      "schedule": "*/2 * * * *"
+      "schedule": "0 3 * * *"
     },
     {
       "path": "/api/cron/renew-webhook",
-      "schedule": "0 0 * * *"
+      "schedule": "0 12 * * *"
     }
   ]
 }
@@ -205,8 +228,8 @@ Defined in `vercel.json`:
 
 | Job | Schedule | Purpose |
 |-----|----------|---------|
-| `sync-notion` | Every 2 min | Poll Notion for changes |
-| `renew-webhook` | Daily | Renew Google Calendar webhook |
+| `sync-notion` | Daily 3 AM | Fallback sync (catches missed webhooks) |
+| `renew-webhook` | Daily 12 PM | Renew Google Calendar webhook |
 
 ## Error Handling
 
@@ -240,7 +263,7 @@ The current architecture is designed for personal use (1-2 calendars):
 | Metric | Supported |
 |--------|-----------|
 | Events | Thousands |
-| Sync frequency | 2 minutes |
+| Sync frequency | Real-time (webhooks) |
 | Concurrent users | 1 per deployment |
 
 For multiple calendars, deploy separate instances.
