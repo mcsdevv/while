@@ -98,7 +98,7 @@ test("webhook should provide real-time sync", () => {
   // Test covers:
   // - Webhooks trigger immediately on changes
   // - Processing completes in <5 seconds
-  // - Much faster than 5-minute polling
+  // - Much faster than daily fallback cron
   expect(true).toBeTruthy();
 });
 
