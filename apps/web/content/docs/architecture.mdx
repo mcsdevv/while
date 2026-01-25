@@ -117,7 +117,9 @@ sequenceDiagram
 4. Sync engine processes changes
 5. Corresponding Google Calendar events are updated
 
-A daily cron job runs as fallback to catch any missed webhooks.
+### Cron Job
+
+A daily cron job runs as fallback to catch any missed webhooks. This is highly unlikely—Notion webhooks are reliable—but the cron ensures data consistency if network issues or transient failures occur.
 
 ## Conflict Resolution
 
