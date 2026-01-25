@@ -4,23 +4,23 @@ description: Frequently asked questions about While
 ---
 
 import { Cards, Card } from "fumadocs-ui/components/card";
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 # Frequently Asked Questions
 
 ## General
 
-<Accordions type="single">
-  <Accordion title="How does the sync work?">
+<FAQAccordion>
+  <FAQAccordionItem title="How does the sync work?">
     The sync uses two mechanisms:
 
     - **Google → Notion**: Webhooks capture changes instantly when you modify events in Google Calendar
     - **Notion → Google**: Polling checks for changes every 2 minutes
 
     Both directions use intelligent conflict resolution where the most recent change wins.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Is my data secure?">
+  <FAQAccordionItem title="Is my data secure?">
     Yes, absolutely. This is a self-hosted solution:
 
     - You deploy to your own Vercel account
@@ -29,9 +29,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     - No data ever passes through third-party servers
 
     You have complete control over your data.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="How much does it cost?">
+  <FAQAccordionItem title="How much does it cost?">
     It's completely free for personal use:
 
     - **Vercel**: Free tier is sufficient (includes Redis via Marketplace)
@@ -39,17 +39,17 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     - **Notion API**: Free
 
     You might need paid tiers if you have high-volume usage.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Is this project affiliated with Notion or Google?">
+  <FAQAccordionItem title="Is this project affiliated with Notion or Google?">
     No, this is an independent open-source project. It's not officially supported by or affiliated with Notion or Google.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Setup
 
-<Accordions type="single">
-  <Accordion title="Why do my Google tokens expire after 7 days?">
+<FAQAccordion>
+  <FAQAccordionItem title="Why do my Google tokens expire after 7 days?">
     This happens when your Google OAuth app is in "Testing" mode. Google limits test apps to 7-day token expiration.
 
     **To fix:**
@@ -58,9 +58,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     3. Click "Publish App"
 
     Published apps have longer-lived refresh tokens.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Can I sync multiple calendars?">
+  <FAQAccordionItem title="Can I sync multiple calendars?">
     Each deployment syncs one Google Calendar with one Notion database. For multiple calendars:
 
     1. Deploy a separate instance for each calendar
@@ -68,9 +68,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     3. Each instance runs independently
 
     This keeps things simple and avoids conflicts.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="What Notion properties are required?">
+  <FAQAccordionItem title="What Notion properties are required?">
     At minimum, you need:
 
     | Property | Type | Notes |
@@ -84,35 +84,35 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     - Reminders (Number)
 
     The sync will also create a `gcal_event_id` property automatically.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Do I need to verify my domain with Google?">
+  <FAQAccordionItem title="Do I need to verify my domain with Google?">
     For basic usage, no. The webhook endpoint on Vercel works without additional domain verification.
 
     If you're using a custom domain and encounter issues, you may need to verify it in Google Search Console.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Sync Behavior
 
-<Accordions type="single">
-  <Accordion title="How quickly do changes sync?">
+<FAQAccordion>
+  <FAQAccordionItem title="How quickly do changes sync?">
     - **Google → Notion**: Nearly instant (via webhooks)
     - **Notion → Google**: Up to 2 minutes (polling interval)
 
     The 2-minute delay for Notion changes is due to API limitations - Notion doesn't support webhooks.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="What happens if I delete an event?">
+  <FAQAccordionItem title="What happens if I delete an event?">
     When you delete an event in either system:
     1. The sync detects the deletion
     2. The corresponding event in the other system is also deleted
     3. The link between them is removed
 
     This is bidirectional - deleting in Notion deletes in Google Calendar and vice versa.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="How are conflicts handled?">
+  <FAQAccordionItem title="How are conflicts handled?">
     When the same event is modified in both systems simultaneously:
 
     1. The sync compares modification timestamps
@@ -120,9 +120,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     3. Both systems are updated to match
 
     To avoid conflicts, try to edit events in only one system at a time.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Does it sync recurring events?">
+  <FAQAccordionItem title="Does it sync recurring events?">
     Recurring events have limited support:
 
     - Individual instances sync normally
@@ -130,13 +130,13 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     - Creating recurring events from Notion is not fully supported
 
     For best results, create recurring events in Google Calendar.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Troubleshooting
 
-<Accordions type="single">
-  <Accordion title="Events aren't syncing, what's wrong?">
+<FAQAccordion>
+  <FAQAccordionItem title="Events aren't syncing, what's wrong?">
     Check these common issues:
 
     1. **Dashboard errors**: Look for error messages in the logs
@@ -145,9 +145,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     4. **Database connection**: Verify integration is connected to database
 
     See the [Troubleshooting Guide](/docs/guides/troubleshooting) for detailed steps.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Why are event times wrong?">
+  <FAQAccordionItem title="Why are event times wrong?">
     Usually caused by:
 
     1. **Notion date property**: Must have "Include time" enabled
@@ -155,22 +155,22 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     3. **All-day events**: Handled differently than timed events
 
     Ensure your Notion Date property includes time, not just date.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Can I reset and start fresh?">
+  <FAQAccordionItem title="Can I reset and start fresh?">
     Yes. Go to Settings > Danger Zone:
 
     - **Reset Sync**: Clears sync state but keeps credentials
     - **Clear All Data**: Removes everything, requires re-setup
 
     Note: This doesn't delete events, just the links between systems.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Technical
 
-<Accordions type="single">
-  <Accordion title="What tech stack is this built with?">
+<FAQAccordion>
+  <FAQAccordionItem title="What tech stack is this built with?">
     - **Framework**: Next.js 16 with App Router
     - **Runtime**: Vercel serverless functions
     - **Storage**: Redis (via Vercel Marketplace)
@@ -178,9 +178,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     - **Auth**: NextAuth.js
 
     It's a monorepo using Turborepo for builds.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="Can I run this locally?">
+  <FAQAccordionItem title="Can I run this locally?">
     Yes! For development:
 
     ```bash
@@ -193,9 +193,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     ```
 
     Note: Webhooks won't work locally unless you use a tunneling service like ngrok.
-  </Accordion>
+  </FAQAccordionItem>
 
-  <Accordion title="How do I contribute?">
+  <FAQAccordionItem title="How do I contribute?">
     Contributions are welcome!
 
     1. Fork the repository
@@ -204,8 +204,8 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
     4. Submit a pull request
 
     See [CONTRIBUTING.md](https://github.com/mcsdevv/while/blob/main/CONTRIBUTING.md) for guidelines.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Still Have Questions?
 
