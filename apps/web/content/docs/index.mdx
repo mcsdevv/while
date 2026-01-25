@@ -4,7 +4,7 @@ description: Keep your Notion calendar database and Google Calendar in perfect s
 ---
 
 import { Cards, Card } from "fumadocs-ui/components/card";
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 # While
 
@@ -30,24 +30,24 @@ This sync eliminates all of that by keeping both systems perfectly in sync.
 
 ## Key Features
 
-<Accordions type="single">
-  <Accordion title="Bidirectional Sync">
+<FAQAccordion>
+  <FAQAccordionItem title="Bidirectional Sync">
     Changes made in either Notion or Google Calendar are automatically synced to the other.
     Edit in whichever app you prefer - both stay current.
-  </Accordion>
-  <Accordion title="Real-time Updates">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Real-time Updates">
     Google Calendar changes are captured via webhooks for instant updates.
     Notion changes are detected through polling every 2 minutes.
-  </Accordion>
-  <Accordion title="Self-Hosted & Private">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Self-Hosted & Private">
     Deploy to your own Vercel account. Your credentials are encrypted and stored in your own Redis instance.
     No data passes through third-party servers.
-  </Accordion>
-  <Accordion title="Custom Field Mapping">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Custom Field Mapping">
     Map any Notion property to Google Calendar fields.
     Full control over how your data syncs between systems.
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## How It Works
 

@@ -3,7 +3,7 @@ title: Notion Integration Setup
 description: Create a Notion integration and configure database access
 ---
 
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
@@ -178,23 +178,23 @@ After completing this setup, you'll have:
 
 ## Troubleshooting
 
-<Accordions type="single">
-  <Accordion title="Could not find database">
+<FAQAccordion>
+  <FAQAccordionItem title="Could not find database">
     - Ensure the integration is connected to the database
     - Check the database ID is correct
     - Verify the integration has read/write permissions
-  </Accordion>
-  <Accordion title="Unauthorized Error">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Unauthorized Error">
     - Token may have been regenerated
     - Check the token starts with `secret_`
     - Ensure you're using the correct workspace
-  </Accordion>
-  <Accordion title="Missing Properties">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Missing Properties">
     - The setup wizard shows available properties
     - Create missing properties in Notion if needed
     - Date property must support time (not just date)
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Security Notes
 

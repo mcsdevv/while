@@ -3,7 +3,7 @@ title: Vercel Deployment
 description: Deploy the sync app to Vercel
 ---
 
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
@@ -117,23 +117,23 @@ To use a custom domain:
 
 ## Troubleshooting
 
-<Accordions type="single">
-  <Accordion title="Build Fails">
+<FAQAccordion>
+  <FAQAccordionItem title="Build Fails">
     - Check environment variables are set correctly
     - Verify all required variables are present
     - Check build logs for specific errors
-  </Accordion>
-  <Accordion title="OAuth Errors After Deploy">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="OAuth Errors After Deploy">
     - Update Google OAuth redirect URIs with your Vercel domain
     - Ensure URIs match exactly (including https://)
     - Clear browser cookies and try again
-  </Accordion>
-  <Accordion title="Redis Connection Failed">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Redis Connection Failed">
     - Verify Redis is connected via Vercel Storage tab
     - Check environment variables are set in project settings
     - Try disconnecting and reconnecting the Upstash integration
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Updating the App
 

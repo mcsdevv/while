@@ -4,7 +4,7 @@ description: Configure how Notion properties sync to Google Calendar fields
 ---
 
 import { Cards, Card } from "fumadocs-ui/components/card";
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 
 Field mapping determines how your Notion database properties correspond to Google Calendar event fields.
@@ -160,23 +160,23 @@ When you delete an event:
 
 ## Troubleshooting
 
-<Accordions type="single">
-  <Accordion title="Property not appearing in dropdown">
+<FAQAccordion>
+  <FAQAccordionItem title="Property not appearing in dropdown">
     - Ensure the property exists in your database
     - Check that the property type is compatible
     - Refresh the settings page
-  </Accordion>
-  <Accordion title="Data not syncing for a field">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Data not syncing for a field">
     - Verify the mapping is configured
     - Check the property types are compatible
     - Look for errors in the dashboard logs
-  </Accordion>
-  <Accordion title="Times are wrong">
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Times are wrong">
     - Ensure your Notion date property includes time
     - Check timezone settings in both systems
     - Verify the date format in Notion
-  </Accordion>
-</Accordions>
+  </FAQAccordionItem>
+</FAQAccordion>
 
 ## Best Practices
 
