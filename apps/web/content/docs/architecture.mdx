@@ -182,7 +182,19 @@ sequenceDiagram
 Google Calendar webhooks require:
 1. HTTPS endpoint (Vercel provides this)
 2. Domain verification (handled automatically)
-3. Periodic renewal (daily cron job)
+3. Periodic renewal (see below)
+
+**Why renewal is required:** Google Calendar webhooks expire after a maximum of 7 days (typically ~24 hours in practice). Unlike Notion webhooks which persist indefinitely, Google requires you to re-register webhook channels before they expire. If a webhook expires, you stop receiving change notifications entirely—missing all calendar updates until the next manual sync.
+
+**Renewal strategy:** A daily cron job checks if the webhook expires within 6 hours. If so, it:
+1. Stops the old webhook channel
+2. Registers a new one with Google
+3. Saves the new channel metadata to Redis
+
+The 6-hour buffer ensures renewal happens well before actual expiration, accounting for:
+- Cron timing variance (Vercel cron can be delayed)
+- Transient API failures with retry time
+- Timezone edge cases
 
 **Lifecycle:**
 
@@ -233,7 +245,7 @@ Defined in `vercel.json`:
 | Job | Schedule | Purpose |
 |-----|----------|---------|
 | `sync-notion` | Daily 3 AM | Fallback sync (catches missed webhooks) |
-| `renew-webhook` | Daily 12 PM | Renew Google Calendar webhook |
+| `renew-webhook` | Daily 12 PM | Renew Google Calendar webhook (if expires within 6 hours) |
 
 ## Error Handling
 
