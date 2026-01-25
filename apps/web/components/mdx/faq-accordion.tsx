@@ -17,7 +17,7 @@ export function FAQAccordionItem({ title, children }: FAQAccordionItemProps) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between p-6 text-left"
+        className="flex w-full items-center justify-between px-6 py-5 text-left"
       >
         <span className="font-medium">{title}</span>
         <ChevronDown
@@ -27,7 +27,7 @@ export function FAQAccordionItem({ title, children }: FAQAccordionItemProps) {
         />
       </button>
       {isOpen && (
-        <CardContent className="border-t pt-4 prose prose-sm dark:prose-invert max-w-none">
+        <CardContent className="border-t px-6 py-5 prose prose-sm dark:prose-invert max-w-none">
           {children}
         </CardContent>
       )}
