@@ -91,9 +91,9 @@
   }
 }
 
-/* Reduce sidebar left padding */
-[data-fd-sidebar] {
-  padding-left: 0.5rem;
+/* Constrain sidebar placeholder to exact sidebar width (prevent grid 1fr expansion) */
+[data-sidebar-placeholder] {
+  width: var(--fd-sidebar-width) !important;
 }
 
 /* Remove border-radius from fumadocs-ui components */
