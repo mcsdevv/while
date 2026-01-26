@@ -4,9 +4,10 @@
  */
 
 import { getGoogleClientConfig } from "@/lib/env";
+import { ensureExtendedFieldMapping } from "./migration";
 import { getSettings } from "./storage";
-import type { FieldMapping } from "./types";
-import { DEFAULT_FIELD_MAPPING } from "./types";
+import type { ExtendedFieldMapping, FieldMapping } from "./types";
+import { DEFAULT_EXTENDED_FIELD_MAPPING } from "./types";
 
 export interface GoogleConfig {
   clientId: string;
@@ -89,16 +90,31 @@ export async function getNotionConfig(): Promise<NotionConfig> {
 /**
  * Get field mapping configuration.
  * Tries settings first, falls back to defaults.
+ * Auto-migrates legacy format to ExtendedFieldMapping.
  */
-export async function getFieldMapping(): Promise<FieldMapping> {
+export async function getFieldMapping(): Promise<ExtendedFieldMapping> {
   const settings = await getSettings();
   if (settings?.fieldMapping) {
-    return {
-      ...DEFAULT_FIELD_MAPPING,
-      ...settings.fieldMapping,
-    };
+    return ensureExtendedFieldMapping(settings.fieldMapping);
   }
-  return DEFAULT_FIELD_MAPPING;
+  return DEFAULT_EXTENDED_FIELD_MAPPING;
+}
+
+/**
+ * Get legacy field mapping (property names only).
+ * Temporary helper for backward compatibility until Notion client is updated.
+ * @deprecated Use getFieldMapping() and access .notionPropertyName directly
+ */
+export async function getLegacyFieldMapping(): Promise<FieldMapping> {
+  const extended = await getFieldMapping();
+  return {
+    title: extended.title.notionPropertyName,
+    date: extended.date.notionPropertyName,
+    description: extended.description.notionPropertyName,
+    location: extended.location.notionPropertyName,
+    gcalEventId: extended.gcalEventId.notionPropertyName,
+    reminders: extended.reminders.notionPropertyName,
+  };
 }
 
 /**
