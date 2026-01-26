@@ -394,7 +394,7 @@ test.describe("Setup Wizard - Welcome Step UX", () => {
     await expect(publishLink).toBeVisible();
     await expect(publishLink).toHaveAttribute(
       "href",
-      "https://while.so/docs/setup/google#step-5-publish-app-optional"
+      "https://while.so/docs/setup/google#step-5-publish-app-optional",
     );
   });
 
@@ -402,7 +402,9 @@ test.describe("Setup Wizard - Welcome Step UX", () => {
     await page.goto("/setup");
 
     // The helper button should be visible
-    await expect(page.getByRole("button", { name: /Google OAuth Configuration Values/i })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Google OAuth Configuration Values/i }),
+    ).toBeVisible();
 
     // But the redirect URI label should not be visible (collapsed)
     await expect(page.getByText("Authorized Redirect URI")).not.toBeVisible();
@@ -449,7 +451,10 @@ test.describe("Setup Wizard - Welcome Step UX", () => {
     // Check links
     const credentialsLink = page.getByRole("link", { name: /Google Cloud Credentials/i });
     await expect(credentialsLink).toBeVisible();
-    await expect(credentialsLink).toHaveAttribute("href", "https://console.cloud.google.com/apis/credentials");
+    await expect(credentialsLink).toHaveAttribute(
+      "href",
+      "https://console.cloud.google.com/apis/credentials",
+    );
 
     const guideLink = page.getByRole("link", { name: /Full Setup Guide/i });
     await expect(guideLink).toBeVisible();

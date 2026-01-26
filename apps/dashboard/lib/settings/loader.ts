@@ -118,6 +118,16 @@ export async function getLegacyFieldMapping(): Promise<FieldMapping> {
 }
 
 /**
+ * Get extended field mapping configuration with enabled/disabled flags.
+ * Returns default configuration until settings migration is complete.
+ */
+export async function getExtendedFieldMapping(): Promise<ExtendedFieldMapping> {
+  // TODO: Read from settings once migration to ExtendedFieldMapping is complete
+  // For now, return defaults which have the new fields disabled by default
+  return DEFAULT_EXTENDED_FIELD_MAPPING;
+}
+
+/**
  * Check if Google OAuth client is configured (env vars).
  */
 export function isGoogleClientConfigured(): boolean {

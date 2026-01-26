@@ -269,10 +269,7 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
             <Button variant="outline" onClick={onBack}>
               Back
             </Button>
-            <Button
-              onClick={handleSignIn}
-              disabled={connecting || showConfigError || validating}
-            >
+            <Button onClick={handleSignIn} disabled={connecting || showConfigError || validating}>
               {connecting ? "Connecting..." : validating ? "Validating..." : "Sign in with Google"}
             </Button>
           </div>

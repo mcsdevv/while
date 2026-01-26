@@ -42,6 +42,7 @@ export {
 // Config loading
 export type { GoogleConfig, NotionConfig } from "./loader";
 export {
+  getExtendedFieldMapping,
   getFieldMapping,
   getGoogleConfig,
   getLegacyFieldMapping,

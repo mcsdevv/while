@@ -67,10 +67,12 @@ export async function GET() {
       });
     } catch (calendarError) {
       // Handle specific Google API errors
-      const errorMessage =
-        calendarError instanceof Error ? calendarError.message : "Unknown error";
+      const errorMessage = calendarError instanceof Error ? calendarError.message : "Unknown error";
 
-      if (errorMessage.includes("invalid_grant") || errorMessage.includes("Token has been expired")) {
+      if (
+        errorMessage.includes("invalid_grant") ||
+        errorMessage.includes("Token has been expired")
+      ) {
         return NextResponse.json(
           {
             error: "OAuth token expired",
