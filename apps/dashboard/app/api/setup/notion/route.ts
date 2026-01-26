@@ -48,6 +48,22 @@ export async function POST(request: NextRequest) {
           url: db.url,
         }));
 
+      // Get integration info
+      let integrationName: string | undefined;
+      let workspaceName: string | undefined;
+
+      try {
+        const botInfo = await notion.users.me({});
+        if (botInfo.type === "bot" && botInfo.bot) {
+          integrationName = botInfo.name ?? undefined;
+          if ("workspace_name" in botInfo.bot) {
+            workspaceName = botInfo.bot.workspace_name as string | undefined;
+          }
+        }
+      } catch {
+        // Non-critical, continue without bot info
+      }
+
       // Save the token (will be encrypted)
       await updateSettings({
         notion: {
@@ -61,6 +77,8 @@ export async function POST(request: NextRequest) {
         status: "success",
         message: "Notion token validated",
         databases,
+        integrationName,
+        workspaceName,
       });
     } catch (notionError) {
       console.error("Notion API error:", notionError);
