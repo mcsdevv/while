@@ -1,7 +1,8 @@
-import { getLegacyFieldMapping, getNotionConfig } from "@/lib/settings";
+import { getFieldMapping, getNotionConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { Client } from "@notionhq/client";
 import type {
+  CreatePageParameters,
   PageObjectResponse,
   QueryDatabaseResponse,
   UpdatePageParameters,
@@ -83,19 +84,11 @@ function getPropertyValue(properties: PageObjectResponse["properties"], key: str
 export async function notionPageToEvent(page: PageObjectResponse): Promise<Event | null> {
   try {
     const properties = page.properties;
-    const fieldMapping = await getLegacyFieldMapping();
+    const fieldMapping = await getFieldMapping();
 
-    const title = getPropertyValue(properties, fieldMapping.title) as string;
-    const description = getPropertyValue(properties, fieldMapping.description) as
-      | string
-      | undefined;
-    const location = getPropertyValue(properties, fieldMapping.location) as string | undefined;
-    const gcalEventId = getPropertyValue(properties, fieldMapping.gcalEventId) as
-      | string
-      | undefined;
-    const reminders = getPropertyValue(properties, fieldMapping.reminders) as number | undefined;
-
-    const dateRange = getPropertyValue(properties, fieldMapping.date) as {
+    // Required fields - always read
+    const title = getPropertyValue(properties, fieldMapping.title.notionPropertyName) as string;
+    const dateRange = getPropertyValue(properties, fieldMapping.date.notionPropertyName) as {
       start?: string;
       end?: string;
     } | null;
@@ -110,6 +103,43 @@ export async function notionPageToEvent(page: PageObjectResponse): Promise<Event
       ? new Date(dateRange.end)
       : new Date(startTime.getTime() + 3600000); // +1 hour default
 
+    // Optional fields - only read if enabled
+    const description = fieldMapping.description.enabled
+      ? (getPropertyValue(properties, fieldMapping.description.notionPropertyName) as string | undefined)
+      : undefined;
+    const location = fieldMapping.location.enabled
+      ? (getPropertyValue(properties, fieldMapping.location.notionPropertyName) as string | undefined)
+      : undefined;
+    const gcalEventId = fieldMapping.gcalEventId.enabled
+      ? (getPropertyValue(properties, fieldMapping.gcalEventId.notionPropertyName) as string | undefined)
+      : undefined;
+    const reminders = fieldMapping.reminders.enabled
+      ? (getPropertyValue(properties, fieldMapping.reminders.notionPropertyName) as number | undefined)
+      : undefined;
+
+    // New extended fields - only read if enabled
+    const attendeesStr = fieldMapping.attendees.enabled
+      ? (getPropertyValue(properties, fieldMapping.attendees.notionPropertyName) as string | undefined)
+      : undefined;
+    const attendees = attendeesStr ? attendeesStr.split(", ").filter(Boolean) : undefined;
+
+    const organizer = fieldMapping.organizer.enabled
+      ? (getPropertyValue(properties, fieldMapping.organizer.notionPropertyName) as string | undefined)
+      : undefined;
+    const conferenceLink = fieldMapping.conferenceLink.enabled
+      ? (getPropertyValue(properties, fieldMapping.conferenceLink.notionPropertyName) as string | undefined)
+      : undefined;
+    const recurrence = fieldMapping.recurrence.enabled
+      ? (getPropertyValue(properties, fieldMapping.recurrence.notionPropertyName) as string | undefined)
+      : undefined;
+    const color = fieldMapping.color.enabled
+      ? (getPropertyValue(properties, fieldMapping.color.notionPropertyName) as string | undefined)
+      : undefined;
+    const visibilityStr = fieldMapping.visibility.enabled
+      ? (getPropertyValue(properties, fieldMapping.visibility.notionPropertyName) as string | undefined)
+      : undefined;
+    const visibility = visibilityStr as Event["visibility"];
+
     const statusValue = getPropertyValue(properties, "Status") as string | undefined;
     const status = statusValue?.toLowerCase() as Event["status"];
 
@@ -122,6 +152,12 @@ export async function notionPageToEvent(page: PageObjectResponse): Promise<Event
       location,
       status,
       reminders,
+      attendees,
+      organizer,
+      conferenceLink,
+      recurrence,
+      color,
+      visibility,
       notionPageId: page.id,
       gcalEventId,
     };
@@ -136,12 +172,12 @@ export async function fetchNotionEvents(): Promise<Event[]> {
   try {
     const client = await getClient();
     const databaseId = await getDatabaseId();
-    const fieldMapping = await getLegacyFieldMapping();
+    const fieldMapping = await getFieldMapping();
 
     const response: QueryDatabaseResponse = await client.databases.query({
       database_id: databaseId,
       filter: {
-        property: fieldMapping.date,
+        property: fieldMapping.date.notionPropertyName,
         date: {
           is_not_empty: true,
         },
@@ -170,74 +206,96 @@ export async function createNotionEvent(event: Event): Promise<string> {
   try {
     const client = await getClient();
     const databaseId = await getDatabaseId();
-    const fieldMapping = await getLegacyFieldMapping();
+    const fieldMapping = await getFieldMapping();
+
+    // Build properties object, checking enabled flags
+    const properties: CreatePageParameters["properties"] = {
+      // Required fields - always include
+      [fieldMapping.title.notionPropertyName]: {
+        title: [{ text: { content: event.title } }],
+      },
+      [fieldMapping.date.notionPropertyName]: {
+        date: {
+          start: event.startTime.toISOString(),
+          end: event.endTime.toISOString(),
+        },
+      },
+    };
+
+    // Optional fields - only include if enabled and value exists
+    if (fieldMapping.description.enabled && event.description) {
+      properties[fieldMapping.description.notionPropertyName] = {
+        rich_text: [{ text: { content: event.description } }],
+      };
+    }
+
+    if (fieldMapping.location.enabled && event.location) {
+      properties[fieldMapping.location.notionPropertyName] = {
+        rich_text: [{ text: { content: event.location } }],
+      };
+    }
+
+    if (fieldMapping.gcalEventId.enabled && event.gcalEventId) {
+      properties[fieldMapping.gcalEventId.notionPropertyName] = {
+        rich_text: [{ text: { content: event.gcalEventId } }],
+      };
+    }
+
+    if (fieldMapping.reminders.enabled && event.reminders !== undefined) {
+      properties[fieldMapping.reminders.notionPropertyName] = {
+        number: event.reminders,
+      };
+    }
+
+    // Status field (not part of field mapping)
+    if (event.status) {
+      properties.Status = {
+        select: {
+          name: event.status.charAt(0).toUpperCase() + event.status.slice(1),
+        },
+      };
+    }
+
+    // New extended fields - only include if enabled and value exists
+    if (fieldMapping.attendees.enabled && event.attendees?.length) {
+      properties[fieldMapping.attendees.notionPropertyName] = {
+        rich_text: [{ text: { content: event.attendees.join(", ") } }],
+      };
+    }
+
+    if (fieldMapping.organizer.enabled && event.organizer) {
+      properties[fieldMapping.organizer.notionPropertyName] = {
+        rich_text: [{ text: { content: event.organizer } }],
+      };
+    }
+
+    if (fieldMapping.conferenceLink.enabled && event.conferenceLink) {
+      properties[fieldMapping.conferenceLink.notionPropertyName] = {
+        rich_text: [{ text: { content: event.conferenceLink } }],
+      };
+    }
+
+    if (fieldMapping.recurrence.enabled && event.recurrence) {
+      properties[fieldMapping.recurrence.notionPropertyName] = {
+        rich_text: [{ text: { content: event.recurrence } }],
+      };
+    }
+
+    if (fieldMapping.color.enabled && event.color) {
+      properties[fieldMapping.color.notionPropertyName] = {
+        rich_text: [{ text: { content: event.color } }],
+      };
+    }
+
+    if (fieldMapping.visibility.enabled && event.visibility) {
+      properties[fieldMapping.visibility.notionPropertyName] = {
+        rich_text: [{ text: { content: event.visibility } }],
+      };
+    }
 
     const response = await client.pages.create({
-      parent: {
-        database_id: databaseId,
-      },
-      properties: {
-        [fieldMapping.title]: {
-          title: [
-            {
-              text: {
-                content: event.title,
-              },
-            },
-          ],
-        },
-        [fieldMapping.date]: {
-          date: {
-            start: event.startTime.toISOString(),
-            end: event.endTime.toISOString(),
-          },
-        },
-        ...(event.description && {
-          [fieldMapping.description]: {
-            rich_text: [
-              {
-                text: {
-                  content: event.description,
-                },
-              },
-            ],
-          },
-        }),
-        ...(event.location && {
-          [fieldMapping.location]: {
-            rich_text: [
-              {
-                text: {
-                  content: event.location,
-                },
-              },
-            ],
-          },
-        }),
-        ...(event.status && {
-          Status: {
-            select: {
-              name: event.status.charAt(0).toUpperCase() + event.status.slice(1),
-            },
-          },
-        }),
-        ...(event.reminders !== undefined && {
-          [fieldMapping.reminders]: {
-            number: event.reminders,
-          },
-        }),
-        ...(event.gcalEventId && {
-          [fieldMapping.gcalEventId]: {
-            rich_text: [
-              {
-                text: {
-                  content: event.gcalEventId,
-                },
-              },
-            ],
-          },
-        }),
-      },
+      parent: { database_id: databaseId },
+      properties,
     });
 
     return response.id;
@@ -251,39 +309,41 @@ export async function createNotionEvent(event: Event): Promise<string> {
 export async function updateNotionEvent(pageId: string, event: Partial<Event>): Promise<void> {
   try {
     const client = await getClient();
-    const fieldMapping = await getLegacyFieldMapping();
+    const fieldMapping = await getFieldMapping();
 
     const properties: UpdatePageParameters["properties"] = {};
 
+    // Required fields - always update if provided
     if (event.title !== undefined) {
-      properties[fieldMapping.title] = {
+      properties[fieldMapping.title.notionPropertyName] = {
         title: [{ text: { content: event.title } }],
       };
     }
 
     if (event.startTime && event.endTime) {
-      properties[fieldMapping.date] = {
+      properties[fieldMapping.date.notionPropertyName] = {
         date: {
           start: event.startTime.toISOString(),
           end: event.endTime.toISOString(),
         },
       };
     } else if (event.startTime) {
-      properties[fieldMapping.date] = {
+      properties[fieldMapping.date.notionPropertyName] = {
         date: {
           start: event.startTime.toISOString(),
         },
       };
     }
 
-    if (event.description !== undefined) {
-      properties[fieldMapping.description] = {
+    // Optional fields - only update if enabled
+    if (fieldMapping.description.enabled && event.description !== undefined) {
+      properties[fieldMapping.description.notionPropertyName] = {
         rich_text: [{ text: { content: event.description } }],
       };
     }
 
-    if (event.location !== undefined) {
-      properties[fieldMapping.location] = {
+    if (fieldMapping.location.enabled && event.location !== undefined) {
+      properties[fieldMapping.location.notionPropertyName] = {
         rich_text: [{ text: { content: event.location } }],
       };
     }
@@ -296,15 +356,52 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
       };
     }
 
-    if (event.reminders !== undefined) {
-      properties[fieldMapping.reminders] = {
+    if (fieldMapping.reminders.enabled && event.reminders !== undefined) {
+      properties[fieldMapping.reminders.notionPropertyName] = {
         number: event.reminders,
       };
     }
 
-    if (event.gcalEventId !== undefined) {
-      properties[fieldMapping.gcalEventId] = {
+    if (fieldMapping.gcalEventId.enabled && event.gcalEventId !== undefined) {
+      properties[fieldMapping.gcalEventId.notionPropertyName] = {
         rich_text: [{ text: { content: event.gcalEventId } }],
+      };
+    }
+
+    // New extended fields - only update if enabled and value exists
+    if (fieldMapping.attendees.enabled && event.attendees !== undefined) {
+      properties[fieldMapping.attendees.notionPropertyName] = {
+        rich_text: [{ text: { content: event.attendees.join(", ") } }],
+      };
+    }
+
+    if (fieldMapping.organizer.enabled && event.organizer !== undefined) {
+      properties[fieldMapping.organizer.notionPropertyName] = {
+        rich_text: [{ text: { content: event.organizer } }],
+      };
+    }
+
+    if (fieldMapping.conferenceLink.enabled && event.conferenceLink !== undefined) {
+      properties[fieldMapping.conferenceLink.notionPropertyName] = {
+        rich_text: [{ text: { content: event.conferenceLink } }],
+      };
+    }
+
+    if (fieldMapping.recurrence.enabled && event.recurrence !== undefined) {
+      properties[fieldMapping.recurrence.notionPropertyName] = {
+        rich_text: [{ text: { content: event.recurrence } }],
+      };
+    }
+
+    if (fieldMapping.color.enabled && event.color !== undefined) {
+      properties[fieldMapping.color.notionPropertyName] = {
+        rich_text: [{ text: { content: event.color } }],
+      };
+    }
+
+    if (fieldMapping.visibility.enabled && event.visibility !== undefined) {
+      properties[fieldMapping.visibility.notionPropertyName] = {
+        rich_text: [{ text: { content: event.visibility } }],
       };
     }
 
