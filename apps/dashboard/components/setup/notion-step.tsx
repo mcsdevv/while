@@ -42,6 +42,8 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
 
   // Debounce timer ref
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const validationRequestId = useRef(0);
+  const validationAbortController = useRef<AbortController | null>(null);
 
   // Debounced validation function
   const validateTokenDebounced = useCallback((token: string) => {
@@ -50,8 +52,15 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
       clearTimeout(debounceTimer.current);
     }
 
+    validationRequestId.current += 1;
+    const requestId = validationRequestId.current;
+
     // Reset status if token is too short
     if (token.length < 10) {
+      if (validationAbortController.current) {
+        validationAbortController.current.abort();
+        validationAbortController.current = null;
+      }
       setValidationStatus({ status: "idle" });
       return;
     }
@@ -61,14 +70,24 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
 
     // Debounce the API call
     debounceTimer.current = setTimeout(async () => {
+      if (validationAbortController.current) {
+        validationAbortController.current.abort();
+      }
+      const controller = new AbortController();
+      validationAbortController.current = controller;
+
       try {
         const response = await fetch("/api/setup/notion/validate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({ apiToken: token }),
         });
 
         const data = await response.json();
+        if (validationRequestId.current !== requestId) {
+          return;
+        }
 
         if (data.valid) {
           if (data.databaseCount === 0) {
@@ -96,7 +115,13 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
             errors: data.errors,
           });
         }
-      } catch {
+      } catch (err) {
+        if (validationRequestId.current !== requestId) {
+          return;
+        }
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return;
+        }
         setValidationStatus({
           status: "invalid",
           message: "Failed to validate token",
@@ -110,6 +135,10 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+      }
+      validationRequestId.current += 1;
+      if (validationAbortController.current) {
+        validationAbortController.current.abort();
       }
     };
   }, []);
@@ -259,7 +288,8 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
           <span className={config.color}>
             {validationStatus.status === "validating" ? "Validating..." : validationStatus.message}
           </span>
-          {validationStatus.integrationName && validationStatus.status === "valid" && (
+          {validationStatus.integrationName &&
+            (validationStatus.status === "valid" || validationStatus.status === "warning") && (
             <span className="ml-1 text-muted-foreground">
               ({validationStatus.integrationName}
               {validationStatus.workspaceName && ` in ${validationStatus.workspaceName}`})
