@@ -17,6 +17,19 @@ interface MermaidDemoProps {
   description?: string;
 }
 
+function buildDirective(config: ThemeConfig): string {
+  const init: Record<string, unknown> = {
+    theme: config.theme,
+  };
+  if (config.look) {
+    init.look = config.look;
+  }
+  if (config.themeVariables) {
+    init.themeVariables = config.themeVariables;
+  }
+  return `%%{init: ${JSON.stringify(init)}}%%\n`;
+}
+
 export function MermaidDemo({ chart, themeConfig, label, description }: MermaidDemoProps) {
   const id = useId();
   const [svg, setSvg] = useState<string>("");
@@ -33,13 +46,13 @@ export function MermaidDemo({ chart, themeConfig, label, description }: MermaidD
           startOnLoad: false,
           securityLevel: "loose",
           fontFamily: "inherit",
-          theme: themeConfig.theme,
-          look: themeConfig.look ?? "classic",
-          ...(themeConfig.themeVariables && { themeVariables: themeConfig.themeVariables }),
         });
 
+        // Prepend directive to chart for per-diagram theming
+        const chartWithDirective = buildDirective(themeConfig) + chart;
+
         const elementId = `mermaid-demo-${id.replace(/:/g, "-")}-${Date.now()}`;
-        const { svg: renderedSvg } = await mermaid.render(elementId, chart);
+        const { svg: renderedSvg } = await mermaid.render(elementId, chartWithDirective);
         setSvg(renderedSvg);
       } catch (error) {
         console.error("Mermaid rendering failed:", error);
