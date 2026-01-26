@@ -1,4 +1,4 @@
-import { getFieldMapping, getNotionConfig } from "@/lib/settings";
+import { getLegacyFieldMapping, getNotionConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { Client } from "@notionhq/client";
 import type {
@@ -83,7 +83,7 @@ function getPropertyValue(properties: PageObjectResponse["properties"], key: str
 export async function notionPageToEvent(page: PageObjectResponse): Promise<Event | null> {
   try {
     const properties = page.properties;
-    const fieldMapping = await getFieldMapping();
+    const fieldMapping = await getLegacyFieldMapping();
 
     const title = getPropertyValue(properties, fieldMapping.title) as string;
     const description = getPropertyValue(properties, fieldMapping.description) as
@@ -136,7 +136,7 @@ export async function fetchNotionEvents(): Promise<Event[]> {
   try {
     const client = await getClient();
     const databaseId = await getDatabaseId();
-    const fieldMapping = await getFieldMapping();
+    const fieldMapping = await getLegacyFieldMapping();
 
     const response: QueryDatabaseResponse = await client.databases.query({
       database_id: databaseId,
@@ -170,7 +170,7 @@ export async function createNotionEvent(event: Event): Promise<string> {
   try {
     const client = await getClient();
     const databaseId = await getDatabaseId();
-    const fieldMapping = await getFieldMapping();
+    const fieldMapping = await getLegacyFieldMapping();
 
     const response = await client.pages.create({
       parent: {
@@ -251,7 +251,7 @@ export async function createNotionEvent(event: Event): Promise<string> {
 export async function updateNotionEvent(pageId: string, event: Partial<Event>): Promise<void> {
   try {
     const client = await getClient();
-    const fieldMapping = await getFieldMapping();
+    const fieldMapping = await getLegacyFieldMapping();
 
     const properties: UpdatePageParameters["properties"] = {};
 
