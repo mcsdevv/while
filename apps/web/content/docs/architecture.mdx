@@ -8,25 +8,27 @@ This document explains the technical architecture of the While sync.
 ## System Diagram
 
 ```mermaid
-graph TB
-    subgraph "Your Vercel Deployment"
-        App[Next.js App]
-        API[API Routes]
-        Cron[Cron Jobs]
+graph LR
+    subgraph deploy ["Your Vercel Deployment"]
+        direction TB
+        App([Next.js App])
+        API([API Routes])
+        Cron([Cron Jobs])
     end
 
-    subgraph "External Services"
-        GCal[Google Calendar API]
-        Notion[Notion API]
-        Redis[(Upstash Redis)]
+    subgraph external ["External Services"]
+        direction TB
+        GCal([Google Calendar])
+        Notion([Notion])
+        Redis[(Redis)]
     end
 
-    GCal -->|Webhooks| API
+    GCal -.->|webhook| API
     API <-->|REST| GCal
-    Notion -->|Webhooks| API
+    Notion -.->|webhook| API
     API <-->|REST| Notion
-    App <-->|Read/Write| Redis
-    Cron -->|Trigger| API
+    App <--> Redis
+    Cron -->|trigger| API
 ```
 
 ## Components
@@ -134,11 +136,11 @@ When the same event is modified in both systems:
 3. **Deletion Priority**: If either system deletes an event, it's deleted in both
 
 ```mermaid
-flowchart TD
-    A[Change Detected] --> B{Same event changed in both?}
-    B -->|No| C[Apply change normally]
-    B -->|Yes| D{Compare timestamps}
-    D --> E[Apply most recent change to both systems]
+flowchart LR
+    A([Change Detected]) --> B{Both systems<br/>modified?}
+    B -->|No| C([Apply change])
+    B -->|Yes| D{Compare<br/>timestamps}
+    D --> E([Apply most recent])
 ```
 
 ## Security
