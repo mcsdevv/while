@@ -1,4 +1,4 @@
-import { getFieldMapping, getNotionConfig } from "@/lib/settings";
+import { getExtendedFieldMapping, getFieldMapping, getNotionConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { Client } from "@notionhq/client";
 import type {
@@ -310,6 +310,7 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
   try {
     const client = await getClient();
     const fieldMapping = await getFieldMapping();
+    const extendedMapping = await getExtendedFieldMapping();
 
     const properties: UpdatePageParameters["properties"] = {};
 
@@ -368,39 +369,39 @@ export async function updateNotionEvent(pageId: string, event: Partial<Event>): 
       };
     }
 
-    // New extended fields - only update if enabled and value exists
-    if (fieldMapping.attendees.enabled && event.attendees !== undefined) {
-      properties[fieldMapping.attendees.notionPropertyName] = {
+    // Extended fields - only update if enabled in field mapping
+    if (event.attendees !== undefined && extendedMapping.attendees.enabled) {
+      properties[extendedMapping.attendees.notionPropertyName] = {
         rich_text: [{ text: { content: event.attendees.join(", ") } }],
       };
     }
 
-    if (fieldMapping.organizer.enabled && event.organizer !== undefined) {
-      properties[fieldMapping.organizer.notionPropertyName] = {
+    if (event.organizer !== undefined && extendedMapping.organizer.enabled) {
+      properties[extendedMapping.organizer.notionPropertyName] = {
         rich_text: [{ text: { content: event.organizer } }],
       };
     }
 
-    if (fieldMapping.conferenceLink.enabled && event.conferenceLink !== undefined) {
-      properties[fieldMapping.conferenceLink.notionPropertyName] = {
+    if (event.conferenceLink !== undefined && extendedMapping.conferenceLink.enabled) {
+      properties[extendedMapping.conferenceLink.notionPropertyName] = {
         rich_text: [{ text: { content: event.conferenceLink } }],
       };
     }
 
-    if (fieldMapping.recurrence.enabled && event.recurrence !== undefined) {
-      properties[fieldMapping.recurrence.notionPropertyName] = {
+    if (event.recurrence !== undefined && extendedMapping.recurrence.enabled) {
+      properties[extendedMapping.recurrence.notionPropertyName] = {
         rich_text: [{ text: { content: event.recurrence } }],
       };
     }
 
-    if (fieldMapping.color.enabled && event.color !== undefined) {
-      properties[fieldMapping.color.notionPropertyName] = {
+    if (event.color !== undefined && extendedMapping.color.enabled) {
+      properties[extendedMapping.color.notionPropertyName] = {
         rich_text: [{ text: { content: event.color } }],
       };
     }
 
-    if (fieldMapping.visibility.enabled && event.visibility !== undefined) {
-      properties[fieldMapping.visibility.notionPropertyName] = {
+    if (event.visibility !== undefined && extendedMapping.visibility.enabled) {
+      properties[extendedMapping.visibility.notionPropertyName] = {
         rich_text: [{ text: { content: event.visibility } }],
       };
     }

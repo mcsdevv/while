@@ -1,5 +1,4 @@
-import { getGoogleConfig } from "@/lib/settings";
-import { GCAL_COLORS } from "@/lib/settings/types";
+import { GCAL_COLORS, getGoogleConfig } from "@/lib/settings";
 import type { Event } from "@/lib/types";
 import { calendar, type calendar_v3 } from "@googleapis/calendar";
 import { OAuth2Client } from "google-auth-library";

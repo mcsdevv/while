@@ -1,8 +1,18 @@
-import { getBackfillProgress, startBackfill } from "@/lib/sync/backfill";
+/**
+ * API endpoints for backfill service.
+ * Used to populate existing Notion pages with new field data from Google Calendar.
+ */
+import {
+  cancelBackfill,
+  getBackfillProgress,
+  resetBackfill,
+  startBackfill,
+} from "@/lib/sync/backfill";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-const VALID_FIELDS = [
+// Valid fields that can be backfilled
+const BACKFILL_FIELDS = [
   "attendees",
   "organizer",
   "conferenceLink",
@@ -12,8 +22,9 @@ const VALID_FIELDS = [
   "reminders",
 ] as const;
 
+// Request body schema for POST
 const startBackfillSchema = z.object({
-  fields: z.array(z.enum(VALID_FIELDS)).min(1),
+  fields: z.array(z.enum(BACKFILL_FIELDS)).min(1, "At least one field is required"),
 });
 
 /**
@@ -25,7 +36,7 @@ export async function GET() {
     const progress = await getBackfillProgress();
     return NextResponse.json(progress);
   } catch (error) {
-    console.error("Error fetching backfill progress:", error);
+    console.error("Error getting backfill progress:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 },
@@ -35,36 +46,78 @@ export async function GET() {
 
 /**
  * POST /api/sync/backfill
- * Starts a backfill operation (non-blocking)
- *
+ * Starts a new backfill operation (non-blocking)
  * Body: { fields: string[] }
- * Returns: { started: true, fieldsToBackfill: [...] }
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const parsed = startBackfillSchema.safeParse(body);
 
+    // Validate request body
+    const parsed = startBackfillSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Invalid request", details: parsed.error.issues },
+        { error: "Invalid request", details: parsed.error.flatten() },
         { status: 400 },
       );
     }
 
-    await startBackfill(parsed.data.fields);
+    const { fields } = parsed.data;
 
+    // Check if backfill is already running
+    const currentProgress = await getBackfillProgress();
+    if (currentProgress.status === "running") {
+      return NextResponse.json(
+        { error: "Backfill is already running", progress: currentProgress },
+        { status: 409 },
+      );
+    }
+
+    // Start backfill in background (non-blocking)
+    // We don't await this - it runs in the background
+    startBackfill(fields).catch((error) => {
+      console.error("Backfill failed:", error);
+    });
+
+    // Return immediately with initial status
     return NextResponse.json({
-      started: true,
-      fieldsToBackfill: parsed.data.fields,
+      status: "started",
+      fields,
+      message: "Backfill started. Use GET to check progress.",
     });
   } catch (error) {
     console.error("Error starting backfill:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 },
+    );
+  }
+}
 
-    if (error instanceof Error && error.message === "Backfill already in progress") {
-      return NextResponse.json({ error: error.message }, { status: 409 });
+/**
+ * DELETE /api/sync/backfill
+ * Cancels a running backfill operation
+ */
+export async function DELETE() {
+  try {
+    const progress = await getBackfillProgress();
+
+    if (progress.status !== "running") {
+      // If not running, just reset to idle
+      await resetBackfill();
+      return NextResponse.json({
+        status: "reset",
+        message: "Backfill was not running. Progress has been reset.",
+      });
     }
 
+    await cancelBackfill();
+    return NextResponse.json({
+      status: "cancelling",
+      message: "Backfill cancellation requested. It will stop after the current batch.",
+    });
+  } catch (error) {
+    console.error("Error cancelling backfill:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 },

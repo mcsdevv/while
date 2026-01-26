@@ -20,8 +20,7 @@ export async function GET() {
       return NextResponse.json({
         valid: false,
         error: "not_configured",
-        details:
-          "GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables are not set.",
+        details: "GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables are not set.",
       });
     }
 

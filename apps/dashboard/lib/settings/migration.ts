@@ -4,19 +4,19 @@
  */
 
 import {
-  type FieldMapping,
-  type ExtendedFieldMapping,
   DEFAULT_EXTENDED_FIELD_MAPPING,
-} from './types';
+  type ExtendedFieldMapping,
+  type FieldMapping,
+} from "./types";
 
 /**
  * Check if a field mapping is in the legacy format.
  * Legacy format has title as a string, new format has title as an object.
  */
 export function isLegacyFieldMapping(
-  mapping: FieldMapping | ExtendedFieldMapping
+  mapping: FieldMapping | ExtendedFieldMapping,
 ): mapping is FieldMapping {
-  return typeof mapping.title === 'string';
+  return typeof mapping.title === "string";
 }
 
 /**
@@ -27,9 +27,7 @@ export function isLegacyFieldMapping(
  * @param legacy - The legacy field mapping to migrate
  * @returns The migrated ExtendedFieldMapping
  */
-export function migrateFieldMapping(
-  legacy: FieldMapping
-): ExtendedFieldMapping {
+export function migrateFieldMapping(legacy: FieldMapping): ExtendedFieldMapping {
   return {
     // Required fields - always enabled, preserve property names
     title: {
@@ -80,7 +78,7 @@ export function migrateFieldMapping(
  * @returns ExtendedFieldMapping (migrated if legacy)
  */
 export function ensureExtendedFieldMapping(
-  mapping: FieldMapping | ExtendedFieldMapping
+  mapping: FieldMapping | ExtendedFieldMapping,
 ): ExtendedFieldMapping {
   if (isLegacyFieldMapping(mapping)) {
     return migrateFieldMapping(mapping);
