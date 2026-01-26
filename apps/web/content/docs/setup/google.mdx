@@ -50,13 +50,6 @@ Enter a name like `Notion Calendar Sync` and click **Create**
 </Step>
 <Step>
 
-### Select User Type
-
-Choose **External** (unless you have Google Workspace, then choose Internal)
-
-</Step>
-<Step>
-
 ### Select Project
 
 Wait for creation, then select your new project from the dropdown
@@ -85,32 +78,53 @@ If the API is already enabled, you'll see "Manage" instead of "Enable". No actio
 </Step>
 <Step>
 
+### Select User Type
+
+Choose **External** (unless you have Google Workspace, then choose Internal) and click **Create**
+
+</Step>
+<Step>
+
 ### Configure App Info
 
 - **App name**: `Notion Calendar Sync`
 - **User support email**: Your email
 - **Developer contact email**: Your email
 
+Click **Save and Continue** through the remaining wizard steps until complete.
+
 </Step>
 <Step>
 
-### Add Scopes
+### Add Scopes (After Creation)
 
-Click **Add or Remove Scopes** and select:
-- `.../auth/userinfo.email`
-- `.../auth/userinfo.profile`
-- `https://www.googleapis.com/auth/calendar`
-- `https://www.googleapis.com/auth/calendar.events`
+After the consent screen is created:
+
+1. Return to **OAuth consent screen** page
+2. Click **Edit App**
+3. Navigate to the **Scopes** section (or click "Add or Remove Scopes")
+4. Add these scopes:
+   - `.../auth/userinfo.email`
+   - `.../auth/userinfo.profile`
+   - `https://www.googleapis.com/auth/calendar`
+   - `https://www.googleapis.com/auth/calendar.events`
+5. Click **Save and Continue**
 
 </Step>
 <Step>
 
 ### Add Test Users
 
-Add your Google email address as a test user
+1. Go to **OAuth consent screen** > **Test users** (or click "Add Users")
+2. Add your Google email address
+3. Click **Save**
 
 </Step>
 </Steps>
+
+<Callout type="info">
+The scopes section may not appear during initial setup. You can always add scopes by editing the consent screen after creation.
+</Callout>
 
 ## Step 4: Create OAuth Credentials
 
