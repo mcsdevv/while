@@ -1,5 +1,6 @@
 "use client";
 
+import { getTokenHealth } from "@/lib/settings/token-health";
 import { Badge } from "@while/ui";
 import { Button } from "@while/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
@@ -11,40 +12,6 @@ interface GoogleStatus {
   calendarId: string | null;
   calendarName: string | null;
   connectedAt: string | null;
-}
-
-// Calculate days since connection for token health
-function getDaysSinceConnection(connectedAt: string | null): number | null {
-  if (!connectedAt) return null;
-  const connected = new Date(connectedAt);
-  const now = new Date();
-  const diffMs = now.getTime() - connected.getTime();
-  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
-}
-
-// Get token health status
-function getTokenHealth(
-  connectedAt: string | null,
-): { status: "healthy" | "warning" | "critical"; message: string } | null {
-  const days = getDaysSinceConnection(connectedAt);
-  if (days === null) return null;
-
-  if (days >= 7) {
-    return {
-      status: "critical",
-      message: `Token may have expired (${days} days old). Re-authenticate if sync stops working.`,
-    };
-  }
-  if (days >= 5) {
-    return {
-      status: "warning",
-      message: `Token expires in ~${7 - days} days. Consider re-authenticating soon.`,
-    };
-  }
-  return {
-    status: "healthy",
-    message: `Token healthy (${days} days old)`,
-  };
 }
 
 interface NotionStatus {

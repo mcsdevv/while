@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build:standalone": "tsx scripts/build-standalone.ts",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "tsx": "^4.19.0",
     "turbo": "^2.5.4",
     "typescript": "^5.9.3"
   },

@@ -1,0 +1,48 @@
+name: Sync Dashboard Template
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/dashboard/**'
+      - 'packages/ui/**'
+      - 'scripts/build-standalone.ts'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  sync-template:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build standalone dashboard
+        run: pnpm build:standalone
+
+      - name: Push to template repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.TEMPLATE_REPO_DEPLOY_KEY }}
+        with:
+          source-directory: 'dist-standalone'
+          destination-github-username: 'mcsdevv'
+          destination-repository-name: 'while-dashboard-template'
+          target-branch: main
+          commit-message: 'chore: sync from monorepo'
