@@ -13,6 +13,40 @@ interface GoogleStatus {
   connectedAt: string | null;
 }
 
+// Calculate days since connection for token health
+function getDaysSinceConnection(connectedAt: string | null): number | null {
+  if (!connectedAt) return null;
+  const connected = new Date(connectedAt);
+  const now = new Date();
+  const diffMs = now.getTime() - connected.getTime();
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+// Get token health status
+function getTokenHealth(
+  connectedAt: string | null,
+): { status: "healthy" | "warning" | "critical"; message: string } | null {
+  const days = getDaysSinceConnection(connectedAt);
+  if (days === null) return null;
+
+  if (days >= 7) {
+    return {
+      status: "critical",
+      message: `Token may have expired (${days} days old). Re-authenticate if sync stops working.`,
+    };
+  }
+  if (days >= 5) {
+    return {
+      status: "warning",
+      message: `Token expires in ~${7 - days} days. Consider re-authenticating soon.`,
+    };
+  }
+  return {
+    status: "healthy",
+    message: `Token healthy (${days} days old)`,
+  };
+}
+
 interface NotionStatus {
   databaseId: string | null;
   databaseName: string | null;
@@ -100,6 +134,52 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
                       : google.calendarId || "Not selected")}
                 </p>
                 <p>Connected: {formatDate(google.connectedAt)}</p>
+                {/* Token health indicator */}
+                {(() => {
+                  const health = getTokenHealth(google.connectedAt);
+                  if (!health) return null;
+                  return (
+                    <div
+                      className={`mt-2 rounded px-2 py-1 text-xs ${
+                        health.status === "critical"
+                          ? "bg-destructive/10 text-destructive"
+                          : health.status === "warning"
+                            ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                            : "bg-foreground/5 text-muted-foreground"
+                      }`}
+                    >
+                      {health.status === "critical" && (
+                        <svg
+                          aria-hidden="true"
+                          className="inline h-3 w-3 mr-1"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                      {health.status === "warning" && (
+                        <svg
+                          aria-hidden="true"
+                          className="inline h-3 w-3 mr-1"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                      {health.message}
+                    </div>
+                  );
+                })()}
               </div>
             )}
           </div>

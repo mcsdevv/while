@@ -4,10 +4,25 @@ description: Configure Google Cloud for Calendar API access
 ---
 
 import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
+import { SetupChecklist, SetupChecklistItem } from "@/components/mdx/setup-checklist";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
 This guide walks through creating a Google Cloud project and configuring OAuth. A single OAuth client handles both dashboard authentication and Google Calendar API access.
+
+<Callout type="warn" title="Token Expiration Warning">
+OAuth tokens expire every **7 days** while your app is in "Testing" mode. You'll need to re-authenticate weekly unless you [publish your app](#step-5-publish-app-optional). This is a Google security measure for unpublished apps.
+</Callout>
+
+<SetupChecklist title="Quick Reference Checklist">
+  <SetupChecklistItem>Created Google Cloud project</SetupChecklistItem>
+  <SetupChecklistItem>Enabled Google Calendar API</SetupChecklistItem>
+  <SetupChecklistItem>Configured OAuth consent screen</SetupChecklistItem>
+  <SetupChecklistItem>Added myself as test user</SetupChecklistItem>
+  <SetupChecklistItem>Created OAuth credentials (Web application)</SetupChecklistItem>
+  <SetupChecklistItem>Added redirect URI to credentials</SetupChecklistItem>
+  <SetupChecklistItem>Copied Client ID and Secret to Vercel</SetupChecklistItem>
+</SetupChecklist>
 
 ## Step 1: Create Google Cloud Project
 
@@ -125,16 +140,26 @@ http://localhost:3000/api/auth/callback/google
 Keep your Client Secret secure. Never commit it to version control.
 </Callout>
 
-## Step 5: Publish App (Optional)
+## Step 5: Publish App (Recommended)
 
-While in "Testing" mode, OAuth tokens expire after 7 days. To avoid this:
+<Callout type="warn">
+**This step prevents weekly re-authentication.** In "Testing" mode, OAuth tokens expire after 7 days, requiring you to sign in again.
+</Callout>
+
+To publish your app and get longer-lived tokens:
 
 1. Go to **OAuth consent screen**
 2. Click **Publish App**
-3. Confirm the warning
+3. Confirm the warning about moving to production
 
-<Callout type="info" title="Note">
-For personal use, keeping the app in "Testing" mode is fine. Just re-authenticate when tokens expire.
+### What "Publishing" means:
+
+- **For personal use**: Google will show an "unverified app" warning once, but tokens won't expire weekly
+- **No Google review required**: Since you're the only user, no verification process is needed
+- **Same functionality**: Publishing doesn't change what your app can do
+
+<Callout type="info" title="Staying in Testing Mode">
+If you prefer testing mode, just re-authenticate every 7 days. The While dashboard will show a warning when your token is approaching expiration.
 </Callout>
 
 ## Environment Variables
