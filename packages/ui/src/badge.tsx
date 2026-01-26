@@ -6,8 +6,7 @@ const badgeVariants = tv({
   variants: {
     variant: {
       default: "border-transparent bg-foreground text-background hover:bg-foreground/80",
-      secondary:
-        "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+      secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
       destructive:
         "border border-foreground/20 bg-foreground/5 text-foreground hover:bg-foreground/10",
       success: "border border-foreground/20 bg-foreground/5 text-foreground hover:bg-foreground/10",

@@ -28,9 +28,7 @@ describe("parseRRule", () => {
     });
 
     test("weekly on two days", () => {
-      expect(parseRRule("RRULE:FREQ=WEEKLY;BYDAY=TU,TH")).toBe(
-        "Weekly on Tuesday and Thursday",
-      );
+      expect(parseRRule("RRULE:FREQ=WEEKLY;BYDAY=TU,TH")).toBe("Weekly on Tuesday and Thursday");
     });
 
     test("weekly on multiple days", () => {
@@ -83,9 +81,7 @@ describe("parseRRule", () => {
     });
 
     test("yearly with month and day", () => {
-      expect(parseRRule("RRULE:FREQ=YEARLY;BYMONTH=3;BYMONTHDAY=15")).toBe(
-        "Yearly on March 15",
-      );
+      expect(parseRRule("RRULE:FREQ=YEARLY;BYMONTH=3;BYMONTHDAY=15")).toBe("Yearly on March 15");
       expect(parseRRule("RRULE:FREQ=YEARLY;BYMONTH=12;BYMONTHDAY=25")).toBe(
         "Yearly on December 25",
       );

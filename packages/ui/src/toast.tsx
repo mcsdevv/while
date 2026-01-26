@@ -90,16 +90,8 @@ export function Toast({ id, title, description, variant = "default" }: ToastProp
       )}
     >
       <div className="flex-1 space-y-1">
-        {title && (
-          <p className="text-sm font-medium text-foreground">
-            {title}
-          </p>
-        )}
-        {description && (
-          <p className="text-sm text-muted-foreground">
-            {description}
-          </p>
-        )}
+        {title && <p className="text-sm font-medium text-foreground">{title}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
       <button
         type="button"

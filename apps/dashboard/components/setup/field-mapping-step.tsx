@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from "@while/ui";
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Switch,
+} from "@while/ui";
 import { useEffect, useState } from "react";
 import type { ExtendedFieldMapping, FieldConfig } from "@/lib/settings/types";
 import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";

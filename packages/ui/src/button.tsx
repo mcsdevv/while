@@ -7,7 +7,8 @@ const buttonVariants = tv({
   variants: {
     variant: {
       default: "bg-foreground text-background shadow hover:bg-foreground/90",
-      destructive: "border border-foreground/20 bg-background text-foreground shadow-sm hover:bg-foreground/5",
+      destructive:
+        "border border-foreground/20 bg-background text-foreground shadow-sm hover:bg-foreground/5",
       outline:
         "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
       secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
@@ -62,9 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return React.cloneElement(child, {
         ...props,
         ref,
-        className: childClassName
-          ? `${mergedClassName} ${childClassName}`
-          : mergedClassName,
+        className: childClassName ? `${mergedClassName} ${childClassName}` : mergedClassName,
       });
     }
 

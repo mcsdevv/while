@@ -159,7 +159,7 @@ export const DEFAULT_EXTENDED_FIELD_MAPPING: ExtendedFieldMapping = {
 export interface AppSettings {
   google: GoogleSettings;
   notion: NotionSettings;
-  fieldMapping: FieldMapping | ExtendedFieldMapping;  // Accept both during migration
+  fieldMapping: FieldMapping | ExtendedFieldMapping; // Accept both during migration
   setupCompleted: boolean;
 }
 

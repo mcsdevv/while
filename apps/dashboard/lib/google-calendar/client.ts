@@ -143,9 +143,7 @@ export function gcalEventToEvent(gcalEvent: calendar_v3.Schema$Event): Event | n
     const recurrence = gcalEvent.recurrence?.[0] ? parseRRule(gcalEvent.recurrence[0]) : undefined;
 
     // Extract color (map colorId to color name)
-    const color = gcalEvent.colorId
-      ? GCAL_COLORS[gcalEvent.colorId]?.name || "Default"
-      : undefined;
+    const color = gcalEvent.colorId ? GCAL_COLORS[gcalEvent.colorId]?.name || "Default" : undefined;
 
     // Extract visibility
     const visibility = gcalEvent.visibility as "public" | "private" | "default" | undefined;

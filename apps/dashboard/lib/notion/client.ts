@@ -105,38 +105,56 @@ export async function notionPageToEvent(page: PageObjectResponse): Promise<Event
 
     // Optional fields - only read if enabled
     const description = fieldMapping.description.enabled
-      ? (getPropertyValue(properties, fieldMapping.description.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.description.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const location = fieldMapping.location.enabled
-      ? (getPropertyValue(properties, fieldMapping.location.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.location.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const gcalEventId = fieldMapping.gcalEventId.enabled
-      ? (getPropertyValue(properties, fieldMapping.gcalEventId.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.gcalEventId.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const reminders = fieldMapping.reminders.enabled
-      ? (getPropertyValue(properties, fieldMapping.reminders.notionPropertyName) as number | undefined)
+      ? (getPropertyValue(properties, fieldMapping.reminders.notionPropertyName) as
+          | number
+          | undefined)
       : undefined;
 
     // New extended fields - only read if enabled
     const attendeesStr = fieldMapping.attendees.enabled
-      ? (getPropertyValue(properties, fieldMapping.attendees.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.attendees.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const attendees = attendeesStr ? attendeesStr.split(", ").filter(Boolean) : undefined;
 
     const organizer = fieldMapping.organizer.enabled
-      ? (getPropertyValue(properties, fieldMapping.organizer.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.organizer.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const conferenceLink = fieldMapping.conferenceLink.enabled
-      ? (getPropertyValue(properties, fieldMapping.conferenceLink.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.conferenceLink.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const recurrence = fieldMapping.recurrence.enabled
-      ? (getPropertyValue(properties, fieldMapping.recurrence.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.recurrence.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const color = fieldMapping.color.enabled
       ? (getPropertyValue(properties, fieldMapping.color.notionPropertyName) as string | undefined)
       : undefined;
     const visibilityStr = fieldMapping.visibility.enabled
-      ? (getPropertyValue(properties, fieldMapping.visibility.notionPropertyName) as string | undefined)
+      ? (getPropertyValue(properties, fieldMapping.visibility.notionPropertyName) as
+          | string
+          | undefined)
       : undefined;
     const visibility = visibilityStr as Event["visibility"];
 

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  isLegacyFieldMapping,
-  migrateFieldMapping,
-  ensureExtendedFieldMapping,
-} from "./migration";
+import { isLegacyFieldMapping, migrateFieldMapping, ensureExtendedFieldMapping } from "./migration";
 import {
   DEFAULT_FIELD_MAPPING,
   DEFAULT_EXTENDED_FIELD_MAPPING,

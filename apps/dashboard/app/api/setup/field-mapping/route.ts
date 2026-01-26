@@ -104,10 +104,7 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields are enabled
     if (!fieldMapping.title.enabled || !fieldMapping.date.enabled) {
-      return NextResponse.json(
-        { error: "Title and Date fields must be enabled" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Title and Date fields must be enabled" }, { status: 400 });
     }
 
     // Validate required fields have property names
