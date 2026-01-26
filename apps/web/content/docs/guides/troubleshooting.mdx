@@ -17,35 +17,39 @@ This guide covers common issues and their solutions.
 - "Invalid credentials" error
 - Events stop syncing from Google Calendar
 - Dashboard shows authentication error
+- Token health indicator shows "critical" status
 
 **Solution:**
 
 <Steps>
 <Step>
 
-### Check Token Status
+### Check Token Health
 
-Go to Settings and look for Google connection status
+Go to Settings and check the Google connection status. The dashboard shows a token health indicator:
+- **Healthy** (green): Token is valid (0-4 days old)
+- **Warning** (amber): Token expires soon (5-6 days old)
+- **Critical** (red): Token may have expired (7+ days old)
 
 </Step>
 <Step>
 
 ### Re-authenticate
 
-Sign out and sign back in with Google to refresh your tokens
+Sign out and sign back in with Google to refresh your tokens. The dashboard will warn you 2 days before expiration.
 
 </Step>
 <Step>
 
-### Publish OAuth App (Optional)
+### Publish OAuth App (Recommended)
 
-To avoid 7-day expiration, publish your Google OAuth app
+To avoid weekly re-authentication, [publish your Google OAuth app](/docs/setup/google#step-5-publish-app-optional). Publishing is free and doesn't require Google review for personal use.
 
 </Step>
 </Steps>
 
-<Callout type="info" title="Note">
-Google OAuth apps in "Testing" mode have tokens that expire after 7 days. Publish your app for longer-lived tokens.
+<Callout type="warn" title="7-Day Token Expiration">
+Google OAuth apps in "Testing" mode have tokens that expire after 7 days. The dashboard will show warnings before expiration so you can re-authenticate proactively.
 </Callout>
 
 ### Notion Integration Disconnected
