@@ -51,10 +51,18 @@ If the API is already enabled, you'll see "Manage" instead of "Enable". No actio
 3. Go to **APIs & Services** > **OAuth consent screen**
 4. Configure as **External** with your email as test user
 5. Go to **Credentials** > **Create Credentials** > **OAuth client ID**
-6. Select **Web application** and add redirect URI:
+6. Select **Web application** and configure:
 
+**Authorised JavaScript origins:**
+```
+https://your-app.vercel.app
+http://localhost:3000
+```
+
+**Authorised redirect URIs:**
 ```
 https://your-app.vercel.app/api/auth/callback/google
+http://localhost:3000/api/auth/callback/google
 ```
 
 <Callout type="info">
