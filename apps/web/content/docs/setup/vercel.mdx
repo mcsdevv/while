@@ -4,10 +4,21 @@ description: Deploy the sync app to Vercel
 ---
 
 import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
+import { SetupChecklist, SetupChecklistItem } from "@/components/mdx/setup-checklist";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
 This guide walks through deploying the sync application to Vercel.
+
+<SetupChecklist title="Quick Reference Checklist">
+  <SetupChecklistItem>Deployed app to Vercel</SetupChecklistItem>
+  <SetupChecklistItem>Set NEXTAUTH_SECRET environment variable</SetupChecklistItem>
+  <SetupChecklistItem>Set Google OAuth credentials</SetupChecklistItem>
+  <SetupChecklistItem>Set AUTHORIZED_EMAILS</SetupChecklistItem>
+  <SetupChecklistItem>Added Redis storage (Upstash)</SetupChecklistItem>
+  <SetupChecklistItem>Updated Google OAuth redirect URI</SetupChecklistItem>
+  <SetupChecklistItem>Completed setup wizard</SetupChecklistItem>
+</SetupChecklist>
 
 ## One-Click Deploy
 
