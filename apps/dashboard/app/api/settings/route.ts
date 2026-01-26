@@ -23,6 +23,7 @@ export async function GET() {
           isConfigured: googleClientConfig !== null,
           isConnected: false,
           calendarId: null,
+          calendarName: null,
           connectedAt: null,
         },
         notion: null,
@@ -37,6 +38,7 @@ export async function GET() {
         isConfigured: googleClientConfig !== null,
         isConnected: !!settings.google?.refreshToken,
         calendarId: settings.google?.calendarId || null,
+        calendarName: settings.google?.calendarName || null,
         connectedAt: settings.google?.connectedAt || null,
       },
       notion: settings.notion

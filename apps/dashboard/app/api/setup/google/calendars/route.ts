@@ -65,6 +65,7 @@ export async function GET() {
 
 const selectCalendarSchema = z.object({
   calendarId: z.string().min(1, "Calendar ID is required"),
+  calendarName: z.string().optional(),
 });
 
 /**
@@ -91,6 +92,7 @@ export async function POST(request: NextRequest) {
       google: {
         ...settings.google,
         calendarId: result.data.calendarId,
+        calendarName: result.data.calendarName,
       },
     });
 
@@ -100,6 +102,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: "success",
       calendarId: result.data.calendarId,
+      calendarName: result.data.calendarName,
     });
   } catch (error) {
     console.error("Error selecting calendar:", error);

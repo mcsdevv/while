@@ -13,10 +13,11 @@ import { useEffect, useState } from "react";
 
 interface Settings {
   google: {
-    clientId: string;
-    calendarId: string | null;
-    connectedAt: string | null;
+    isConfigured: boolean;
     isConnected: boolean;
+    calendarId: string | null;
+    calendarName: string | null;
+    connectedAt: string | null;
   } | null;
   notion: {
     databaseId: string | null;

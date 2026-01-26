@@ -65,10 +65,14 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
   const handleSelectCalendar = async (calendarId: string) => {
     setSelectedCalendar(calendarId);
     try {
+      // Find calendar name for storage
+      const selectedCal = calendars.find((cal) => cal.id === calendarId);
+      const calendarName = selectedCal?.name || "";
+
       const response = await fetch("/api/setup/google/calendars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ calendarId }),
+        body: JSON.stringify({ calendarId, calendarName }),
       });
 
       if (!response.ok) {

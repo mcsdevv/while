@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 
 interface GoogleSettingsProps {
   settings: {
-    clientId: string;
-    calendarId: string | null;
-    connectedAt: string | null;
+    isConfigured: boolean;
     isConnected: boolean;
+    calendarId: string | null;
+    calendarName: string | null;
+    connectedAt: string | null;
   } | null;
 }
 
@@ -32,6 +33,20 @@ export function GoogleSettings({ settings }: GoogleSettingsProps) {
     });
   };
 
+  // Display calendar name, falling back to ID if name not available
+  const getCalendarDisplay = () => {
+    if (settings?.calendarName) {
+      return settings.calendarName;
+    }
+    if (settings?.calendarId) {
+      // Show abbreviated ID if no name
+      return settings.calendarId === "primary"
+        ? "Primary Calendar"
+        : settings.calendarId.split("@")[0] || settings.calendarId;
+    }
+    return "Not selected";
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -50,12 +65,8 @@ export function GoogleSettings({ settings }: GoogleSettingsProps) {
           <>
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
-                <span className="text-muted-foreground">Client ID</span>
-                <span className="font-mono truncate">{settings.clientId || "Not configured"}</span>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Calendar</span>
-                <span className="truncate">{settings.calendarId || "Not selected"}</span>
+                <span className="truncate font-medium">{getCalendarDisplay()}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm">
                 <span className="text-muted-foreground">Connected</span>

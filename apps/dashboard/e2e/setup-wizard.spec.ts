@@ -107,14 +107,14 @@ test.describe("Setup Wizard", () => {
 
 test.describe("Setup Wizard - Google Step", () => {
   test.beforeEach(async ({ page }) => {
-    // Mock status API to show Google step
+    // Mock status API to show Google step (not yet connected)
     await page.route("**/api/setup/status", async (route) => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({
           setupComplete: false,
-          google: { configured: false, connected: false, calendarSelected: false },
+          google: { configured: true, connected: false, calendarSelected: false },
           notion: { configured: false, databaseSelected: false, databaseName: null },
           fieldMapping: { configured: false },
         }),
@@ -122,40 +122,56 @@ test.describe("Setup Wizard - Google Step", () => {
     });
   });
 
-  test("shows Google credentials form on step 2", async ({ page }) => {
+  test("shows Sign in with Google button on step 2", async ({ page }) => {
     await page.goto("/setup");
 
     // Navigate to Google step
     await page.getByRole("button", { name: "Get Started" }).click();
 
-    // Check form fields are visible
+    // Check Google step is visible with sign-in button (no credential fields)
     await expect(page.getByRole("heading", { name: "Google" })).toBeVisible();
-    await expect(page.getByLabel(/Client ID/i)).toBeVisible();
-    await expect(page.getByLabel(/Client Secret/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: /Sign in with Google/i })).toBeVisible();
   });
 
-  test("shows error for invalid credentials", async ({ page }) => {
-    // Mock Google validation to fail
-    await page.route("**/api/setup/google", async (route) => {
+  test("shows calendar selection after Google sign-in", async ({ page }) => {
+    // Mock status API to show Google connected
+    await page.route("**/api/setup/status", async (route) => {
       await route.fulfill({
-        status: 400,
+        status: 200,
         contentType: "application/json",
-        body: JSON.stringify({ error: "Invalid client credentials" }),
+        body: JSON.stringify({
+          setupComplete: false,
+          google: { configured: true, connected: true, calendarSelected: false },
+          notion: { configured: false, databaseSelected: false, databaseName: null },
+          fieldMapping: { configured: false },
+        }),
       });
+    });
+
+    // Mock calendar list API
+    await page.route("**/api/setup/google/calendars", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({
+            calendars: [
+              { id: "primary", name: "Personal", primary: true },
+              { id: "work@group.calendar.google.com", name: "Work", primary: false },
+            ],
+            selectedCalendarId: null,
+          }),
+        });
+      }
     });
 
     await page.goto("/setup");
     await page.getByRole("button", { name: "Get Started" }).click();
 
-    // Fill in credentials
-    await page.getByLabel(/Client ID/i).fill("invalid-client-id");
-    await page.getByLabel(/Client Secret/i).fill("invalid-secret");
-
-    // Submit
-    await page.getByRole("button", { name: /Save & Connect/i }).click();
-
-    // Check error is displayed
-    await expect(page.getByText(/Invalid client credentials/i)).toBeVisible();
+    // Check calendar selection is visible
+    await expect(page.getByRole("heading", { name: "Google" })).toBeVisible();
+    await expect(page.getByText(/Google Calendar connected/i)).toBeVisible();
+    await expect(page.getByText(/Select Calendar to Sync/i)).toBeVisible();
   });
 });
 

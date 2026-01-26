@@ -3,26 +3,42 @@ import { z } from "zod";
 
 /**
  * Tests for environment variable validation schema
+ * Updated to reflect consolidated Google OAuth (single client for auth + calendar)
  */
 describe("Environment Variables", () => {
-  // Minimal schema for testing auth-related env vars
+  // Schema matching the actual implementation in lib/env.ts
   const authEnvSchema = z.object({
     NEXTAUTH_SECRET: z.string().min(1, "NextAuth secret is required"),
     NEXTAUTH_URL: z.string().url().optional(),
-    AUTH_GOOGLE_ID: z.string().min(1, "Google OAuth client ID is required"),
-    AUTH_GOOGLE_SECRET: z.string().min(1, "Google OAuth client secret is required"),
+    GOOGLE_CLIENT_ID: z.string().min(1, "Google OAuth client ID is required"),
+    GOOGLE_CLIENT_SECRET: z.string().min(1, "Google OAuth client secret is required"),
     AUTHORIZED_EMAILS: z
       .string()
-      .min(1, "At least one authorized email is required")
-      .transform((str) => str.split(",").map((email) => email.trim())),
+      .optional()
+      .transform((str) =>
+        str
+          ?.split(",")
+          .map((email) => email.trim().toLowerCase())
+          .filter(Boolean),
+      ),
+    AUTHORIZED_DOMAINS: z
+      .string()
+      .optional()
+      .transform((str) =>
+        str
+          ?.split(",")
+          .map((domain) => domain.trim().toLowerCase())
+          .filter(Boolean),
+      ),
+    SETUP_TOKEN: z.string().optional(),
   });
 
   describe("NEXTAUTH_SECRET", () => {
     it("should require NEXTAUTH_SECRET", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -32,8 +48,8 @@ describe("Environment Variables", () => {
     it("should accept valid NEXTAUTH_SECRET", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "my-super-secret-key-that-is-32-chars",
-        AUTH_GOOGLE_ID: "test.apps.googleusercontent.com",
-        AUTH_GOOGLE_SECRET: "GOCSPX-test",
+        GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
+        GOOGLE_CLIENT_SECRET: "GOCSPX-test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -46,8 +62,8 @@ describe("Environment Variables", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
         NEXTAUTH_URL: "https://example.com",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -58,8 +74,8 @@ describe("Environment Variables", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
         NEXTAUTH_URL: "not-a-url",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -69,8 +85,8 @@ describe("Environment Variables", () => {
     it("should allow NEXTAUTH_URL to be optional", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -78,12 +94,12 @@ describe("Environment Variables", () => {
     });
   });
 
-  describe("AUTH_GOOGLE_ID", () => {
-    it("should require AUTH_GOOGLE_ID", () => {
+  describe("GOOGLE_CLIENT_ID", () => {
+    it("should require GOOGLE_CLIENT_ID", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -93,8 +109,8 @@ describe("Environment Variables", () => {
     it("should accept valid Google Client ID format", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "123456789-abc123.apps.googleusercontent.com",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "123456789-abc123.apps.googleusercontent.com",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -102,12 +118,12 @@ describe("Environment Variables", () => {
     });
   });
 
-  describe("AUTH_GOOGLE_SECRET", () => {
-    it("should require AUTH_GOOGLE_SECRET", () => {
+  describe("GOOGLE_CLIENT_SECRET", () => {
+    it("should require GOOGLE_CLIENT_SECRET", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -117,8 +133,8 @@ describe("Environment Variables", () => {
     it("should accept valid Google Client Secret format", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "GOCSPX-abc123xyz789",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "GOCSPX-abc123xyz789",
         AUTHORIZED_EMAILS: "test@example.com",
       });
 
@@ -127,22 +143,22 @@ describe("Environment Variables", () => {
   });
 
   describe("AUTHORIZED_EMAILS", () => {
-    it("should require at least one authorized email", () => {
+    it("should allow AUTHORIZED_EMAILS to be optional", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
-        AUTHORIZED_EMAILS: "",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        // No AUTHORIZED_EMAILS - allowed when using AUTHORIZED_DOMAINS or SETUP_TOKEN
       });
 
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
     });
 
     it("should parse single email", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "user@example.com",
       });
 
@@ -155,8 +171,8 @@ describe("Environment Variables", () => {
     it("should parse multiple emails separated by commas", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
         AUTHORIZED_EMAILS: "user1@example.com,user2@example.com,user3@example.com",
       });
 
@@ -170,30 +186,12 @@ describe("Environment Variables", () => {
       }
     });
 
-    it("should trim whitespace from emails", () => {
+    it("should trim whitespace and lowercase emails", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
-        AUTHORIZED_EMAILS: " user1@example.com , user2@example.com , user3@example.com ",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_EMAILS).toEqual([
-          "user1@example.com",
-          "user2@example.com",
-          "user3@example.com",
-        ]);
-      }
-    });
-
-    it("should handle emails with no spaces", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        AUTH_GOOGLE_ID: "test",
-        AUTH_GOOGLE_SECRET: "test",
-        AUTHORIZED_EMAILS: "user1@example.com,user2@example.com",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_EMAILS: " User1@Example.COM , USER2@example.com ",
       });
 
       expect(result.success).toBe(true);
@@ -201,15 +199,135 @@ describe("Environment Variables", () => {
         expect(result.data.AUTHORIZED_EMAILS).toEqual(["user1@example.com", "user2@example.com"]);
       }
     });
+
+    it("should filter out empty entries", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_EMAILS: "user@example.com,,  ,another@example.com",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_EMAILS).toEqual(["user@example.com", "another@example.com"]);
+      }
+    });
+
+    it("should accept wildcard patterns", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_EMAILS: "*@company.com,admin@gmail.com",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_EMAILS).toEqual(["*@company.com", "admin@gmail.com"]);
+      }
+    });
+  });
+
+  describe("AUTHORIZED_DOMAINS", () => {
+    it("should allow AUTHORIZED_DOMAINS to be optional", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_EMAILS: "test@example.com",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
+      }
+    });
+
+    it("should parse single domain", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_DOMAINS: "company.com",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com"]);
+      }
+    });
+
+    it("should parse multiple domains", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_DOMAINS: "company.com,subsidiary.org,partner.net",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual([
+          "company.com",
+          "subsidiary.org",
+          "partner.net",
+        ]);
+      }
+    });
+
+    it("should trim whitespace and lowercase domains", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_DOMAINS: " Company.COM , OTHER.org ",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "other.org"]);
+      }
+    });
+  });
+
+  describe("SETUP_TOKEN", () => {
+    it("should allow SETUP_TOKEN to be optional", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_EMAILS: "test@example.com",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.SETUP_TOKEN).toBeUndefined();
+      }
+    });
+
+    it("should accept SETUP_TOKEN when provided", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        SETUP_TOKEN: "abc123xyz789",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.SETUP_TOKEN).toBe("abc123xyz789");
+      }
+    });
   });
 
   describe("Complete Configuration", () => {
-    it("should validate complete auth configuration", () => {
+    it("should validate complete auth configuration with emails", () => {
       const validConfig = {
         NEXTAUTH_SECRET: "my-super-secret-key-that-is-32-chars",
         NEXTAUTH_URL: "https://my-app.vercel.app",
-        AUTH_GOOGLE_ID: "123456789-abc123.apps.googleusercontent.com",
-        AUTH_GOOGLE_SECRET: "GOCSPX-abc123xyz789",
+        GOOGLE_CLIENT_ID: "123456789-abc123.apps.googleusercontent.com",
+        GOOGLE_CLIENT_SECRET: "GOCSPX-abc123xyz789",
         AUTHORIZED_EMAILS: "admin@example.com,user@example.com",
       };
 
@@ -219,9 +337,44 @@ describe("Environment Variables", () => {
       if (result.success) {
         expect(result.data.NEXTAUTH_SECRET).toBe(validConfig.NEXTAUTH_SECRET);
         expect(result.data.NEXTAUTH_URL).toBe(validConfig.NEXTAUTH_URL);
-        expect(result.data.AUTH_GOOGLE_ID).toBe(validConfig.AUTH_GOOGLE_ID);
-        expect(result.data.AUTH_GOOGLE_SECRET).toBe(validConfig.AUTH_GOOGLE_SECRET);
+        expect(result.data.GOOGLE_CLIENT_ID).toBe(validConfig.GOOGLE_CLIENT_ID);
+        expect(result.data.GOOGLE_CLIENT_SECRET).toBe(validConfig.GOOGLE_CLIENT_SECRET);
         expect(result.data.AUTHORIZED_EMAILS).toEqual(["admin@example.com", "user@example.com"]);
+      }
+    });
+
+    it("should validate configuration with domains instead of emails", () => {
+      const validConfig = {
+        NEXTAUTH_SECRET: "my-super-secret-key",
+        GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
+        GOOGLE_CLIENT_SECRET: "GOCSPX-test",
+        AUTHORIZED_DOMAINS: "company.com,partner.org",
+      };
+
+      const result = authEnvSchema.safeParse(validConfig);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "partner.org"]);
+        expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
+      }
+    });
+
+    it("should validate configuration with setup token only", () => {
+      const validConfig = {
+        NEXTAUTH_SECRET: "my-super-secret-key",
+        GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
+        GOOGLE_CLIENT_SECRET: "GOCSPX-test",
+        SETUP_TOKEN: "initial-setup-token-12345",
+      };
+
+      const result = authEnvSchema.safeParse(validConfig);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.SETUP_TOKEN).toBe("initial-setup-token-12345");
+        expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
+        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
       }
     });
 
@@ -229,9 +382,8 @@ describe("Environment Variables", () => {
       const invalidConfig = {
         NEXTAUTH_SECRET: "", // Invalid: empty
         NEXTAUTH_URL: "not-a-url", // Invalid: not a URL
-        AUTH_GOOGLE_ID: "", // Invalid: empty
-        AUTH_GOOGLE_SECRET: "", // Invalid: empty
-        AUTHORIZED_EMAILS: "", // Invalid: empty
+        GOOGLE_CLIENT_ID: "", // Invalid: empty
+        GOOGLE_CLIENT_SECRET: "", // Invalid: empty
       };
 
       const result = authEnvSchema.safeParse(invalidConfig);

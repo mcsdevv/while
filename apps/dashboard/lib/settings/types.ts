@@ -8,6 +8,7 @@ export interface GoogleSettings {
   // Note: clientId and clientSecret now come from GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET env vars
   refreshToken: string; // Encrypted at rest, obtained during OAuth sign-in
   calendarId: string;
+  calendarName?: string; // Display name of the selected calendar
   connectedAt: string; // ISO timestamp
 }
 

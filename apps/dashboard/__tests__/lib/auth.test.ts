@@ -1,34 +1,41 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
- * Tests for authentication configuration and email whitelist
+ * Tests for authentication configuration and email authorization
+ * Updated to test new authorization methods: exact emails, wildcards, domains, setup token
  */
 describe("Authentication", () => {
-  describe("Email Whitelist", () => {
+  describe("Email Allowlist (Exact Match)", () => {
     const originalEnv = process.env;
 
     beforeEach(() => {
-      // Reset environment before each test
       process.env = { ...originalEnv };
     });
 
+    afterEach(() => {
+      process.env = originalEnv;
+    });
+
     it("should allow authorized emails to sign in", () => {
-      // Mock environment with authorized emails
       process.env.AUTHORIZED_EMAILS = "user1@example.com,user2@example.com";
 
-      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) => e.trim());
+      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) =>
+        e.trim().toLowerCase(),
+      );
       const testEmail = "user1@example.com";
 
-      expect(authorizedEmails.includes(testEmail)).toBe(true);
+      expect(authorizedEmails.includes(testEmail.toLowerCase())).toBe(true);
     });
 
     it("should reject unauthorized emails", () => {
       process.env.AUTHORIZED_EMAILS = "user1@example.com,user2@example.com";
 
-      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) => e.trim());
+      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) =>
+        e.trim().toLowerCase(),
+      );
       const testEmail = "unauthorized@example.com";
 
-      expect(authorizedEmails.includes(testEmail)).toBe(false);
+      expect(authorizedEmails.includes(testEmail.toLowerCase())).toBe(false);
     });
 
     it("should handle case-insensitive email comparison", () => {
@@ -37,7 +44,7 @@ describe("Authentication", () => {
       const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) =>
         e.trim().toLowerCase(),
       );
-      const testEmail = "user@example.com";
+      const testEmail = "USER@EXAMPLE.COM";
 
       expect(authorizedEmails.includes(testEmail.toLowerCase())).toBe(true);
     });
@@ -45,7 +52,9 @@ describe("Authentication", () => {
     it("should handle multiple emails with spaces", () => {
       process.env.AUTHORIZED_EMAILS = " user1@example.com , user2@example.com , user3@example.com ";
 
-      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) => e.trim());
+      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) =>
+        e.trim().toLowerCase(),
+      );
 
       expect(authorizedEmails).toEqual([
         "user1@example.com",
@@ -57,10 +66,145 @@ describe("Authentication", () => {
     it("should handle single authorized email", () => {
       process.env.AUTHORIZED_EMAILS = "single@example.com";
 
-      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) => e.trim());
+      const authorizedEmails = process.env.AUTHORIZED_EMAILS.split(",").map((e) =>
+        e.trim().toLowerCase(),
+      );
 
       expect(authorizedEmails).toEqual(["single@example.com"]);
       expect(authorizedEmails.length).toBe(1);
+    });
+  });
+
+  describe("Wildcard Patterns", () => {
+    /**
+     * Helper function that mimics isEmailAuthorized for wildcard patterns
+     */
+    function isEmailAuthorizedByPattern(email: string, patterns: string[]): boolean {
+      const normalizedEmail = email.toLowerCase();
+      const emailDomain = normalizedEmail.split("@")[1];
+
+      for (const pattern of patterns) {
+        if (pattern.startsWith("*@")) {
+          const patternDomain = pattern.slice(2);
+          if (emailDomain === patternDomain) {
+            return true;
+          }
+        } else if (pattern === normalizedEmail) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    it("should match wildcard pattern *@domain.com", () => {
+      const patterns = ["*@company.com"];
+
+      expect(isEmailAuthorizedByPattern("user@company.com", patterns)).toBe(true);
+      expect(isEmailAuthorizedByPattern("admin@company.com", patterns)).toBe(true);
+      expect(isEmailAuthorizedByPattern("anyone@company.com", patterns)).toBe(true);
+    });
+
+    it("should not match different domains for wildcard pattern", () => {
+      const patterns = ["*@company.com"];
+
+      expect(isEmailAuthorizedByPattern("user@other.com", patterns)).toBe(false);
+      expect(isEmailAuthorizedByPattern("user@notcompany.com", patterns)).toBe(false);
+    });
+
+    it("should mix exact emails and wildcard patterns", () => {
+      const patterns = ["admin@gmail.com", "*@company.com"];
+
+      // Exact match
+      expect(isEmailAuthorizedByPattern("admin@gmail.com", patterns)).toBe(true);
+      // Wildcard match
+      expect(isEmailAuthorizedByPattern("anyone@company.com", patterns)).toBe(true);
+      // No match
+      expect(isEmailAuthorizedByPattern("user@gmail.com", patterns)).toBe(false);
+    });
+
+    it("should be case-insensitive for wildcard patterns", () => {
+      const patterns = ["*@company.com"];
+
+      expect(isEmailAuthorizedByPattern("USER@COMPANY.COM", patterns)).toBe(true);
+      expect(isEmailAuthorizedByPattern("User@Company.Com", patterns)).toBe(true);
+    });
+  });
+
+  describe("Domain Allowlist", () => {
+    /**
+     * Helper function that mimics isEmailAuthorized for domain allowlist
+     */
+    function isEmailAuthorizedByDomain(email: string, domains: string[]): boolean {
+      const normalizedEmail = email.toLowerCase();
+      const emailDomain = normalizedEmail.split("@")[1];
+      return domains.includes(emailDomain);
+    }
+
+    it("should allow emails from authorized domains", () => {
+      const domains = ["company.com", "partner.org"];
+
+      expect(isEmailAuthorizedByDomain("user@company.com", domains)).toBe(true);
+      expect(isEmailAuthorizedByDomain("admin@partner.org", domains)).toBe(true);
+    });
+
+    it("should reject emails from unauthorized domains", () => {
+      const domains = ["company.com"];
+
+      expect(isEmailAuthorizedByDomain("user@other.com", domains)).toBe(false);
+      expect(isEmailAuthorizedByDomain("user@gmail.com", domains)).toBe(false);
+    });
+
+    it("should be case-insensitive for domain matching", () => {
+      const domains = ["company.com"];
+
+      expect(isEmailAuthorizedByDomain("USER@COMPANY.COM", domains)).toBe(true);
+      expect(isEmailAuthorizedByDomain("user@Company.Com", domains)).toBe(true);
+    });
+  });
+
+  describe("Setup Token Mode", () => {
+    it("should identify setup token mode when no emails or domains are configured", () => {
+      const authorizedEmails: string[] = [];
+      const authorizedDomains: string[] = [];
+      const setupToken = "some-token";
+
+      const hasEmailOrDomainAuth = authorizedEmails.length > 0 || authorizedDomains.length > 0;
+      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(setupToken);
+
+      expect(isSetupTokenMode).toBe(true);
+    });
+
+    it("should not be in setup token mode when emails are configured", () => {
+      const authorizedEmails = ["admin@example.com"];
+      const authorizedDomains: string[] = [];
+      const setupToken = "some-token";
+
+      const hasEmailOrDomainAuth = authorizedEmails.length > 0 || authorizedDomains.length > 0;
+      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(setupToken);
+
+      expect(isSetupTokenMode).toBe(false);
+    });
+
+    it("should not be in setup token mode when domains are configured", () => {
+      const authorizedEmails: string[] = [];
+      const authorizedDomains = ["company.com"];
+      const setupToken = "some-token";
+
+      const hasEmailOrDomainAuth = authorizedEmails.length > 0 || authorizedDomains.length > 0;
+      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(setupToken);
+
+      expect(isSetupTokenMode).toBe(false);
+    });
+
+    it("should not be in setup token mode when token is not set", () => {
+      const authorizedEmails: string[] = [];
+      const authorizedDomains: string[] = [];
+      const setupToken = "";
+
+      const hasEmailOrDomainAuth = authorizedEmails.length > 0 || authorizedDomains.length > 0;
+      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(setupToken);
+
+      expect(isSetupTokenMode).toBe(false);
     });
   });
 
@@ -71,22 +215,16 @@ describe("Authentication", () => {
       expect(secret.length).toBeGreaterThan(0);
     });
 
-    it("should require AUTH_GOOGLE_ID when present", () => {
-      const clientId = process.env.AUTH_GOOGLE_ID || "test.apps.googleusercontent.com";
+    it("should require GOOGLE_CLIENT_ID when present", () => {
+      const clientId = process.env.GOOGLE_CLIENT_ID || "test.apps.googleusercontent.com";
       expect(typeof clientId).toBe("string");
       expect(clientId.length).toBeGreaterThan(0);
     });
 
-    it("should require AUTH_GOOGLE_SECRET when present", () => {
-      const clientSecret = process.env.AUTH_GOOGLE_SECRET || "GOCSPX-test";
+    it("should require GOOGLE_CLIENT_SECRET when present", () => {
+      const clientSecret = process.env.GOOGLE_CLIENT_SECRET || "GOCSPX-test";
       expect(typeof clientSecret).toBe("string");
       expect(clientSecret.length).toBeGreaterThan(0);
-    });
-
-    it("should require AUTHORIZED_EMAILS when present", () => {
-      const emails = process.env.AUTHORIZED_EMAILS || "test@example.com";
-      expect(typeof emails).toBe("string");
-      expect(emails.length).toBeGreaterThan(0);
     });
 
     it("NEXTAUTH_URL should be a valid URL if provided", () => {
@@ -107,20 +245,30 @@ describe("Authentication", () => {
   });
 
   describe("OAuth Configuration", () => {
-    it("should configure Google provider with correct scopes", () => {
-      // Google OAuth should request email and profile
-      const expectedScopes = ["openid", "email", "profile"];
+    it("should configure Google provider with calendar scope", () => {
+      // Google OAuth should request calendar access in addition to profile
+      const expectedScopes = [
+        "openid",
+        "email",
+        "profile",
+        "https://www.googleapis.com/auth/calendar",
+      ];
 
-      // NextAuth automatically requests these scopes
       expect(expectedScopes).toContain("email");
       expect(expectedScopes).toContain("profile");
+      expect(expectedScopes).toContain("https://www.googleapis.com/auth/calendar");
     });
 
-    it("should prompt for account selection", () => {
-      // Authorization params should include prompt=select_account
-      // This forces users to choose which Google account to use
-      const prompt = "select_account";
-      expect(prompt).toBe("select_account");
+    it("should prompt for consent to ensure refresh token", () => {
+      // Authorization params should include prompt=consent and access_type=offline
+      // This ensures we get a refresh token for calendar API access
+      const authParams = {
+        access_type: "offline",
+        prompt: "consent",
+      };
+
+      expect(authParams.access_type).toBe("offline");
+      expect(authParams.prompt).toBe("consent");
     });
   });
 
@@ -157,6 +305,25 @@ describe("Authentication", () => {
 
       expect(isAuthorized).toBe(false);
     });
+
+    it("should log security warning in setup token mode", () => {
+      const consoleSpy = vi.fn();
+      const originalWarn = console.warn;
+      console.warn = consoleSpy;
+
+      const isSetupTokenMode = true;
+      if (isSetupTokenMode) {
+        console.warn(
+          "⚠️  SECURITY: Add this email to AUTHORIZED_EMAILS and remove SETUP_TOKEN after setup!",
+        );
+      }
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "⚠️  SECURITY: Add this email to AUTHORIZED_EMAILS and remove SETUP_TOKEN after setup!",
+      );
+
+      console.warn = originalWarn;
+    });
   });
 
   describe("Callback URLs", () => {
@@ -165,9 +332,47 @@ describe("Authentication", () => {
       expect(defaultRedirect).toBe("/");
     });
 
-    it("should redirect to homepage on error", () => {
-      const errorRedirect = "/";
-      expect(errorRedirect).toBe("/");
+    it("should redirect to setup page with google=connected parameter", () => {
+      // When signing in from setup wizard, redirect back to setup
+      const setupCallbackUrl = "/setup?google=connected";
+      expect(setupCallbackUrl).toContain("/setup");
+      expect(setupCallbackUrl).toContain("google=connected");
+    });
+  });
+
+  describe("Refresh Token Storage", () => {
+    it("should preserve existing calendarId when storing new refresh token", () => {
+      // When user re-consents, we should keep their calendar selection
+      const existingSettings = {
+        google: {
+          refreshToken: "old-token",
+          calendarId: "calendar-123",
+          connectedAt: "2024-01-01T00:00:00Z",
+        },
+      };
+
+      const newRefreshToken = "new-token";
+      const updatedSettings = {
+        google: {
+          refreshToken: newRefreshToken,
+          calendarId: existingSettings.google.calendarId, // Preserved
+          connectedAt: new Date().toISOString(),
+        },
+      };
+
+      expect(updatedSettings.google.calendarId).toBe("calendar-123");
+      expect(updatedSettings.google.refreshToken).toBe("new-token");
+    });
+
+    it("should initialize calendarId as empty string for new users", () => {
+      // When no existing settings, calendarId should be empty
+      // Simulate the nullable pattern used in auth.ts
+      type Settings = { google?: { calendarId?: string } } | null;
+      const getExistingSettings = (): Settings => null;
+      const existingSettings = getExistingSettings();
+      const existingCalendarId = existingSettings?.google?.calendarId || "";
+
+      expect(existingCalendarId).toBe("");
     });
   });
 });

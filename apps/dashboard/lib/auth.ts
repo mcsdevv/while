@@ -1,5 +1,6 @@
-import { env, isAuthConfigured } from "@/lib/env";
-import { updateSettings } from "@/lib/settings";
+import { env, isAuthConfigured, isEmailAuthorized } from "@/lib/env";
+import { resetGcalClient } from "@/lib/google-calendar/client";
+import { getSettings, updateSettings } from "@/lib/settings";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
@@ -34,12 +35,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     /**
-     * Check if user's email is in the authorized list
+     * Check if user's email is authorized via:
+     * - AUTHORIZED_EMAILS (exact emails or *@domain.com patterns)
+     * - AUTHORIZED_DOMAINS (domain allowlist)
+     * - SETUP_TOKEN (allows any email during initial setup)
      */
     async signIn({ user, account }) {
       if (!isAuthConfigured()) {
         console.error(
-          "Auth not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.",
+          "Auth not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET, " +
+            "and at least one of: AUTHORIZED_EMAILS, AUTHORIZED_DOMAINS, or SETUP_TOKEN.",
         );
         return false;
       }
@@ -47,10 +52,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const email = user.email?.toLowerCase();
       if (!email) return false;
 
-      const authorizedEmails = (env.AUTHORIZED_EMAILS ?? []).map((e) => e.toLowerCase());
-      const isAuthorized = authorizedEmails.includes(email);
+      // Check if this is setup token mode (no emails/domains configured, just token)
+      const hasEmailOrDomainAuth =
+        (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
 
-      if (!isAuthorized) {
+      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(env.SETUP_TOKEN);
+
+      // In setup token mode, any authenticated Google user can sign in
+      // This is for initial deployment - admin should add their email to AUTHORIZED_EMAILS after setup
+      if (isSetupTokenMode) {
+        console.log(`Setup token mode: allowing sign-in from ${email}`);
+        console.warn(
+          "⚠️  SECURITY: Add this email to AUTHORIZED_EMAILS and remove SETUP_TOKEN after setup!",
+        );
+      } else if (!isEmailAuthorized(email)) {
         console.warn(`Unauthorized sign-in attempt from: ${email}`);
         return false;
       }
@@ -58,13 +73,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Store refresh token for calendar API access
       if (account?.refresh_token) {
         try {
+          // Preserve existing calendarId on re-consent
+          const existingSettings = await getSettings();
+          const existingCalendarId = existingSettings?.google?.calendarId || "";
+
           await updateSettings({
             google: {
               refreshToken: account.refresh_token,
-              calendarId: "", // Will be set when user selects calendar
+              calendarId: existingCalendarId, // Preserve existing selection
               connectedAt: new Date().toISOString(),
             },
           });
+
+          // Reset cached OAuth client to use new refresh token
+          resetGcalClient();
+
           console.log("Stored Google refresh token for calendar access");
         } catch (error) {
           console.error("Failed to store refresh token:", error);

@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@whil
 import { useState } from "react";
 
 interface GoogleStatus {
-  clientId: string;
-  calendarId: string | null;
-  connectedAt: string | null;
+  isConfigured: boolean;
   isConnected: boolean;
+  calendarId: string | null;
+  calendarName: string | null;
+  connectedAt: string | null;
 }
 
 interface NotionStatus {
@@ -91,7 +92,13 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
             </div>
             {google?.isConnected && (
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>Calendar: {google.calendarId || "Not selected"}</p>
+                <p>
+                  Calendar:{" "}
+                  {google.calendarName ||
+                    (google.calendarId === "primary"
+                      ? "Primary Calendar"
+                      : google.calendarId || "Not selected")}
+                </p>
                 <p>Connected: {formatDate(google.connectedAt)}</p>
               </div>
             )}
