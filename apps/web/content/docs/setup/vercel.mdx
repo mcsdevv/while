@@ -40,6 +40,8 @@ During deployment, you'll need to configure these environment variables:
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID (auth + calendar) | [Google OAuth Setup](/docs/setup/google) |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/docs/setup/google) |
 | `AUTHORIZED_EMAILS` | Emails allowed to sign in | Your email or pattern (e.g., `*@company.com`) |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis REST endpoint | [Add via Vercel Storage](#add-redis-storage) |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis auth token | [Add via Vercel Storage](#add-redis-storage) |
 
 <Callout type="info">
 Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is automatically configured when you add the Upstash integration from the Vercel Marketplace.
