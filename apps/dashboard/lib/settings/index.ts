@@ -3,8 +3,28 @@
  */
 
 // Types
-export type { AppSettings, ExtendedFieldMapping, FieldConfig, FieldMapping, GoogleSettings, NotionSettings } from "./types";
-export { DEFAULT_EXTENDED_FIELD_MAPPING, DEFAULT_FIELD_MAPPING, ENCRYPTED_FIELDS, GCAL_COLORS } from "./types";
+export type {
+  AppSettings,
+  ExtendedFieldMapping,
+  FieldConfig,
+  FieldMapping,
+  GoogleSettings,
+  NotionPropertyType,
+  NotionSettings,
+} from "./types";
+export {
+  DEFAULT_EXTENDED_FIELD_MAPPING,
+  DEFAULT_FIELD_MAPPING,
+  ENCRYPTED_FIELDS,
+  GCAL_COLORS,
+} from "./types";
+
+// Migration
+export {
+  ensureExtendedFieldMapping,
+  isLegacyFieldMapping,
+  migrateFieldMapping,
+} from "./migration";
 
 // Encryption utilities
 export { decrypt, encrypt, isEncryptionConfigured, safeDecrypt, safeEncrypt } from "./encryption";
