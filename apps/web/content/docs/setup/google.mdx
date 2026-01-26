@@ -7,7 +7,7 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Steps, Step } from "fumadocs-ui/components/steps";
 
-This guide walks through creating a Google Cloud project and configuring OAuth for Google Calendar access.
+This guide walks through creating a Google Cloud project and configuring OAuth. A single OAuth client handles both dashboard authentication and Google Calendar API access.
 
 ## Step 1: Create Google Cloud Project
 
@@ -82,6 +82,8 @@ Choose **External** (unless you have Google Workspace, then choose Internal)
 ### Add Scopes
 
 Click **Add or Remove Scopes** and select:
+- `.../auth/userinfo.email`
+- `.../auth/userinfo.profile`
 - `https://www.googleapis.com/auth/calendar`
 - `https://www.googleapis.com/auth/calendar.events`
 
@@ -102,20 +104,18 @@ Add your Google email address as a test user
 3. Select **Web application**
 4. Enter name: `Notion Calendar Sync Web`
 
-### Authorized Redirect URIs
+### Authorized Redirect URI
 
-Add these URIs (replace `your-app` with your Vercel domain):
+Add this URI (replace `your-app` with your Vercel domain):
 
 ```
 https://your-app.vercel.app/api/auth/callback/google
-https://your-app.vercel.app/api/setup/google-oauth/callback
 ```
 
 For local development, also add:
 
 ```
 http://localhost:3000/api/auth/callback/google
-http://localhost:3000/api/setup/google-oauth/callback
 ```
 
 5. Click **Create**

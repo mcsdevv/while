@@ -26,11 +26,9 @@ During deployment, you'll need to configure these environment variables:
 | Variable | Description | How to Get |
 |----------|-------------|------------|
 | `NEXTAUTH_SECRET` | Session encryption key | Generate with `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | [Google OAuth Setup](/docs/setup/google) |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID (auth + calendar) | [Google OAuth Setup](/docs/setup/google) |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/docs/setup/google) |
-| `NOTION_CLIENT_ID` | Notion OAuth client ID | [Notion Setup](/docs/setup/notion) |
-| `NOTION_CLIENT_SECRET` | Notion OAuth client secret | [Notion Setup](/docs/setup/notion) |
-| `ENCRYPTION_KEY` | Credential encryption key | Generate with `openssl rand -base64 32` |
+| `AUTHORIZED_EMAILS` | Emails allowed to sign in | Your email or pattern (e.g., `*@company.com`) |
 
 <Callout type="info">
 Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is automatically configured when you add the Upstash integration from the Vercel Marketplace.
@@ -41,11 +39,14 @@ Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is autom
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `NEXTAUTH_URL` | App URL (auto-detected on Vercel) | Auto |
+| `SETTINGS_ENCRYPTION_KEY` | Credential encryption key | None (recommended for production) |
+| `AUTHORIZED_DOMAINS` | Domain allowlist (e.g., `company.com`) | None |
+| `SETUP_TOKEN` | One-time setup access token | None |
 | `LOG_LEVEL` | Logging verbosity | `info` |
 
-## Generate Encryption Keys
+## Generate Secrets
 
-Both `NEXTAUTH_SECRET` and `ENCRYPTION_KEY` should be random 32-byte keys.
+`NEXTAUTH_SECRET` is required. `SETTINGS_ENCRYPTION_KEY` is recommended for production.
 
 ### Using OpenSSL (macOS/Linux)
 
@@ -59,8 +60,8 @@ openssl rand -base64 32
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
-<Callout type="warn">
-Generate separate keys for `NEXTAUTH_SECRET` and `ENCRYPTION_KEY`. Don't reuse the same key.
+<Callout type="info">
+If using `SETTINGS_ENCRYPTION_KEY`, generate a separate value from `NEXTAUTH_SECRET`.
 </Callout>
 
 ## Add Redis Storage
@@ -79,13 +80,12 @@ The Vercel Marketplace integration handles all configuration automatically. No s
 
 ## Post-Deployment Steps
 
-### 1. Update Google OAuth Redirect URIs
+### 1. Update Google OAuth Redirect URI
 
 After deployment, update your Google OAuth credentials with your actual Vercel domain:
 
 ```
 https://your-app-name.vercel.app/api/auth/callback/google
-https://your-app-name.vercel.app/api/setup/google-oauth/callback
 ```
 
 ### 2. Complete Setup Wizard
