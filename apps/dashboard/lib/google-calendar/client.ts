@@ -1,7 +1,9 @@
 import { getGoogleConfig } from "@/lib/settings";
+import { GCAL_COLORS } from "@/lib/settings/types";
 import type { Event } from "@/lib/types";
 import { calendar, type calendar_v3 } from "@googleapis/calendar";
 import { OAuth2Client } from "google-auth-library";
+import { parseRRule } from "./rrule-parser";
 
 // Cached clients (lazy initialization)
 let cachedOAuth2Client: OAuth2Client | null = null;
@@ -125,6 +127,30 @@ export function gcalEventToEvent(gcalEvent: calendar_v3.Schema$Event): Event | n
     // Extract reminder minutes (take first reminder if exists)
     const reminders = gcalEvent.reminders?.overrides?.[0]?.minutes;
 
+    // Extract attendees (exclude self, format as array of names/emails)
+    const attendees = gcalEvent.attendees
+      ?.filter((a) => !a.self)
+      ?.map((a) => a.displayName || a.email?.split("@")[0] || "Unknown");
+
+    // Extract organizer
+    const organizer = gcalEvent.organizer?.displayName || gcalEvent.organizer?.email;
+
+    // Extract conference/video link (prefer video entry point)
+    const conferenceLink = gcalEvent.conferenceData?.entryPoints?.find(
+      (e) => e.entryPointType === "video",
+    )?.uri;
+
+    // Extract recurrence (convert RRULE to human-readable)
+    const recurrence = gcalEvent.recurrence?.[0] ? parseRRule(gcalEvent.recurrence[0]) : undefined;
+
+    // Extract color (map colorId to color name)
+    const color = gcalEvent.colorId
+      ? GCAL_COLORS[gcalEvent.colorId]?.name || "Default"
+      : undefined;
+
+    // Extract visibility
+    const visibility = gcalEvent.visibility as "public" | "private" | "default" | undefined;
+
     return {
       id: gcalEvent.id,
       title: gcalEvent.summary,
@@ -134,6 +160,14 @@ export function gcalEventToEvent(gcalEvent: calendar_v3.Schema$Event): Event | n
       location: gcalEvent.location || undefined,
       status,
       reminders: reminders || undefined,
+      // Extended fields
+      attendees: attendees?.length ? attendees : undefined,
+      organizer: organizer || undefined,
+      conferenceLink: conferenceLink || undefined,
+      recurrence: recurrence || undefined,
+      color: color || undefined,
+      visibility: visibility || undefined,
+      // Sync metadata
       gcalEventId: gcalEvent.id,
       notionPageId: notionPageId || undefined,
     };

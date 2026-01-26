@@ -44,6 +44,7 @@ export type { GoogleConfig, NotionConfig } from "./loader";
 export {
   getFieldMapping,
   getGoogleConfig,
+  getLegacyFieldMapping,
   getNotionConfig,
   isFullyConfigured,
   isGoogleClientConfigured,
