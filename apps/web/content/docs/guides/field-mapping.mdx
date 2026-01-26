@@ -13,6 +13,8 @@ Field mapping determines how your Notion database properties correspond to Googl
 
 The sync supports mapping between these fields:
 
+### Core Fields
+
 | Google Calendar | Notion Property Type | Notes |
 |-----------------|---------------------|-------|
 | Title | Title | Required |
@@ -20,6 +22,21 @@ The sync supports mapping between these fields:
 | Description | Text, Rich Text | Optional |
 | Location | Text | Optional |
 | Reminders | Number | Minutes before event |
+
+### Extended Fields
+
+| Google Calendar | Notion Property Type | Notes |
+|-----------------|---------------------|-------|
+| Attendees | Rich Text | One-way sync (GCal → Notion) |
+| Organizer | Rich Text | One-way sync (GCal → Notion) |
+| Conference Link | Rich Text | Video meeting URL |
+| Recurrence | Rich Text | Human-readable pattern |
+| Color | Rich Text | Event color name |
+| Visibility | Rich Text | public/private/default |
+
+<Callout type="info">
+Extended fields sync one-way from Google Calendar to Notion. Editing these fields in Notion won't update the Google Calendar event.
+</Callout>
 
 ## Required Mappings
 
@@ -89,6 +106,140 @@ Example values:
 - `15` = 15 minutes before
 - `60` = 1 hour before
 - `1440` = 1 day before (60 × 24)
+
+## Extended Fields
+
+Extended fields bring additional event metadata from Google Calendar into Notion. These fields are disabled by default and sync one-way (GCal → Notion only).
+
+<Callout type="warn">
+Extended fields are read-only in Notion. Changes made in Notion won't sync back to Google Calendar.
+</Callout>
+
+### Attendees
+
+Shows who's invited to the event.
+
+```
+Google Calendar: Event attendees
+→
+Notion: Rich Text property (comma-separated list)
+```
+
+Example value: `alice@example.com, bob@example.com`
+
+<Callout type="info" title="Note">
+Your own email is excluded from the attendees list to reduce clutter.
+</Callout>
+
+### Organizer
+
+Shows who created or owns the event.
+
+```
+Google Calendar: Event organizer
+→
+Notion: Rich Text property
+```
+
+Example value: `Alice Smith` or `alice@example.com`
+
+### Conference Link
+
+Captures video meeting URLs from the event.
+
+```
+Google Calendar: Conference data (Meet, Zoom, etc.)
+→
+Notion: Rich Text property (URL)
+```
+
+Example value: `https://meet.google.com/abc-defg-hij`
+
+### Recurrence
+
+Shows the repeat pattern for recurring events.
+
+```
+Google Calendar: RRULE (recurrence rule)
+→
+Notion: Rich Text property (human-readable)
+```
+
+Example values:
+- `Weekly on Monday`
+- `Daily`
+- `Monthly on the 15th`
+- `Every 2 weeks on Tuesday, Thursday`
+
+### Color
+
+Captures the event's color label from Google Calendar.
+
+```
+Google Calendar: Color ID
+→
+Notion: Rich Text property (color name)
+```
+
+Color names: `Tomato`, `Flamingo`, `Tangerine`, `Banana`, `Sage`, `Basil`, `Peacock`, `Blueberry`, `Lavender`, `Grape`, `Graphite`
+
+### Visibility
+
+Shows who can see the event.
+
+```
+Google Calendar: Event visibility
+→
+Notion: Rich Text property
+```
+
+Values:
+- `default` - Uses calendar's default visibility
+- `public` - Visible to anyone
+- `private` - Only visible to attendees
+
+## Enabling Fields
+
+Extended fields are disabled by default. To enable them:
+
+### During Setup
+
+The setup wizard shows toggle switches for each extended field. Enable the fields you want to sync.
+
+### In Settings
+
+1. Go to your app dashboard
+2. Click **Settings**
+3. Find the **Field Mapping** section
+4. Toggle on the extended fields you want
+5. Optionally set custom Notion property names
+6. Click **Save**
+
+<Callout type="info">
+When you enable a new field, only future events will have that field populated. Use backfill to update existing events.
+</Callout>
+
+## Backfilling Existing Events
+
+When you enable a new extended field, existing Notion pages won't have that data yet. Use backfill to populate them.
+
+### Starting a Backfill
+
+1. Go to **Settings** in your dashboard
+2. Find the **Backfill** section
+3. Select the fields you want to backfill
+4. Click **Start Backfill**
+
+### Progress Tracking
+
+The dashboard shows:
+- Total events to process
+- Events completed
+- Current status (running/completed/failed)
+
+<Callout type="warn">
+Backfill can take several minutes for large calendars. Don't close the dashboard while it's running.
+</Callout>
 
 ## Configuring Mappings
 
@@ -175,6 +326,15 @@ When you delete an event:
     - Ensure your Notion date property includes time
     - Check timezone settings in both systems
     - Verify the date format in Notion
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Extended field changes in Notion not syncing">
+    Extended fields (attendees, organizer, conference link, recurrence, color, visibility) only sync one-way from Google Calendar to Notion. To change these values, edit the event in Google Calendar.
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Extended fields empty for existing events">
+    When you enable a new field, only future events get the data. Use the Backfill feature in Settings to populate existing events.
+  </FAQAccordionItem>
+  <FAQAccordionItem title="Recurrence showing raw RRULE format">
+    If you see text like `RRULE:FREQ=WEEKLY;BYDAY=MO` instead of human-readable text, report this as a bug. The sync should convert these automatically.
   </FAQAccordionItem>
 </FAQAccordion>
 
