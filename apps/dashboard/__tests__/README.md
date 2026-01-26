@@ -57,8 +57,8 @@ Tests for environment configuration:
 
 - **NEXTAUTH_SECRET**: Required secret validation
 - **NEXTAUTH_URL**: Optional URL validation
-- **AUTH_GOOGLE_ID**: Google OAuth client ID validation
-- **AUTH_GOOGLE_SECRET**: Google OAuth client secret validation
+- **GOOGLE_CLIENT_ID**: Google OAuth client ID validation
+- **GOOGLE_CLIENT_SECRET**: Google OAuth client secret validation
 - **AUTHORIZED_EMAILS**: Email list parsing and trimming
 - **Complete Configuration**: End-to-end config validation
 

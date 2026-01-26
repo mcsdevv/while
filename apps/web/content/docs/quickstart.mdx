@@ -51,11 +51,10 @@ If the API is already enabled, you'll see "Manage" instead of "Enable". No actio
 3. Go to **APIs & Services** > **OAuth consent screen**
 4. Configure as **External** with your email as test user
 5. Go to **Credentials** > **Create Credentials** > **OAuth client ID**
-6. Select **Web application** and add redirect URIs:
+6. Select **Web application** and add redirect URI:
 
 ```
 https://your-app.vercel.app/api/auth/callback/google
-https://your-app.vercel.app/api/setup/google-oauth/callback
 ```
 
 <Callout type="info">
@@ -92,14 +91,11 @@ During deployment, you'll need to provide these environment variables:
 | `NEXTAUTH_SECRET` | Random string for session encryption |
 | `GOOGLE_CLIENT_ID` | From Google OAuth credentials |
 | `GOOGLE_CLIENT_SECRET` | From Google OAuth credentials |
-| `NOTION_CLIENT_ID` | From Notion integration |
-| `NOTION_CLIENT_SECRET` | From Notion integration |
-| `ENCRYPTION_KEY` | 32-byte base64 key for credential encryption |
+| `AUTHORIZED_EMAILS` | Your email (e.g., `you@gmail.com`) |
 
 Redis storage is automatically configured when you add the Upstash integration from the Vercel Marketplace during deployment.
 
-<Callout type="info" title="Tip">
-Generate an encryption key with:
+<Callout type="info" title="Generate secrets">
 ```bash
 openssl rand -base64 32
 ```
@@ -111,20 +107,19 @@ openssl rand -base64 32
 
 1. Open your deployed app URL
 2. Follow the setup wizard to:
-   - Sign in with Google
+   - Sign in with Google (grants calendar access automatically)
    - Select your calendar
-   - Connect Notion
+   - Enter your Notion integration token
    - Select your database
    - Configure field mappings
    - Test the connection
 
-## Step 5: Update OAuth Redirect URIs
+## Step 5: Update OAuth Redirect URI
 
 After deployment, update your Google OAuth credentials with your actual Vercel domain:
 
 ```
 https://your-app-name.vercel.app/api/auth/callback/google
-https://your-app-name.vercel.app/api/setup/google-oauth/callback
 ```
 
 ## You're Done!
