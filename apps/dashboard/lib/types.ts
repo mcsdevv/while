@@ -10,6 +10,13 @@ export const eventSchema = z.object({
   location: z.string().optional(),
   status: z.enum(["confirmed", "tentative", "cancelled"]).optional(),
   reminders: z.number().optional(), // minutes before event
+  // Extended event properties
+  attendees: z.array(z.string()).optional(), // Array of attendee names/emails
+  organizer: z.string().optional(), // Event organizer name/email
+  conferenceLink: z.string().optional(), // Video call URLs (Zoom/Meet)
+  recurrence: z.string().optional(), // Human-readable recurrence like "Every Monday"
+  color: z.string().optional(), // Google Calendar color name like "Tomato", "Banana"
+  visibility: z.enum(["public", "private", "default"]).optional(), // Event visibility
   // Sync metadata
   notionPageId: z.string().optional(),
   gcalEventId: z.string().optional(),
