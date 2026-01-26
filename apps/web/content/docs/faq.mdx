@@ -25,6 +25,17 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
     No, this is an independent open-source project. It's not officially supported by or affiliated with Notion or Google.
   </FAQAccordionItem>
 
+  <FAQAccordionItem title="Why do I need to create my own Google OAuth app?">
+    Since While is self-hosted, there's no central OAuth application. Creating your own app means:
+
+    - **Your credentials stay private**: Your client ID and secret live only in your Vercel deployment
+    - **No shared secrets**: Each deployment is independent with its own OAuth credentials
+    - **Full control**: You manage your own app settings, quotas, and publishing status
+    - **Better security**: No third-party ever sees your API credentials
+
+    This approach is more work upfront but gives you complete ownership of your data flow.
+  </FAQAccordionItem>
+
   <FAQAccordionItem title="Will there be a hosted version?">
     Highly unlikely unless there is significant demand. The intention here is to make available something of personal use that may have wider application, nothing more.
   </FAQAccordionItem>
