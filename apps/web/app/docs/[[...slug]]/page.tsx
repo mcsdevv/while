@@ -1,15 +1,10 @@
 import { source } from "@/lib/source";
-import {
-  DocsPage,
-  DocsBody,
-  DocsTitle,
-  DocsDescription,
-} from "fumadocs-ui/layouts/docs/page";
-import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
-import type { Metadata } from "next";
 import type { TOCItemType } from "fumadocs-core/toc";
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import type { MDXContent } from "mdx/types";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;

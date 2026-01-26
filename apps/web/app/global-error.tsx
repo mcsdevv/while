@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import { ServerCrash } from "lucide-react";
+import { useEffect } from "react";
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -9,30 +10,25 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  useEffect(() => {
+    console.error("Global error:", error);
+  }, [error]);
+
   return (
     <html lang="en">
       <body>
         <div className="flex flex-col items-center justify-center min-h-screen bg-background px-4 relative overflow-hidden">
           {/* Large background error code */}
-          <div
-            className="absolute inset-0 flex items-center justify-center select-none pointer-events-none"
-            style={{ animation: "pulse-subtle 3s ease-in-out infinite" }}
-          >
+          <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none animate-pulse-subtle">
             <span className="text-[120px] sm:text-[180px] font-semibold tracking-tighter text-foreground/5">
               500
             </span>
           </div>
 
           {/* Content */}
-          <div
-            className="relative z-10 flex flex-col items-center text-center"
-            style={{ animation: "fade-in-up 0.5s ease-out" }}
-          >
+          <div className="relative z-10 flex flex-col items-center text-center animate-fade-in-up">
             {/* Icon */}
-            <div
-              className="w-16 h-16 rounded-full border border-border flex items-center justify-center mb-6"
-              style={{ animation: "float 4s ease-in-out infinite" }}
-            >
+            <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center mb-6 animate-float">
               <ServerCrash className="w-7 h-7 text-muted-foreground" />
             </div>
 
@@ -68,38 +64,6 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </p>
             )}
           </div>
-
-          {/* Keyframe animations */}
-          <style>{`
-            @keyframes fade-in-up {
-              from {
-                opacity: 0;
-                transform: translateY(10px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            @keyframes float {
-              0%, 100% {
-                transform: translateY(0);
-              }
-              50% {
-                transform: translateY(-6px);
-              }
-            }
-
-            @keyframes pulse-subtle {
-              0%, 100% {
-                opacity: 1;
-              }
-              50% {
-                opacity: 0.5;
-              }
-            }
-          `}</style>
         </div>
       </body>
     </html>

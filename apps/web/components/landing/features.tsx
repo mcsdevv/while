@@ -1,12 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
-import {
-  ArrowLeftRight,
-  Gauge,
-  Lock,
-  Settings2,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { ArrowLeftRight, Gauge, Lock, Settings2, Sparkles, Zap } from "lucide-react";
 
 const features = [
   {

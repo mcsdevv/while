@@ -27,8 +27,8 @@ export function Footer() {
               <span className="font-medium">While</span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              Open-source, self-hosted bidirectional sync between Notion and Google Calendar.
-              Built with privacy and reliability in mind.
+              Open-source, self-hosted bidirectional sync between Notion and Google Calendar. Built
+              with privacy and reliability in mind.
             </p>
           </div>
 
@@ -103,7 +103,8 @@ export function Footer() {
               className="underline hover:text-foreground"
             >
               Matthew Sweeney
-            </a>.
+            </a>
+            .
           </p>
           <ThemeToggle />
           <p className="text-sm text-muted-foreground">
@@ -115,7 +116,8 @@ export function Footer() {
               className="underline hover:text-foreground"
             >
               MIT License
-            </a>.
+            </a>
+            .
           </p>
         </div>
       </div>
