@@ -22,9 +22,7 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={<Button variant="outline" size="sm" className="gap-2" />}
-      >
+      <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="gap-2" />}>
         {session.user.image && (
           <img
             src={session.user.image}
@@ -42,9 +40,7 @@ export function UserMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/settings" />}>
-          Settings
-        </DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/settings" />}>Settings</DropdownMenuItem>
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

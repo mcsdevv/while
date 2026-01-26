@@ -4,18 +4,10 @@
  * PUT: Update settings (field mapping only)
  */
 
+import { getGoogleClientConfig } from "@/lib/env";
 import { getSettings, updateSettings } from "@/lib/settings";
 import type { FieldMapping } from "@/lib/settings/types";
 import { NextResponse } from "next/server";
-
-/**
- * Mask a string to show only last N characters.
- */
-function maskString(value: string | undefined, showLast = 4): string {
-  if (!value) return "";
-  if (value.length <= showLast) return "****";
-  return "****" + value.slice(-showLast);
-}
 
 /**
  * GET - Get current settings with sensitive fields masked
@@ -23,10 +15,17 @@ function maskString(value: string | undefined, showLast = 4): string {
 export async function GET() {
   try {
     const settings = await getSettings();
+    const googleClientConfig = getGoogleClientConfig();
 
     if (!settings) {
       return NextResponse.json({
-        google: null,
+        google: {
+          isConfigured: googleClientConfig !== null,
+          isConnected: false,
+          calendarId: null,
+          calendarName: null,
+          connectedAt: null,
+        },
         notion: null,
         fieldMapping: null,
         setupCompleted: false,
@@ -34,14 +33,14 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      google: settings.google
-        ? {
-            clientId: maskString(settings.google.clientId),
-            calendarId: settings.google.calendarId || null,
-            connectedAt: settings.google.connectedAt || null,
-            isConnected: !!settings.google.refreshToken,
-          }
-        : null,
+      google: {
+        // Client credentials come from env vars
+        isConfigured: googleClientConfig !== null,
+        isConnected: !!settings.google?.refreshToken,
+        calendarId: settings.google?.calendarId || null,
+        calendarName: settings.google?.calendarName || null,
+        connectedAt: settings.google?.connectedAt || null,
+      },
       notion: settings.notion
         ? {
             databaseId: settings.notion.databaseId || null,

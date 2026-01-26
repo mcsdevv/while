@@ -5,10 +5,10 @@
  */
 
 export interface GoogleSettings {
-  clientId: string;
-  clientSecret: string; // Encrypted at rest
-  refreshToken: string; // Encrypted at rest
+  // Note: clientId and clientSecret now come from GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET env vars
+  refreshToken: string; // Encrypted at rest, obtained during OAuth sign-in
   calendarId: string;
+  calendarName?: string; // Display name of the selected calendar
   connectedAt: string; // ISO timestamp
 }
 
@@ -51,7 +51,7 @@ export const DEFAULT_FIELD_MAPPING: FieldMapping = {
  * Fields that contain sensitive data and must be encrypted at rest.
  */
 export const ENCRYPTED_FIELDS = {
-  google: ["clientSecret", "refreshToken"] as const,
+  google: ["refreshToken"] as const,
   notion: ["apiToken"] as const,
 };
 

@@ -2,13 +2,7 @@
 
 import { Button } from "@while/ui";
 import { Input } from "@while/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@while/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
 import { useState } from "react";
 
 interface NotionStepProps {
@@ -112,9 +106,7 @@ export function NotionStep({ status, onBack, onNext }: NotionStepProps) {
             </svg>
             <span className="font-medium">Notion connected</span>
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Database: {status.databaseName}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Database: {status.databaseName}</p>
         </div>
 
         <div className="flex justify-between">

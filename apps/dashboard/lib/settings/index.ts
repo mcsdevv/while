@@ -26,6 +26,8 @@ export {
   getGoogleConfig,
   getNotionConfig,
   isFullyConfigured,
+  isGoogleClientConfigured,
   isGoogleConfigured,
+  isGoogleConnected,
   isNotionConfigured,
 } from "./loader";

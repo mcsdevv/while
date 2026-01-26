@@ -1,8 +1,10 @@
 /**
  * Setup API - List Google Calendars
  * GET: List available calendars for selection
+ * POST: Select a calendar to sync
  */
 
+import { getGoogleClientConfig } from "@/lib/env";
 import { resetGcalClient } from "@/lib/google-calendar/client";
 import { getSettings, updateSettings } from "@/lib/settings";
 import { calendar } from "@googleapis/calendar";
@@ -15,21 +17,26 @@ import { z } from "zod";
  */
 export async function GET() {
   try {
-    const settings = await getSettings();
+    // Get client credentials from env vars
+    const clientConfig = getGoogleClientConfig();
+    if (!clientConfig) {
+      return NextResponse.json(
+        { error: "Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET." },
+        { status: 400 },
+      );
+    }
 
-    if (
-      !settings?.google?.clientId ||
-      !settings?.google?.clientSecret ||
-      !settings?.google?.refreshToken
-    ) {
-      return NextResponse.json({ error: "Google not connected" }, { status: 400 });
+    // Get refresh token from settings
+    const settings = await getSettings();
+    if (!settings?.google?.refreshToken) {
+      return NextResponse.json(
+        { error: "Google not connected. Please sign in first." },
+        { status: 400 },
+      );
     }
 
     // Create OAuth2 client
-    const oauth2Client = new OAuth2Client(
-      settings.google.clientId,
-      settings.google.clientSecret,
-    );
+    const oauth2Client = new OAuth2Client(clientConfig.clientId, clientConfig.clientSecret);
     oauth2Client.setCredentials({ refresh_token: settings.google.refreshToken });
 
     // Get calendar list
@@ -58,6 +65,7 @@ export async function GET() {
 
 const selectCalendarSchema = z.object({
   calendarId: z.string().min(1, "Calendar ID is required"),
+  calendarName: z.string().optional(),
 });
 
 /**
@@ -84,6 +92,7 @@ export async function POST(request: NextRequest) {
       google: {
         ...settings.google,
         calendarId: result.data.calendarId,
+        calendarName: result.data.calendarName,
       },
     });
 
@@ -93,6 +102,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: "success",
       calendarId: result.data.calendarId,
+      calendarName: result.data.calendarName,
     });
   } catch (error) {
     console.error("Error selecting calendar:", error);

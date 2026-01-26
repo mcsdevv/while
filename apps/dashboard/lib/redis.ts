@@ -10,9 +10,7 @@ let redis: Redis | null = null;
  * Check if Redis environment variables are configured.
  */
 export function isRedisConfigured(): boolean {
-  return Boolean(
-    process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN,
-  );
+  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 }
 
 /**

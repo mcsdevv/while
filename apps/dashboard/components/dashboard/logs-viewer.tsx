@@ -1,26 +1,13 @@
 "use client";
 
+import type { SyncDirection, SyncLog, SyncOperation } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { Badge } from "@while/ui";
 import { Button } from "@while/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { Input } from "@while/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@while/ui";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@while/ui";
-import type { SyncDirection, SyncLog, SyncOperation } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@while/ui";
 import { useMemo, useState } from "react";
 
 interface LogsViewerProps {

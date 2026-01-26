@@ -3,6 +3,7 @@
  * GET: Get current setup status
  */
 
+import { getGoogleClientConfig } from "@/lib/env";
 import { getSettings, isSetupComplete } from "@/lib/settings";
 import { NextResponse } from "next/server";
 
@@ -13,11 +14,14 @@ export async function GET() {
   try {
     const settings = await getSettings();
     const setupComplete = await isSetupComplete();
+    const googleClientConfig = getGoogleClientConfig();
 
     return NextResponse.json({
       setupComplete,
       google: {
-        configured: !!(settings?.google?.clientId && settings?.google?.clientSecret),
+        // Client credentials are configured via env vars
+        configured: googleClientConfig !== null,
+        // Connected when we have a refresh token from OAuth sign-in
         connected: !!settings?.google?.refreshToken,
         calendarSelected: !!settings?.google?.calendarId,
         connectedAt: settings?.google?.connectedAt || null,

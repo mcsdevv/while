@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import type { SyncMetrics } from "@/lib/types";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { useMemo } from "react";
 import {
   Area,

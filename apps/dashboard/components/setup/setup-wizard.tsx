@@ -1,9 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@while/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { SkeletonSetupWizard } from "@while/ui";
-import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 import { FieldMappingStep } from "./field-mapping-step";
 import { GoogleStep } from "./google-step";

@@ -1,14 +1,8 @@
 "use client";
 
 import { Button } from "@while/ui";
-import { Input } from "@while/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@while/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
+import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
 interface GoogleStepProps {
@@ -28,9 +22,6 @@ interface Calendar {
 }
 
 export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
-  const [clientId, setClientId] = useState("");
-  const [clientSecret, setClientSecret] = useState("");
-  const [saving, setSaving] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [calendars, setCalendars] = useState<Calendar[]>([]);
@@ -39,54 +30,16 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
 
   const isConnected = status?.connected;
 
-  const handleSaveCredentials = async () => {
-    if (!clientId || !clientSecret) {
-      setError("Please enter both Client ID and Client Secret");
-      return;
-    }
-
-    setSaving(true);
-    setError(null);
-
-    try {
-      const response = await fetch("/api/setup/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ clientId, clientSecret }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to save credentials");
-      }
-
-      // Now start OAuth flow
-      await handleConnect();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save credentials");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleConnect = async () => {
+  const handleSignIn = async () => {
     setConnecting(true);
     setError(null);
 
     try {
-      // Get OAuth URL
-      const response = await fetch(`/api/setup/google?clientId=${encodeURIComponent(clientId)}`);
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to get OAuth URL");
-      }
-
-      const { oauthUrl } = await response.json();
-
-      // Redirect to Google OAuth
-      window.location.href = oauthUrl;
+      // Trigger NextAuth sign-in with Google
+      // This will redirect to Google, get consent, store refresh token, and redirect back
+      await signIn("google", { callbackUrl: "/setup?google=connected" });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to connect");
+      setError(err instanceof Error ? err.message : "Failed to sign in");
       setConnecting(false);
     }
   };
@@ -112,10 +65,14 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
   const handleSelectCalendar = async (calendarId: string) => {
     setSelectedCalendar(calendarId);
     try {
+      // Find calendar name for storage
+      const selectedCal = calendars.find((cal) => cal.id === calendarId);
+      const calendarName = selectedCal?.name || "";
+
       const response = await fetch("/api/setup/google/calendars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ calendarId }),
+        body: JSON.stringify({ calendarId, calendarName }),
       });
 
       if (!response.ok) {
@@ -138,40 +95,17 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
       {!isConnected ? (
         <>
           <div className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="clientId" className="text-sm font-medium">
-                Google OAuth Client ID
-              </label>
-              <Input
-                id="clientId"
-                type="text"
-                placeholder="xxx.apps.googleusercontent.com"
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-              />
-            </div>
+            <p className="text-sm text-muted-foreground">
+              Sign in with your Google account to grant calendar access. This allows While to sync
+              events between Notion and Google Calendar.
+            </p>
 
-            <div className="space-y-2">
-              <label htmlFor="clientSecret" className="text-sm font-medium">
-                Google OAuth Client Secret
-              </label>
-              <Input
-                id="clientSecret"
-                type="password"
-                placeholder="Enter your client secret"
-                value={clientSecret}
-                onChange={(e) => setClientSecret(e.target.value)}
-              />
-            </div>
-
-            <div className="rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground">
-              <p className="font-medium">Important:</p>
-              <p>Add this redirect URI to your Google Cloud OAuth credentials:</p>
-              <code className="mt-1 block rounded bg-muted px-2 py-1 text-xs">
-                {typeof window !== "undefined"
-                  ? `${window.location.origin}/api/setup/google/callback`
-                  : "/api/setup/google/callback"}
-              </code>
+            <div className="rounded-lg bg-muted/50 p-4 text-sm">
+              <p className="font-medium mb-2">What permissions are requested:</p>
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                <li>View and edit your Google Calendar events</li>
+                <li>Access your email address for authentication</li>
+              </ul>
             </div>
           </div>
 
@@ -183,11 +117,8 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
             <Button variant="outline" onClick={onBack}>
               Back
             </Button>
-            <Button
-              onClick={handleSaveCredentials}
-              disabled={saving || connecting || !clientId || !clientSecret}
-            >
-              {saving ? "Saving..." : connecting ? "Connecting..." : "Connect Google Calendar"}
+            <Button onClick={handleSignIn} disabled={connecting}>
+              {connecting ? "Connecting..." : "Sign in with Google"}
             </Button>
           </div>
         </>
@@ -208,15 +139,20 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
 
           <div className="space-y-2">
             <span id="calendar-label" className="text-sm font-medium">
-              Select Calendar
+              Select Calendar to Sync
             </span>
+            <p className="text-sm text-muted-foreground">
+              Choose which Google Calendar to sync with your Notion database.
+            </p>
             <Select
               value={selectedCalendar}
               onValueChange={handleSelectCalendar}
               aria-labelledby="calendar-label"
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select a calendar" />
+                <SelectValue
+                  placeholder={loadingCalendars ? "Loading calendars..." : "Select a calendar"}
+                />
               </SelectTrigger>
               <SelectContent>
                 {calendars.map((cal) => (

@@ -99,18 +99,14 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
                 )}
                 <span
                   className={`font-medium ${
-                    result.success
-                      ? "text-foreground"
-                      : "text-muted-foreground"
+                    result.success ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {result.service}: {result.message}
                 </span>
               </div>
               {result.details && (
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {result.details}
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{result.details}</p>
               )}
             </div>
           ))}
@@ -129,9 +125,7 @@ export function TestStep({ onBack, setupComplete }: TestStepProps) {
             </svg>
             <span className="font-medium">Setup Complete!</span>
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Your calendar sync is ready to use.
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Your calendar sync is ready to use.</p>
         </div>
       )}
 

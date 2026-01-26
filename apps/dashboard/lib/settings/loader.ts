@@ -3,6 +3,7 @@
  * Priority: Settings > Env vars > Defaults (for field mapping only)
  */
 
+import { getGoogleClientConfig } from "@/lib/env";
 import { getSettings } from "./storage";
 import type { FieldMapping } from "./types";
 import { DEFAULT_FIELD_MAPPING } from "./types";
@@ -21,45 +22,33 @@ export interface NotionConfig {
 
 /**
  * Get Google Calendar configuration.
- * Tries settings first, falls back to env vars.
+ * Client credentials come from env vars (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET).
+ * Refresh token and calendar ID come from settings (stored during OAuth sign-in).
  *
- * @throws Error if configuration is not available from either source
+ * @throws Error if configuration is not available
  */
 export async function getGoogleConfig(): Promise<GoogleConfig> {
-  // Try settings first
-  const settings = await getSettings();
-  if (
-    settings?.google?.clientId &&
-    settings?.google?.clientSecret &&
-    settings?.google?.refreshToken
-  ) {
-    return {
-      clientId: settings.google.clientId,
-      clientSecret: settings.google.clientSecret,
-      refreshToken: settings.google.refreshToken,
-      calendarId: settings.google.calendarId || "primary",
-    };
+  // Get client credentials from env vars
+  const clientConfig = getGoogleClientConfig();
+  if (!clientConfig) {
+    throw new Error(
+      "Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.",
+    );
   }
 
-  // Fall back to env vars
-  const clientId = process.env.GOOGLE_CALENDAR_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CALENDAR_CLIENT_SECRET;
-  const refreshToken = process.env.GOOGLE_CALENDAR_REFRESH_TOKEN;
-  const calendarId = process.env.GOOGLE_CALENDAR_CALENDAR_ID || "primary";
-
-  if (!clientId || !clientSecret || !refreshToken) {
+  // Get refresh token and calendar ID from settings
+  const settings = await getSettings();
+  if (!settings?.google?.refreshToken) {
     throw new Error(
-      "Google Calendar configuration not found. " +
-        "Either complete setup via the web UI or set GOOGLE_CALENDAR_CLIENT_ID, " +
-        "GOOGLE_CALENDAR_CLIENT_SECRET, and GOOGLE_CALENDAR_REFRESH_TOKEN environment variables.",
+      "Google Calendar not connected. Please sign in with Google to grant calendar access.",
     );
   }
 
   return {
-    clientId,
-    clientSecret,
-    refreshToken,
-    calendarId,
+    clientId: clientConfig.clientId,
+    clientSecret: clientConfig.clientSecret,
+    refreshToken: settings.google.refreshToken,
+    calendarId: settings.google.calendarId || "primary",
   };
 }
 
@@ -113,7 +102,14 @@ export async function getFieldMapping(): Promise<FieldMapping> {
 }
 
 /**
- * Check if Google Calendar is configured (from either source).
+ * Check if Google OAuth client is configured (env vars).
+ */
+export function isGoogleClientConfigured(): boolean {
+  return getGoogleClientConfig() !== null;
+}
+
+/**
+ * Check if Google Calendar is fully configured (client + refresh token).
  */
 export async function isGoogleConfigured(): Promise<boolean> {
   try {
@@ -122,6 +118,15 @@ export async function isGoogleConfigured(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/**
+ * Check if Google Calendar is connected (has refresh token, may not have calendar selected).
+ */
+export async function isGoogleConnected(): Promise<boolean> {
+  if (!isGoogleClientConfigured()) return false;
+  const settings = await getSettings();
+  return Boolean(settings?.google?.refreshToken);
 }
 
 /**

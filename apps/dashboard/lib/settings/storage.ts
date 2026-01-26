@@ -101,7 +101,9 @@ export async function getSettings(): Promise<AppSettings | null> {
 export async function saveSettings(settings: AppSettings): Promise<void> {
   const redis = getRedis();
   if (!redis) {
-    throw new Error("Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.");
+    throw new Error(
+      "Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.",
+    );
   }
   const encrypted = encryptSettings(settings);
   await redis.set(SETTINGS_KEY, encrypted);
@@ -140,7 +142,9 @@ export async function updateSettings(partial: Partial<AppSettings>): Promise<voi
 export async function deleteSettings(): Promise<void> {
   const redis = getRedis();
   if (!redis) {
-    throw new Error("Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.");
+    throw new Error(
+      "Redis is not configured. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.",
+    );
   }
   await redis.del(SETTINGS_KEY);
 }
