@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import { RootProvider } from "fumadocs-ui/provider/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { RootProvider } from "fumadocs-ui/provider/next";
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://while.so"),
   title: "While | Sync Notion & Google Calendar",
   description:
     "Keep your Notion calendar database and Google Calendar in perfect sync. Bidirectional, real-time, self-hosted. Free and open source.",

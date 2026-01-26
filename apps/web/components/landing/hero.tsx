@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Button } from "@while/ui";
 import { ArrowRight, BookOpen } from "lucide-react";
+import Link from "next/link";
 
 const DEPLOY_URL =
   "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while";
@@ -16,8 +16,7 @@ export function Hero() {
           </div>
 
           <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
-            Keep Notion and Google Calendar in{" "}
-            <span className="text-foreground">Perfect Sync</span>
+            Keep Notion and Google Calendar in <span className="text-foreground">Perfect Sync</span>
           </h1>
 
           <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg">

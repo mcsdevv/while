@@ -33,8 +33,7 @@ const steps = [
   {
     number: "01",
     title: "Deploy to Vercel",
-    description:
-      "One-click deployment to Vercel. Your own instance, running on the free tier.",
+    description: "One-click deployment to Vercel. Your own instance, running on the free tier.",
     icon: Rocket,
   },
   {
@@ -47,8 +46,7 @@ const steps = [
   {
     number: "03",
     title: "Events Sync Automatically",
-    description:
-      "That's it! Your events now sync bidirectionally in real-time.",
+    description: "That's it! Your events now sync bidirectionally in real-time.",
     icon: CheckCircle2,
   },
 ];

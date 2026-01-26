@@ -1,15 +1,15 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { Moon, Sun, Monitor } from "lucide-react";
-import { useEffect, useState } from "react";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuTrigger,
 } from "@while/ui";
+import { Monitor, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const themes = [
   { value: "light", label: "Light", icon: Sun },
@@ -35,7 +35,8 @@ export function ThemeToggle() {
     );
   }
 
-  const currentTheme = themes.find((t) => t.value === theme) ?? themes[2];
+  const currentValue = theme ?? "system";
+  const currentTheme = themes.find((t) => t.value === currentValue) ?? themes[2];
   const Icon = resolvedTheme === "dark" ? Moon : Sun;
 
   return (
@@ -45,7 +46,7 @@ export function ThemeToggle() {
         <span>{currentTheme.label}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
-        <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+        <DropdownMenuRadioGroup value={currentValue} onValueChange={setTheme}>
           {themes.map(({ value, label, icon: ThemeIcon }) => (
             <DropdownMenuRadioItem key={value} value={value}>
               <ThemeIcon className="size-4 mr-2" />

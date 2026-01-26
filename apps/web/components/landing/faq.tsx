@@ -1,9 +1,5 @@
-"use client";
-
-import Link from "next/link";
-import { Card, CardContent } from "@while/ui";
 import { ChevronDown } from "lucide-react";
-import * as React from "react";
+import Link from "next/link";
 
 const faqs = [
   {
@@ -39,8 +35,6 @@ const faqs = [
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
-
   return (
     <section className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -58,26 +52,19 @@ export function FAQ() {
 
         <div className="mx-auto mt-16 max-w-3xl">
           <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <Card key={index} className="overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="flex w-full items-center justify-between p-6 text-left"
-                >
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="group overflow-hidden rounded-none border border-border bg-card text-card-foreground"
+              >
+                <summary className="flex w-full cursor-pointer list-none items-center justify-between p-6 text-left [&::-webkit-details-marker]:hidden">
                   <span className="font-medium">{faq.question}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
-                      openIndex === index ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {openIndex === index && (
-                  <CardContent className="border-t pt-4">
-                    <p className="text-muted-foreground">{faq.answer}</p>
-                  </CardContent>
-                )}
-              </Card>
+                  <ChevronDown className="h-5 w-5 flex-shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
+                </summary>
+                <div className="border-t px-6 py-5">
+                  <p className="text-muted-foreground">{faq.answer}</p>
+                </div>
+              </details>
             ))}
           </div>
         </div>
