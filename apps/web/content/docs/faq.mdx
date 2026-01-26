@@ -34,14 +34,22 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
 <FAQAccordion>
   <FAQAccordionItem title="Why do my Google tokens expire after 7 days?">
-    This happens when your Google OAuth app is in "Testing" mode. Google limits test apps to 7-day token expiration.
+    This happens when your Google OAuth app is in "Testing" mode. Google limits test apps to 7-day token expiration, which means you'll need to re-authenticate weekly.
 
-    **To fix:**
+    **Dashboard warnings:** The dashboard shows a token health indicator that warns you 2 days before expiration, so you can re-authenticate proactively.
+
+    **Recommended fix—publish your app:**
     1. Go to Google Cloud Console
     2. Navigate to OAuth consent screen
     3. Click "Publish App"
 
-    Published apps have longer-lived refresh tokens.
+    **Benefits of publishing:**
+    - No more weekly re-authentication
+    - Refresh tokens don't expire (as long as you use the app periodically)
+    - Publishing is free and instant for personal use
+    - No Google review required if you're the only user
+
+    See the [detailed publishing guide](/docs/setup/google#step-5-publish-app-optional) for step-by-step instructions.
   </FAQAccordionItem>
 
   <FAQAccordionItem title="Can I sync multiple calendars?">

@@ -16,10 +16,10 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@while/ui": "workspace:*",
+    "@googleapis/calendar": "^9.0.0",
     "@notionhq/client": "^2.2.15",
     "@upstash/redis": "^1.36.0",
-    "@googleapis/calendar": "^9.0.0",
+    "@while/ui": "workspace:*",
     "google-auth-library": "^9.0.0",
     "lucide-react": "^0.562.0",
     "next": "^16.1.1",
@@ -32,11 +32,15 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@playwright/test": "^1.58.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@vitest/coverage-v8": "^3.2.0",
     "autoprefixer": "^10.4.20",
+    "jsdom": "^27.4.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",

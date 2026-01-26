@@ -364,6 +364,113 @@ test.describe("Setup Wizard - Test Step", () => {
   });
 });
 
+test.describe("Setup Wizard - Welcome Step UX", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route("**/api/setup/status", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          setupComplete: false,
+          google: { configured: false, connected: false, calendarSelected: false },
+          notion: { configured: false, databaseSelected: false, databaseName: null },
+          fieldMapping: { configured: false },
+        }),
+      });
+    });
+  });
+
+  test("displays 7-day token expiration warning", async ({ page }) => {
+    await page.goto("/setup");
+
+    await expect(page.getByText("Token expiration notice")).toBeVisible();
+    await expect(page.getByText(/OAuth tokens expire every 7 days/)).toBeVisible();
+  });
+
+  test("warning contains link to publish docs", async ({ page }) => {
+    await page.goto("/setup");
+
+    const publishLink = page.getByRole("link", { name: /publish your OAuth app/ });
+    await expect(publishLink).toBeVisible();
+    await expect(publishLink).toHaveAttribute(
+      "href",
+      "https://while.so/docs/setup/google#step-5-publish-app-optional"
+    );
+  });
+
+  test("setup helper section is collapsed by default", async ({ page }) => {
+    await page.goto("/setup");
+
+    // The helper button should be visible
+    await expect(page.getByRole("button", { name: /Google OAuth Configuration Values/i })).toBeVisible();
+
+    // But the redirect URI label should not be visible (collapsed)
+    await expect(page.getByText("Authorized Redirect URI")).not.toBeVisible();
+  });
+
+  test("clicking setup helper expands it", async ({ page }) => {
+    await page.goto("/setup");
+
+    // Click to expand
+    await page.getByRole("button", { name: /Google OAuth Configuration Values/i }).click();
+
+    // Now the content should be visible
+    await expect(page.getByText("Authorized Redirect URI")).toBeVisible();
+    await expect(page.getByText("OAuth Scopes (for consent screen)")).toBeVisible();
+  });
+
+  test("redirect URI displays current origin", async ({ page }) => {
+    await page.goto("/setup");
+
+    // Expand helper
+    await page.getByRole("button", { name: /Google OAuth Configuration Values/i }).click();
+
+    // Check redirect URI contains the expected path
+    await expect(page.getByText(/\/api\/auth\/callback\/google/)).toBeVisible();
+  });
+
+  test("OAuth scopes display correctly", async ({ page }) => {
+    await page.goto("/setup");
+
+    // Expand helper
+    await page.getByRole("button", { name: /Google OAuth Configuration Values/i }).click();
+
+    // Check scopes are present
+    await expect(page.getByText(/openid/)).toBeVisible();
+    await expect(page.getByText(/googleapis\.com\/auth\/calendar/)).toBeVisible();
+  });
+
+  test("setup helper has external links when expanded", async ({ page }) => {
+    await page.goto("/setup");
+
+    // Expand helper
+    await page.getByRole("button", { name: /Google OAuth Configuration Values/i }).click();
+
+    // Check links
+    const credentialsLink = page.getByRole("link", { name: /Google Cloud Credentials/i });
+    await expect(credentialsLink).toBeVisible();
+    await expect(credentialsLink).toHaveAttribute("href", "https://console.cloud.google.com/apis/credentials");
+
+    const guideLink = page.getByRole("link", { name: /Full Setup Guide/i });
+    await expect(guideLink).toBeVisible();
+    await expect(guideLink).toHaveAttribute("href", "https://while.so/docs/setup/google");
+  });
+
+  test("clicking setup helper again collapses it", async ({ page }) => {
+    await page.goto("/setup");
+
+    const helperButton = page.getByRole("button", { name: /Google OAuth Configuration Values/i });
+
+    // Expand
+    await helperButton.click();
+    await expect(page.getByText("Authorized Redirect URI")).toBeVisible();
+
+    // Collapse
+    await helperButton.click();
+    await expect(page.getByText("Authorized Redirect URI")).not.toBeVisible();
+  });
+});
+
 test.describe("Setup Wizard - Mobile Responsive", () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
@@ -390,5 +497,34 @@ test.describe("Setup Wizard - Mobile Responsive", () => {
 
     // Check welcome step is visible
     await expect(page.getByRole("heading", { name: "Welcome" })).toBeVisible();
+  });
+
+  test("warning and helper display correctly on mobile", async ({ page }) => {
+    await page.route("**/api/setup/status", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          setupComplete: false,
+          google: { configured: false, connected: false, calendarSelected: false },
+          notion: { configured: false, databaseSelected: false, databaseName: null },
+          fieldMapping: { configured: false },
+        }),
+      });
+    });
+
+    await page.goto("/setup");
+
+    // Token warning should be visible
+    await expect(page.getByText("Token expiration notice")).toBeVisible();
+
+    // Setup helper should be expandable
+    await page.getByRole("button", { name: /Google OAuth Configuration Values/i }).click();
+    await expect(page.getByText("Authorized Redirect URI")).toBeVisible();
+
+    // Content should not overflow
+    const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+    expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 1);
   });
 });
