@@ -5,9 +5,10 @@
  * Unlike the setup test route, this does NOT modify setupCompleted status.
  */
 
+import { getGoogleClientConfig } from "@/lib/env";
 import { getSettings } from "@/lib/settings";
-import { Client } from "@notionhq/client";
 import { calendar } from "@googleapis/calendar";
+import { Client } from "@notionhq/client";
 import { OAuth2Client } from "google-auth-library";
 import { NextResponse } from "next/server";
 
@@ -56,21 +57,23 @@ export async function POST() {
 async function testGoogleConnection(
   settings: Awaited<ReturnType<typeof getSettings>>,
 ): Promise<TestResult> {
-  if (!settings?.google?.clientId || !settings?.google?.clientSecret) {
+  // Check for client credentials from env vars
+  const clientConfig = getGoogleClientConfig();
+  if (!clientConfig) {
     return {
       service: "Google Calendar",
       success: false,
       message: "Not configured",
-      details: "Client ID and secret not set",
+      details: "GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET not set",
     };
   }
 
-  if (!settings.google.refreshToken) {
+  if (!settings?.google?.refreshToken) {
     return {
       service: "Google Calendar",
       success: false,
       message: "Not connected",
-      details: "OAuth flow not completed",
+      details: "Please sign in with Google",
     };
   }
 
@@ -84,10 +87,7 @@ async function testGoogleConnection(
   }
 
   try {
-    const oauth2Client = new OAuth2Client(
-      settings.google.clientId,
-      settings.google.clientSecret,
-    );
+    const oauth2Client = new OAuth2Client(clientConfig.clientId, clientConfig.clientSecret);
     oauth2Client.setCredentials({ refresh_token: settings.google.refreshToken });
 
     const calendarClient = calendar({ version: "v3", auth: oauth2Client });

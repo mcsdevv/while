@@ -5,11 +5,9 @@ const envSchema = z.object({
   NOTION_API_TOKEN: z.string().optional(),
   NOTION_DATABASE_ID: z.string().optional(),
 
-  // Google Calendar (optional - can be configured via settings UI)
-  GOOGLE_CALENDAR_CLIENT_ID: z.string().optional(),
-  GOOGLE_CALENDAR_CLIENT_SECRET: z.string().optional(),
-  GOOGLE_CALENDAR_REFRESH_TOKEN: z.string().optional(),
-  GOOGLE_CALENDAR_CALENDAR_ID: z.string().optional(),
+  // Google OAuth (single client for auth + calendar access)
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
 
   // Settings encryption (required for storing credentials in Redis)
   SETTINGS_ENCRYPTION_KEY: z.string().optional(),
@@ -22,8 +20,6 @@ const envSchema = z.object({
   // NextAuth (optional at build time - validated at runtime when auth is used)
   NEXTAUTH_SECRET: z.string().optional(),
   NEXTAUTH_URL: z.string().url().optional(),
-  AUTH_GOOGLE_ID: z.string().optional(),
-  AUTH_GOOGLE_SECRET: z.string().optional(),
   AUTHORIZED_EMAILS: z
     .string()
     .optional()
@@ -57,8 +53,8 @@ export const env = getEnv();
 export function isAuthConfigured(): boolean {
   return Boolean(
     env.NEXTAUTH_SECRET &&
-      env.AUTH_GOOGLE_ID &&
-      env.AUTH_GOOGLE_SECRET &&
+      env.GOOGLE_CLIENT_ID &&
+      env.GOOGLE_CLIENT_SECRET &&
       env.AUTHORIZED_EMAILS?.length,
   );
 }
@@ -69,14 +65,14 @@ export function isAuthConfigured(): boolean {
  */
 export function requireAuthEnv(): {
   NEXTAUTH_SECRET: string;
-  AUTH_GOOGLE_ID: string;
-  AUTH_GOOGLE_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
   AUTHORIZED_EMAILS: string[];
 } {
   const missing: string[] = [];
   if (!env.NEXTAUTH_SECRET) missing.push("NEXTAUTH_SECRET");
-  if (!env.AUTH_GOOGLE_ID) missing.push("AUTH_GOOGLE_ID");
-  if (!env.AUTH_GOOGLE_SECRET) missing.push("AUTH_GOOGLE_SECRET");
+  if (!env.GOOGLE_CLIENT_ID) missing.push("GOOGLE_CLIENT_ID");
+  if (!env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
   if (!env.AUTHORIZED_EMAILS?.length) missing.push("AUTHORIZED_EMAILS");
 
   if (missing.length > 0) {
@@ -88,8 +84,22 @@ export function requireAuthEnv(): {
 
   return {
     NEXTAUTH_SECRET: env.NEXTAUTH_SECRET!,
-    AUTH_GOOGLE_ID: env.AUTH_GOOGLE_ID!,
-    AUTH_GOOGLE_SECRET: env.AUTH_GOOGLE_SECRET!,
+    GOOGLE_CLIENT_ID: env.GOOGLE_CLIENT_ID!,
+    GOOGLE_CLIENT_SECRET: env.GOOGLE_CLIENT_SECRET!,
     AUTHORIZED_EMAILS: env.AUTHORIZED_EMAILS!,
+  };
+}
+
+/**
+ * Get Google OAuth client credentials.
+ * Used by both NextAuth and Calendar API.
+ */
+export function getGoogleClientConfig(): { clientId: string; clientSecret: string } | null {
+  if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
+    return null;
+  }
+  return {
+    clientId: env.GOOGLE_CLIENT_ID,
+    clientSecret: env.GOOGLE_CLIENT_SECRET,
   };
 }

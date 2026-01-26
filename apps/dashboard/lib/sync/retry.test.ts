@@ -1,5 +1,5 @@
-import { expect, test } from "vitest";
 import { NetworkError, RateLimitError, ValidationError, isRetryableError } from "@/lib/errors";
+import { expect, test } from "vitest";
 import { retryWithBackoff } from "./retry";
 
 test("isRetryableError - identifies network errors", () => {

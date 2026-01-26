@@ -45,8 +45,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           Something went wrong
         </h1>
         <p className="text-muted-foreground text-base max-w-md mb-8">
-          An unexpected error occurred. We&apos;ve been notified and are looking
-          into it.
+          An unexpected error occurred. We&apos;ve been notified and are looking into it.
         </p>
 
         {/* Actions */}
@@ -59,9 +58,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
         {/* Error digest */}
         {error.digest && (
-          <p className="mt-6 text-xs text-muted-foreground font-mono">
-            Error ID: {error.digest}
-          </p>
+          <p className="mt-6 text-xs text-muted-foreground font-mono">Error ID: {error.digest}</p>
         )}
       </div>
 

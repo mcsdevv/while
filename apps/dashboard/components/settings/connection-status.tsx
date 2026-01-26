@@ -158,18 +158,14 @@ export function ConnectionStatus({ google, notion }: ConnectionStatusProps) {
                   )}
                   <span
                     className={`text-sm font-medium ${
-                      result.success
-                        ? "text-foreground"
-                        : "text-muted-foreground"
+                      result.success ? "text-foreground" : "text-muted-foreground"
                     }`}
                   >
                     {result.service}: {result.message}
                   </span>
                 </div>
                 {result.details && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {result.details}
-                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">{result.details}</p>
                 )}
               </div>
             ))}

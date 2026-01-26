@@ -2,13 +2,7 @@
 
 import { Button } from "@while/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@while/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
 import { useCallback, useEffect, useState } from "react";
 
 interface FieldMapping {

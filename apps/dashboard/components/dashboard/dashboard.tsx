@@ -2,19 +2,13 @@
 
 import { UserMenu } from "@/components/auth/user-menu";
 import { LogsViewer } from "@/components/dashboard/logs-viewer";
-import { Badge } from "@while/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@while/ui";
-import { Separator } from "@while/ui";
-import { Skeleton } from "@while/ui";
 import type { SyncMetrics } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { Badge } from "@while/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
+import { Separator } from "@while/ui";
+import { Skeleton } from "@while/ui";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 

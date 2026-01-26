@@ -1,10 +1,12 @@
 import { env, isAuthConfigured } from "@/lib/env";
+import { updateSettings } from "@/lib/settings";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
 /**
  * NextAuth configuration
  * Uses Google OAuth with email whitelist for access control
+ * Also requests calendar scope and stores refresh token for calendar sync
  *
  * Note: Auth env vars are optional at build time. If not configured,
  * sign-in attempts will fail gracefully with an error message.
@@ -19,11 +21,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: env.NEXTAUTH_SECRET || PLACEHOLDER_SECRET,
   providers: [
     Google({
-      clientId: env.AUTH_GOOGLE_ID ?? "",
-      clientSecret: env.AUTH_GOOGLE_SECRET ?? "",
+      clientId: env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
       authorization: {
         params: {
-          prompt: "select_account",
+          scope: "openid email profile https://www.googleapis.com/auth/calendar",
+          access_type: "offline",
+          prompt: "consent",
         },
       },
     }),
@@ -32,10 +36,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     /**
      * Check if user's email is in the authorized list
      */
-    async signIn({ user }) {
+    async signIn({ user, account }) {
       if (!isAuthConfigured()) {
         console.error(
-          "Auth not configured. Set AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.",
+          "Auth not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET, and AUTHORIZED_EMAILS.",
         );
         return false;
       }
@@ -48,9 +52,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (!isAuthorized) {
         console.warn(`Unauthorized sign-in attempt from: ${email}`);
+        return false;
       }
 
-      return isAuthorized;
+      // Store refresh token for calendar API access
+      if (account?.refresh_token) {
+        try {
+          await updateSettings({
+            google: {
+              refreshToken: account.refresh_token,
+              calendarId: "", // Will be set when user selects calendar
+              connectedAt: new Date().toISOString(),
+            },
+          });
+          console.log("Stored Google refresh token for calendar access");
+        } catch (error) {
+          console.error("Failed to store refresh token:", error);
+          // Don't block sign-in if settings storage fails
+        }
+      }
+
+      return true;
     },
     /**
      * Add user info to JWT token

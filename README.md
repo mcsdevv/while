@@ -4,7 +4,7 @@
 
 Bidirectional, real-time sync between Notion calendar databases and Google Calendar. Built with Next.js and deployable to Vercel with one click.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_CLIENT_ID,NOTION_CLIENT_SECRET,ENCRYPTION_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile%2Ftree%2Fmain%2Fapps%2Fdashboard&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while)
 
 ## Features
 
@@ -51,12 +51,11 @@ Before deploying, you'll need:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXTAUTH_SECRET` | Yes | Session encryption key |
-| `GOOGLE_CLIENT_ID` | Yes | Google OAuth client ID |
+| `GOOGLE_CLIENT_ID` | Yes | Google OAuth client ID (for auth + calendar) |
 | `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth client secret |
-| `NOTION_CLIENT_ID` | Yes | Notion OAuth client ID |
-| `NOTION_CLIENT_SECRET` | Yes | Notion OAuth client secret |
-| `ENCRYPTION_KEY` | Yes | 32-byte base64 key for credential encryption |
+| `NEXTAUTH_SECRET` | Yes | Session encryption key |
+| `AUTHORIZED_EMAILS` | Yes | Comma-separated list of allowed email addresses |
+| `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
 | `UPSTASH_REDIS_REST_URL` | Auto | Auto-configured via Vercel Marketplace |
 | `UPSTASH_REDIS_REST_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
 
