@@ -103,11 +103,18 @@ After the consent screen is created:
 1. Return to **OAuth consent screen** page
 2. Click **Edit App**
 3. Navigate to the **Scopes** section (or click "Add or Remove Scopes")
-4. Add these scopes:
-   - `.../auth/userinfo.email`
-   - `.../auth/userinfo.profile`
-   - `https://www.googleapis.com/auth/calendar`
-   - `https://www.googleapis.com/auth/calendar.events`
+4. Add these [scopes](https://console.cloud.google.com/auth/scopes):
+
+```
+https://www.googleapis.com/auth/userinfo.email
+https://www.googleapis.com/auth/userinfo.profile
+https://www.googleapis.com/auth/calendar
+```
+
+<Callout type="info">
+You'll see "Your app requires verification" - ignore this. Verification is only required for apps with many external users. For personal use, no review is needed.
+</Callout>
+
 5. Click **Save and Continue**
 
 </Step>
