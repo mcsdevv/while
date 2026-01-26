@@ -46,6 +46,9 @@ export {
 // Separator
 export { Separator } from "./separator";
 
+// Switch
+export { Switch, type SwitchProps } from "./switch";
+
 // Skeleton
 export { Skeleton, SkeletonCard, SkeletonSettingsPage, SkeletonSetupWizard } from "./skeleton";
 

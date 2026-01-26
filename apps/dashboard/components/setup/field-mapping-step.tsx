@@ -1,41 +1,57 @@
 "use client";
 
-import { Button } from "@while/ui";
-import { Input } from "@while/ui";
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from "@while/ui";
 import { useEffect, useState } from "react";
+import type { ExtendedFieldMapping, FieldConfig } from "@/lib/settings/types";
+import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";
 
 interface FieldMappingStepProps {
   onBack: () => void;
   onNext: () => void;
 }
 
-interface FieldMapping {
-  title: string;
-  date: string;
-  description: string;
-  location: string;
-  gcalEventId: string;
-  reminders: string;
+interface NotionProperty {
+  id: string;
+  name: string;
+  type: string;
 }
 
-const FIELD_DESCRIPTIONS: Record<keyof FieldMapping, string> = {
-  title: "The property containing the event title (required)",
-  date: "The date property for event timing (required)",
-  description: "The property for event description (optional)",
-  location: "The property for event location (optional)",
-  gcalEventId: "Property to store Google Calendar event ID (optional)",
-  reminders: "Property for reminder minutes (optional)",
+type FieldKey = keyof ExtendedFieldMapping;
+
+const REQUIRED_FIELDS: FieldKey[] = ["title", "date"];
+const OPTIONAL_FIELDS: FieldKey[] = [
+  "description",
+  "location",
+  "gcalEventId",
+  "reminders",
+  "attendees",
+  "organizer",
+  "conferenceLink",
+  "recurrence",
+  "color",
+  "visibility",
+];
+
+const FIELD_DESCRIPTIONS: Record<FieldKey, string> = {
+  title: "The property containing the event title",
+  date: "The date property for event timing",
+  description: "Event description text",
+  location: "Event location or address",
+  gcalEventId: "Stores the Google Calendar event ID for syncing",
+  reminders: "Reminder time in minutes before event",
+  attendees: "List of event attendees",
+  organizer: "Event organizer name",
+  conferenceLink: "Video call link (Zoom, Meet, etc.)",
+  recurrence: "Recurring event pattern",
+  color: "Calendar color category",
+  visibility: "Event visibility (public/private)",
 };
 
+const EMPTY_VALUE = "__none__";
+
 export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
-  const [mapping, setMapping] = useState<FieldMapping>({
-    title: "Title",
-    date: "Date",
-    description: "Description",
-    location: "Location",
-    gcalEventId: "GCal Event ID",
-    reminders: "Reminders",
-  });
+  const [mapping, setMapping] = useState<ExtendedFieldMapping>(DEFAULT_EXTENDED_FIELD_MAPPING);
+  const [properties, setProperties] = useState<NotionProperty[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +63,7 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
         if (response.ok) {
           const data = await response.json();
           setMapping(data.fieldMapping);
+          setProperties(data.notionProperties || []);
         }
       } catch (err) {
         console.error("Failed to load field mapping:", err);
@@ -57,13 +74,25 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
     loadMapping();
   }, []);
 
-  const handleChange = (field: keyof FieldMapping, value: string) => {
-    setMapping((prev) => ({ ...prev, [field]: value }));
+  const handleToggle = (field: FieldKey, enabled: boolean) => {
+    setMapping((prev) => ({
+      ...prev,
+      [field]: { ...prev[field], enabled },
+    }));
+  };
+
+  const handlePropertyChange = (field: FieldKey, propertyName: string) => {
+    const actualValue = propertyName === EMPTY_VALUE ? "" : propertyName;
+    setMapping((prev) => ({
+      ...prev,
+      [field]: { ...prev[field], notionPropertyName: actualValue },
+    }));
   };
 
   const handleSave = async () => {
-    if (!mapping.title || !mapping.date) {
-      setError("Title and Date fields are required");
+    // Validate required fields
+    if (!mapping.title.notionPropertyName || !mapping.date.notionPropertyName) {
+      setError("Title and Date fields require Notion property names");
       return;
     }
 
@@ -90,6 +119,75 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
     }
   };
 
+  const renderFieldRow = (field: FieldKey, config: FieldConfig) => {
+    const isRequired = REQUIRED_FIELDS.includes(field);
+    const currentValue = config.notionPropertyName || EMPTY_VALUE;
+
+    return (
+      <div key={field} className="flex items-center gap-4 py-2">
+        {/* Toggle */}
+        <div className="w-12 flex justify-center">
+          {isRequired ? (
+            <div className="text-xs text-muted-foreground">Required</div>
+          ) : (
+            <Switch
+              checked={config.enabled}
+              onCheckedChange={(checked) => handleToggle(field, checked)}
+            />
+          )}
+        </div>
+
+        {/* Label and description */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">{config.displayLabel}</span>
+            {isRequired && <span className="text-xs text-destructive">*</span>}
+          </div>
+          <p className="text-xs text-muted-foreground truncate">{FIELD_DESCRIPTIONS[field]}</p>
+        </div>
+
+        {/* Property selector */}
+        <div className="w-48">
+          {properties.length > 0 ? (
+            <Select
+              value={currentValue}
+              onValueChange={(val) => handlePropertyChange(field, val)}
+              disabled={!isRequired && !config.enabled}
+            >
+              <SelectTrigger className={!isRequired && !config.enabled ? "opacity-50" : ""}>
+                <SelectValue placeholder="Select property" />
+              </SelectTrigger>
+              <SelectContent>
+                {!isRequired && (
+                  <SelectItem value={EMPTY_VALUE}>
+                    <span className="text-muted-foreground">None</span>
+                  </SelectItem>
+                )}
+                {properties.map((prop) => (
+                  <SelectItem key={prop.id} value={prop.name}>
+                    <div className="flex items-center gap-2">
+                      <span>{prop.name}</span>
+                      <span className="text-xs text-muted-foreground">({prop.type})</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <input
+              type="text"
+              value={config.notionPropertyName}
+              onChange={(e) => handlePropertyChange(field, e.target.value)}
+              disabled={!isRequired && !config.enabled}
+              placeholder="Property name"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
+            />
+          )}
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -101,31 +199,28 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
   return (
     <div className="space-y-6">
       <div className="text-sm text-muted-foreground">
-        Map your Notion database property names to Google Calendar fields. Enter the exact property
-        names as they appear in your Notion database.
+        Configure which Google Calendar fields sync to your Notion database. Toggle fields on/off
+        and map them to your Notion properties.
       </div>
 
-      <div className="space-y-4">
-        {(Object.keys(mapping) as Array<keyof FieldMapping>).map((field) => (
-          <div key={field} className="space-y-1">
-            <div className="flex items-center gap-2">
-              <label htmlFor={field} className="text-sm font-medium capitalize">
-                {field.replace(/([A-Z])/g, " $1").trim()}
-              </label>
-              {(field === "title" || field === "date") && (
-                <span className="text-xs text-destructive">*</span>
-              )}
-            </div>
-            <Input
-              id={field}
-              type="text"
-              placeholder={`Notion property name for ${field}`}
-              value={mapping[field]}
-              onChange={(e) => handleChange(field, e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">{FIELD_DESCRIPTIONS[field]}</p>
-          </div>
-        ))}
+      {/* Required Fields Section */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+          Required Fields
+        </h3>
+        <div className="rounded-lg border border-input bg-background p-2">
+          {REQUIRED_FIELDS.map((field) => renderFieldRow(field, mapping[field]))}
+        </div>
+      </div>
+
+      {/* Optional Fields Section */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+          Optional Fields
+        </h3>
+        <div className="rounded-lg border border-input bg-background p-2">
+          {OPTIONAL_FIELDS.map((field) => renderFieldRow(field, mapping[field]))}
+        </div>
       </div>
 
       {error && (
