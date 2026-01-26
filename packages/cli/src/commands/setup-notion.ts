@@ -190,7 +190,7 @@ export async function setupNotion(): Promise<void> {
   console.log(chalk.bold.green("✓ Notion setup complete!"));
   console.log();
   console.log(chalk.gray("Next steps:"));
-  console.log(chalk.gray("  1. Run: bun run dev"));
+  console.log(chalk.gray("  1. Run: pnpm dev"));
   console.log(chalk.gray("  2. Open: http://localhost:3000/setup"));
   console.log(chalk.gray("  3. Complete field mapping in the web UI"));
   console.log();
