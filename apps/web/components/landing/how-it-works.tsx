@@ -1,4 +1,4 @@
-import { Calendar, CheckCircle2, Rocket } from "lucide-react";
+import { CheckCircle2, Rocket, Settings } from "lucide-react";
 
 const StepArrow = () => (
   <svg
@@ -32,16 +32,15 @@ const StepArrow = () => (
 const steps = [
   {
     number: "01",
-    title: "Deploy to Vercel",
-    description: "One-click deployment to Vercel. Your own instance, running on the free tier.",
-    icon: Rocket,
+    title: "Set Up Credentials",
+    description: "Create a Google OAuth app and Notion integration. Takes about 5 minutes.",
+    icon: Settings,
   },
   {
     number: "02",
-    title: "Connect Your Accounts",
-    description:
-      "Follow the setup wizard to connect Google Calendar and Notion. No coding required.",
-    icon: Calendar,
+    title: "Deploy to Vercel",
+    description: "One-click deployment to Vercel. Your own instance, running on the free tier.",
+    icon: Rocket,
   },
   {
     number: "03",
