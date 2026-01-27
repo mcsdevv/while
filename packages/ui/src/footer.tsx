@@ -1,17 +1,18 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import { ThemeToggle } from "../theme-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 const links = {
   product: [
-    { name: "Documentation", href: "/docs", external: false },
-    { name: "GitHub", href: "https://github.com/mcsdevv/while", external: true },
-    { name: "Issues", href: "https://github.com/mcsdevv/while/issues", external: true },
+    { name: "Documentation", href: "https://while.so/docs" },
+    { name: "GitHub", href: "https://github.com/mcsdevv/while" },
+    { name: "Issues", href: "https://github.com/mcsdevv/while/issues" },
   ],
   resources: [
-    { name: "Setup Guide", href: "/docs/quickstart", external: false },
-    { name: "Troubleshooting", href: "/docs/guides/troubleshooting", external: false },
-    { name: "Architecture", href: "/docs/architecture", external: false },
+    { name: "Setup Guide", href: "https://while.so/docs/quickstart" },
+    { name: "Troubleshooting", href: "https://while.so/docs/guides/troubleshooting" },
+    { name: "Architecture", href: "https://while.so/docs/architecture" },
   ],
 };
 
@@ -40,23 +41,14 @@ export function Footer() {
               <ul className="mt-4 space-y-2">
                 {links.product.map((link) => (
                   <li key={link.name}>
-                    {link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm underline text-muted-foreground hover:text-foreground"
-                      >
-                        {link.name}
-                      </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        className="text-sm underline text-muted-foreground hover:text-foreground"
-                      >
-                        {link.name}
-                      </Link>
-                    )}
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm underline text-muted-foreground hover:text-foreground"
+                    >
+                      {link.name}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -68,23 +60,14 @@ export function Footer() {
               <ul className="mt-4 space-y-2">
                 {links.resources.map((link) => (
                   <li key={link.name}>
-                    {link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm underline text-muted-foreground hover:text-foreground"
-                      >
-                        {link.name}
-                      </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        className="text-sm underline text-muted-foreground hover:text-foreground"
-                      >
-                        {link.name}
-                      </Link>
-                    )}
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm underline text-muted-foreground hover:text-foreground"
+                    >
+                      {link.name}
+                    </a>
                   </li>
                 ))}
               </ul>
