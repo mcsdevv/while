@@ -21,15 +21,6 @@ describe("Environment Variables", () => {
           .map((email) => email.trim().toLowerCase())
           .filter(Boolean),
       ),
-    AUTHORIZED_DOMAINS: z
-      .string()
-      .optional()
-      .transform((str) =>
-        str
-          ?.split(",")
-          .map((domain) => domain.trim().toLowerCase())
-          .filter(Boolean),
-      ),
   });
 
   describe("NEXTAUTH_SECRET", () => {
@@ -142,12 +133,12 @@ describe("Environment Variables", () => {
   });
 
   describe("AUTHORIZED_EMAILS", () => {
-    it("should allow AUTHORIZED_EMAILS to be optional", () => {
+    it("should allow AUTHORIZED_EMAILS to be optional in schema (runtime validation is separate)", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
         GOOGLE_CLIENT_ID: "test",
         GOOGLE_CLIENT_SECRET: "test",
-        // No AUTHORIZED_EMAILS - allowed when using AUTHORIZED_DOMAINS
+        // Schema allows empty, but runtime validation requires at least one email
       });
 
       expect(result.success).toBe(true);
@@ -228,68 +219,6 @@ describe("Environment Variables", () => {
     });
   });
 
-  describe("AUTHORIZED_DOMAINS", () => {
-    it("should allow AUTHORIZED_DOMAINS to be optional", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_EMAILS: "test@example.com",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
-      }
-    });
-
-    it("should parse single domain", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: "company.com",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com"]);
-      }
-    });
-
-    it("should parse multiple domains", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: "company.com,subsidiary.org,partner.net",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual([
-          "company.com",
-          "subsidiary.org",
-          "partner.net",
-        ]);
-      }
-    });
-
-    it("should trim whitespace and lowercase domains", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: " Company.COM , OTHER.org ",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "other.org"]);
-      }
-    });
-  });
-
   describe("Complete Configuration", () => {
     it("should validate complete auth configuration with emails", () => {
       const validConfig = {
@@ -312,20 +241,19 @@ describe("Environment Variables", () => {
       }
     });
 
-    it("should validate configuration with domains instead of emails", () => {
+    it("should validate configuration with wildcard patterns", () => {
       const validConfig = {
         NEXTAUTH_SECRET: "my-super-secret-key",
         GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
         GOOGLE_CLIENT_SECRET: "GOCSPX-test",
-        AUTHORIZED_DOMAINS: "company.com,partner.org",
+        AUTHORIZED_EMAILS: "*@company.com,*@partner.org",
       };
 
       const result = authEnvSchema.safeParse(validConfig);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "partner.org"]);
-        expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
+        expect(result.data.AUTHORIZED_EMAILS).toEqual(["*@company.com", "*@partner.org"]);
       }
     });
 

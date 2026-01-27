@@ -35,15 +35,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     /**
-     * Check if user's email is authorized via:
-     * - AUTHORIZED_EMAILS (exact emails or *@domain.com patterns)
-     * - AUTHORIZED_DOMAINS (domain allowlist)
+     * Check if user's email is authorized via AUTHORIZED_EMAILS
+     * (exact emails or *@domain.com patterns)
      */
     async signIn({ user, account }) {
       if (!isAuthConfigured()) {
         console.error(
           "Auth not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET, " +
-            "and at least one of: AUTHORIZED_EMAILS or AUTHORIZED_DOMAINS.",
+            "and AUTHORIZED_EMAILS.",
         );
         return false;
       }

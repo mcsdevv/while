@@ -54,13 +54,12 @@ Before deploying, you'll need:
 | `GOOGLE_CLIENT_ID` | Yes | Google OAuth client ID (for auth + calendar) |
 | `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth client secret |
 | `NEXTAUTH_SECRET` | Yes | Session encryption key |
-| `AUTHORIZED_EMAILS` | One of these | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
-| `AUTHORIZED_DOMAINS` | One of these | Comma-separated domains without @ (`company.com,other.org`) |
+| `AUTHORIZED_EMAILS` | Yes | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
 | `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
 | `UPSTASH_REDIS_REST_URL` | Auto | Auto-configured via Vercel Marketplace |
 | `UPSTASH_REDIS_REST_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
 
-**Authorization**: At least one of `AUTHORIZED_EMAILS` or `AUTHORIZED_DOMAINS` must be set.
+**Authorization**: Use wildcard patterns like `*@company.com` to allow all emails from a domain.
 
 Generate secrets with:
 ```bash
