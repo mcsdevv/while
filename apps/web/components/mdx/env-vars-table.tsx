@@ -41,7 +41,12 @@ function generateBase64Secret(bytes = 32): string {
   return btoa(String.fromCharCode(...array));
 }
 
-function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
+function EnvVarRow({
+  envVar,
+  showHowToGet,
+  showDefault,
+  showYourValue,
+}: {
   envVar: EnvVar;
   showHowToGet: boolean;
   showDefault: boolean;
@@ -49,6 +54,7 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
 }) {
   const [value, setValue] = React.useState("");
   const [copied, setCopied] = React.useState(false);
+  const [valueCopied, setValueCopied] = React.useState(false);
 
   React.useEffect(() => {
     const stored = localStorage.getItem(`${STORAGE_PREFIX}${envVar.name}`);
@@ -79,16 +85,23 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const howToGetContent = envVar.howToGet ?? (
-    envVar.howToGetLink ? (
+  const copyValue = async () => {
+    if (!value) return;
+    await navigator.clipboard.writeText(value);
+    setValueCopied(true);
+    setTimeout(() => setValueCopied(false), 1500);
+  };
+
+  const howToGetContent =
+    envVar.howToGet ??
+    (envVar.howToGetLink ? (
       <Link
         href={envVar.howToGetLink.href}
         className="text-primary underline-offset-4 hover:underline"
       >
         {envVar.howToGetLink.label}
       </Link>
-    ) : null
-  );
+    ) : null);
 
   return (
     <TableRow>
@@ -108,12 +121,8 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
         </button>
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">{envVar.description}</TableCell>
-      {showHowToGet && (
-        <TableCell className="text-sm">{howToGetContent}</TableCell>
-      )}
-      {showDefault && (
-        <TableCell className="text-sm font-mono">{envVar.default}</TableCell>
-      )}
+      {showHowToGet && <TableCell className="text-sm">{howToGetContent}</TableCell>}
+      {showDefault && <TableCell className="text-sm font-mono">{envVar.default}</TableCell>}
       {showYourValue && (
         <TableCell className="min-w-[200px]">
           {envVar.hideInput ? (
@@ -127,6 +136,21 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
                 placeholder="Enter value..."
                 className="h-8 text-sm font-mono"
               />
+              {value && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={copyValue}
+                  className="shrink-0 h-8 px-2"
+                  title="Copy value"
+                >
+                  {valueCopied ? (
+                    <Check className="h-3.5 w-3.5 text-green-500" />
+                  ) : (
+                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                  )}
+                </Button>
+              )}
               {envVar.generate && !value && (
                 <Button
                   variant="outline"
@@ -149,9 +173,7 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
 export function EnvVarsTable({ vars }: EnvVarsTableProps) {
   const [clearKey, setClearKey] = React.useState(0);
 
-  const showHowToGet = vars.some(
-    (v) => v.howToGet !== undefined || v.howToGetLink !== undefined,
-  );
+  const showHowToGet = vars.some((v) => v.howToGet !== undefined || v.howToGetLink !== undefined);
   const showDefault = vars.some((v) => v.default !== undefined);
   const showYourValue = vars.some((v) => !v.hideInput);
 
