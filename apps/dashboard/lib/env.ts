@@ -35,19 +35,6 @@ const envSchema = z.object({
         .filter(Boolean),
     ),
 
-  // AUTHORIZED_DOMAINS: Comma-separated list of email domains (without @)
-  //   - Example: company.com,other.org
-  //   - Any email from these domains is authorized
-  AUTHORIZED_DOMAINS: z
-    .string()
-    .optional()
-    .transform((str) =>
-      str
-        ?.split(",")
-        .map((domain) => domain.trim().toLowerCase())
-        .filter(Boolean),
-    ),
-
   // Optional
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
@@ -79,15 +66,14 @@ export function isAuthConfigured(): boolean {
   );
 
   // At least one authorization method must be configured
-  const hasAuthorization =
-    (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
+  const hasAuthorization = (env.AUTHORIZED_EMAILS?.length ?? 0) > 0;
 
   return hasAuthCore && hasAuthorization;
 }
 
 /**
  * Check if an email is authorized based on configured env vars.
- * Supports exact emails, wildcard patterns (*@domain.com), and domain allowlists.
+ * Supports exact emails and wildcard patterns (*@domain.com).
  */
 export function isEmailAuthorized(email: string): boolean {
   const normalizedEmail = email.toLowerCase();
@@ -108,12 +94,6 @@ export function isEmailAuthorized(email: string): boolean {
     }
   }
 
-  // Check domain allowlist
-  const authorizedDomains = env.AUTHORIZED_DOMAINS ?? [];
-  if (authorizedDomains.includes(emailDomain)) {
-    return true;
-  }
-
   return false;
 }
 
@@ -132,11 +112,10 @@ export function requireAuthEnv(): {
   if (!env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
 
   // Check that at least one authorization method is configured
-  const hasAuthorization =
-    (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
+  const hasAuthorization = (env.AUTHORIZED_EMAILS?.length ?? 0) > 0;
 
   if (!hasAuthorization) {
-    missing.push("AUTHORIZED_EMAILS or AUTHORIZED_DOMAINS");
+    missing.push("AUTHORIZED_EMAILS");
   }
 
   if (missing.length > 0) {

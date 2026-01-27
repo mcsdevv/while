@@ -268,8 +268,7 @@ See \`.env.example\` for all configuration options.
 | \`GOOGLE_CLIENT_ID\` | Yes | Google OAuth client ID |
 | \`GOOGLE_CLIENT_SECRET\` | Yes | Google OAuth client secret |
 | \`NEXTAUTH_SECRET\` | Yes | Session encryption key |
-| \`AUTHORIZED_EMAILS\` | One of | Allowed email patterns |
-| \`AUTHORIZED_DOMAINS\` | One of | Allowed email domains |
+| \`AUTHORIZED_EMAILS\` | Yes | Allowed email patterns (e.g., \`*@company.com\`) |
 
 ## Documentation
 
