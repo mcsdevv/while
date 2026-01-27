@@ -55,12 +55,12 @@ Before deploying, you'll need:
 | `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth client secret |
 | `NEXTAUTH_SECRET` | Yes | Session encryption key |
 | `AUTHORIZED_EMAILS` | One of these | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
-| `SETUP_TOKEN` | One of these | One-time token for initial setup (remove after first sign-in) |
+| `AUTHORIZED_DOMAINS` | One of these | Comma-separated domains without @ (`company.com,other.org`) |
 | `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
 | `UPSTASH_REDIS_REST_URL` | Auto | Auto-configured via Vercel Marketplace |
 | `UPSTASH_REDIS_REST_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
 
-**Authorization**: At least one of `AUTHORIZED_EMAILS` or `SETUP_TOKEN` must be set.
+**Authorization**: At least one of `AUTHORIZED_EMAILS` or `AUTHORIZED_DOMAINS` must be set.
 
 Generate secrets with:
 ```bash

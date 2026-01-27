@@ -21,7 +21,15 @@ describe("Environment Variables", () => {
           .map((email) => email.trim().toLowerCase())
           .filter(Boolean),
       ),
-    SETUP_TOKEN: z.string().optional(),
+    AUTHORIZED_DOMAINS: z
+      .string()
+      .optional()
+      .transform((str) =>
+        str
+          ?.split(",")
+          .map((domain) => domain.trim().toLowerCase())
+          .filter(Boolean),
+      ),
   });
 
   describe("NEXTAUTH_SECRET", () => {
@@ -139,7 +147,7 @@ describe("Environment Variables", () => {
         NEXTAUTH_SECRET: "secret",
         GOOGLE_CLIENT_ID: "test",
         GOOGLE_CLIENT_SECRET: "test",
-        // No AUTHORIZED_EMAILS - allowed when using SETUP_TOKEN
+        // No AUTHORIZED_EMAILS - allowed when using AUTHORIZED_DOMAINS
       });
 
       expect(result.success).toBe(true);
@@ -220,8 +228,8 @@ describe("Environment Variables", () => {
     });
   });
 
-  describe("SETUP_TOKEN", () => {
-    it("should allow SETUP_TOKEN to be optional", () => {
+  describe("AUTHORIZED_DOMAINS", () => {
+    it("should allow AUTHORIZED_DOMAINS to be optional", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
         GOOGLE_CLIENT_ID: "test",
@@ -231,21 +239,53 @@ describe("Environment Variables", () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.SETUP_TOKEN).toBeUndefined();
+        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
       }
     });
 
-    it("should accept SETUP_TOKEN when provided", () => {
+    it("should parse single domain", () => {
       const result = authEnvSchema.safeParse({
         NEXTAUTH_SECRET: "secret",
         GOOGLE_CLIENT_ID: "test",
         GOOGLE_CLIENT_SECRET: "test",
-        SETUP_TOKEN: "abc123xyz789",
+        AUTHORIZED_DOMAINS: "company.com",
       });
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.SETUP_TOKEN).toBe("abc123xyz789");
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com"]);
+      }
+    });
+
+    it("should parse multiple domains", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_DOMAINS: "company.com,subsidiary.org,partner.net",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual([
+          "company.com",
+          "subsidiary.org",
+          "partner.net",
+        ]);
+      }
+    });
+
+    it("should trim whitespace and lowercase domains", () => {
+      const result = authEnvSchema.safeParse({
+        NEXTAUTH_SECRET: "secret",
+        GOOGLE_CLIENT_ID: "test",
+        GOOGLE_CLIENT_SECRET: "test",
+        AUTHORIZED_DOMAINS: " Company.COM , OTHER.org ",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "other.org"]);
       }
     });
   });
@@ -272,19 +312,19 @@ describe("Environment Variables", () => {
       }
     });
 
-    it("should validate configuration with setup token only", () => {
+    it("should validate configuration with domains instead of emails", () => {
       const validConfig = {
         NEXTAUTH_SECRET: "my-super-secret-key",
         GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
         GOOGLE_CLIENT_SECRET: "GOCSPX-test",
-        SETUP_TOKEN: "initial-setup-token-12345",
+        AUTHORIZED_DOMAINS: "company.com,partner.org",
       };
 
       const result = authEnvSchema.safeParse(validConfig);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.SETUP_TOKEN).toBe("initial-setup-token-12345");
+        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "partner.org"]);
         expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
       }
     });

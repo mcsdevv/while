@@ -306,24 +306,6 @@ describe("Authentication", () => {
       expect(isAuthorized).toBe(false);
     });
 
-    it("should log security warning in setup token mode", () => {
-      const consoleSpy = vi.fn();
-      const originalWarn = console.warn;
-      console.warn = consoleSpy;
-
-      const isSetupTokenMode = true;
-      if (isSetupTokenMode) {
-        console.warn(
-          "⚠️  SECURITY: Add this email to AUTHORIZED_EMAILS and remove SETUP_TOKEN after setup!",
-        );
-      }
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "⚠️  SECURITY: Add this email to AUTHORIZED_EMAILS and remove SETUP_TOKEN after setup!",
-      );
-
-      console.warn = originalWarn;
-    });
   });
 
   describe("Callback URLs", () => {

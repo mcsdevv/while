@@ -35,11 +35,18 @@ const envSchema = z.object({
         .filter(Boolean),
     ),
 
-  // SETUP_TOKEN: One-time token for initial setup access
-  //   - Allows first-time setup without pre-configuring AUTHORIZED_EMAILS
-  //   - Generate with: openssl rand -base64 32
-  //   - Should be deleted from env after first admin signs in
-  SETUP_TOKEN: z.string().optional(),
+  // AUTHORIZED_DOMAINS: Comma-separated list of email domains (without @)
+  //   - Example: company.com,other.org
+  //   - Any email from these domains is authorized
+  AUTHORIZED_DOMAINS: z
+    .string()
+    .optional()
+    .transform((str) =>
+      str
+        ?.split(",")
+        .map((domain) => domain.trim().toLowerCase())
+        .filter(Boolean),
+    ),
 
   // Optional
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
@@ -72,7 +79,8 @@ export function isAuthConfigured(): boolean {
   );
 
   // At least one authorization method must be configured
-  const hasAuthorization = (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || Boolean(env.SETUP_TOKEN);
+  const hasAuthorization =
+    (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
 
   return hasAuthCore && hasAuthorization;
 }
@@ -100,6 +108,12 @@ export function isEmailAuthorized(email: string): boolean {
     }
   }
 
+  // Check domain allowlist
+  const authorizedDomains = env.AUTHORIZED_DOMAINS ?? [];
+  if (authorizedDomains.includes(emailDomain)) {
+    return true;
+  }
+
   return false;
 }
 
@@ -118,10 +132,11 @@ export function requireAuthEnv(): {
   if (!env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
 
   // Check that at least one authorization method is configured
-  const hasAuthorization = (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || Boolean(env.SETUP_TOKEN);
+  const hasAuthorization =
+    (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
 
   if (!hasAuthorization) {
-    missing.push("AUTHORIZED_EMAILS or SETUP_TOKEN");
+    missing.push("AUTHORIZED_EMAILS or AUTHORIZED_DOMAINS");
   }
 
   if (missing.length > 0) {
