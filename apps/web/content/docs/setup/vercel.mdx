@@ -34,14 +34,14 @@ During deployment, you'll need to configure these environment variables:
 
 ### Required Variables
 
-| Variable | Description | How to Get | Your Value |
-|----------|-------------|------------|------------|
-| `NEXTAUTH_SECRET` | Session encryption key | Generate with `openssl rand -base64 32` | |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID (auth + calendar) | [Google OAuth Setup](/docs/setup/google) | |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | [Google OAuth Setup](/docs/setup/google) | |
-| `AUTHORIZED_EMAILS` | Emails allowed to sign in | Your email or pattern (e.g., `*@company.com`) | |
-| `UPSTASH_REDIS_REST_URL` | Upstash Redis REST endpoint | [Add via Vercel Storage](#add-redis-storage) | |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis auth token | [Add via Vercel Storage](#add-redis-storage) | |
+<EnvVarsTable vars={[
+  { name: "NEXTAUTH_SECRET", description: "Session encryption key", howToGet: <>Generate with <code>openssl rand -base64 32</code></> },
+  { name: "GOOGLE_CLIENT_ID", description: "Google OAuth client ID (auth + calendar)", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
+  { name: "GOOGLE_CLIENT_SECRET", description: "Google OAuth client secret", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
+  { name: "AUTHORIZED_EMAILS", description: "Emails allowed to sign in", howToGet: <>Your email or pattern (e.g., <code>*@company.com</code>)</> },
+  { name: "UPSTASH_REDIS_REST_URL", description: "Upstash Redis REST endpoint", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" } },
+  { name: "UPSTASH_REDIS_REST_TOKEN", description: "Upstash Redis auth token", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" } },
+]} />
 
 <Callout type="info">
 Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is automatically configured when you add the Upstash integration from the Vercel Marketplace.
@@ -49,13 +49,13 @@ Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is autom
 
 ### Optional Variables
 
-| Variable | Description | Default | Your Value |
-|----------|-------------|---------|------------|
-| `NEXTAUTH_URL` | App URL (auto-detected on Vercel) | Auto | |
-| `SETTINGS_ENCRYPTION_KEY` | Credential encryption key | None (recommended for production) | |
-| `AUTHORIZED_DOMAINS` | Domain allowlist (e.g., `company.com`) | None | |
-| `SETUP_TOKEN` | One-time setup access token | None | |
-| `LOG_LEVEL` | Logging verbosity | `info` | |
+<EnvVarsTable vars={[
+  { name: "NEXTAUTH_URL", description: "App URL (auto-detected on Vercel)", default: "Auto" },
+  { name: "SETTINGS_ENCRYPTION_KEY", description: "Credential encryption key", default: "None (recommended for production)" },
+  { name: "AUTHORIZED_DOMAINS", description: "Domain allowlist (e.g., company.com)", default: "None" },
+  { name: "SETUP_TOKEN", description: "One-time setup access token", default: "None" },
+  { name: "LOG_LEVEL", description: "Logging verbosity", default: "info" },
+]} />
 
 ## Generate Secrets
 

@@ -1,3 +1,4 @@
+import { EnvVarsTable } from "@/components/mdx/env-vars-table";
 import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 import { Mermaid } from "@/components/mdx/mermaid";
 import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
@@ -14,6 +15,7 @@ const baseComponents: MDXComponents = {
   Callout,
   Card,
   Cards,
+  EnvVarsTable,
   FAQAccordion,
   FAQAccordionItem,
   Mermaid,
