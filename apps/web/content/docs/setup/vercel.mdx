@@ -35,7 +35,7 @@ During deployment, you'll need to configure these environment variables:
 ### Required Variables
 
 <EnvVarsTable vars={[
-  { name: "NEXTAUTH_SECRET", description: "Session encryption key", howToGet: <>Generate with <code>openssl rand -base64 32</code></> },
+  { name: "NEXTAUTH_SECRET", description: "Session encryption key", generate: "base64" },
   { name: "GOOGLE_CLIENT_ID", description: "Google OAuth client ID (auth + calendar)", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "GOOGLE_CLIENT_SECRET", description: "Google OAuth client secret", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "NOTION_API_TOKEN", description: "Notion integration token", howToGetLink: { href: "/docs/setup/notion", label: "Notion Setup" } },
@@ -52,7 +52,7 @@ Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is autom
 
 <EnvVarsTable vars={[
   { name: "NEXTAUTH_URL", description: "App URL (auto-detected on Vercel)", default: "Auto" },
-  { name: "SETTINGS_ENCRYPTION_KEY", description: "Credential encryption key", default: "None (recommended for production)" },
+  { name: "SETTINGS_ENCRYPTION_KEY", description: "Credential encryption key", generate: "base64", default: "None (recommended for production)" },
   { name: "AUTHORIZED_DOMAINS", description: "Domain allowlist (e.g., company.com)", default: "None" },
   { name: "SETUP_TOKEN", description: "One-time setup access token", default: "None" },
   { name: "LOG_LEVEL", description: "Logging verbosity", default: "info" },
