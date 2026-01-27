@@ -37,14 +37,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     /**
      * Check if user's email is authorized via:
      * - AUTHORIZED_EMAILS (exact emails or *@domain.com patterns)
-     * - AUTHORIZED_DOMAINS (domain allowlist)
      * - SETUP_TOKEN (allows any email during initial setup)
      */
     async signIn({ user, account }) {
       if (!isAuthConfigured()) {
         console.error(
           "Auth not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET, " +
-            "and at least one of: AUTHORIZED_EMAILS, AUTHORIZED_DOMAINS, or SETUP_TOKEN.",
+            "and at least one of: AUTHORIZED_EMAILS or SETUP_TOKEN.",
         );
         return false;
       }
@@ -52,11 +51,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const email = user.email?.toLowerCase();
       if (!email) return false;
 
-      // Check if this is setup token mode (no emails/domains configured, just token)
-      const hasEmailOrDomainAuth =
-        (env.AUTHORIZED_EMAILS?.length ?? 0) > 0 || (env.AUTHORIZED_DOMAINS?.length ?? 0) > 0;
+      // Check if this is setup token mode (no emails configured, just token)
+      const hasEmailAuth = (env.AUTHORIZED_EMAILS?.length ?? 0) > 0;
 
-      const isSetupTokenMode = !hasEmailOrDomainAuth && Boolean(env.SETUP_TOKEN);
+      const isSetupTokenMode = !hasEmailAuth && Boolean(env.SETUP_TOKEN);
 
       // In setup token mode, any authenticated Google user can sign in
       // This is for initial deployment - admin should add their email to AUTHORIZED_EMAILS after setup
