@@ -1,26 +1,12 @@
 "use client";
 
 import { Button } from "@while/ui";
-import { CopyValue } from "./copy-value";
 
 interface WelcomeStepProps {
   onNext: () => void;
 }
 
-const GOOGLE_SCOPES = [
-  "openid",
-  "email",
-  "profile",
-  "https://www.googleapis.com/auth/calendar",
-].join(" ");
-
 export function WelcomeStep({ onNext }: WelcomeStepProps) {
-  // Generate redirect URI from current host
-  const redirectUri =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/api/auth/callback/google`
-      : "https://your-app.vercel.app/api/auth/callback/google";
-
   return (
     <div className="space-y-5">
       <div className="space-y-3">
@@ -102,38 +88,6 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
               </span>
             </li>
           </ul>
-        </div>
-
-        {/* Google OAuth Configuration Values - always visible */}
-        <div className="rounded-lg border p-3 space-y-3">
-          <h3 className="font-medium">Google OAuth Configuration Values</h3>
-          <p className="text-sm text-muted-foreground">
-            Copy these values when configuring your Google Cloud OAuth credentials:
-          </p>
-
-          <CopyValue label="Authorized Redirect URI" value={redirectUri} />
-
-          <CopyValue label="OAuth Scopes (for consent screen)" value={GOOGLE_SCOPES} />
-
-          <div className="flex gap-2">
-            <a
-              href="https://console.cloud.google.com/apis/credentials"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary underline"
-            >
-              Google Cloud Credentials
-            </a>
-            <span className="text-muted-foreground">|</span>
-            <a
-              href="https://while.so/docs/setup/google"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary underline"
-            >
-              Full Setup Guide
-            </a>
-          </div>
         </div>
       </div>
 

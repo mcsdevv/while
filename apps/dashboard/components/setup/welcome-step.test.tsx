@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { WelcomeStep } from "./welcome-step";
 
-// Mock the UI components and CopyValue
+// Mock the UI components
 vi.mock("@while/ui", () => ({
   Button: ({
     children,
@@ -16,15 +16,6 @@ vi.mock("@while/ui", () => ({
     <button onClick={onClick} {...props}>
       {children}
     </button>
-  ),
-}));
-
-vi.mock("./copy-value", () => ({
-  CopyValue: ({ value, label }: { value: string; label?: string }) => (
-    <div data-testid="copy-value">
-      {label && <span data-testid="copy-value-label">{label}</span>}
-      <span data-testid="copy-value-content">{value}</span>
-    </div>
   ),
 }));
 
@@ -92,58 +83,6 @@ describe("WelcomeStep", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
       expect(screen.getByRole("button", { name: /Get Started/i })).toBeInTheDocument();
-    });
-  });
-
-  describe("OAuth configuration section", () => {
-    it("renders the OAuth configuration header", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      expect(screen.getByText("Google OAuth Configuration Values")).toBeInTheDocument();
-    });
-
-    it("OAuth configuration values are always visible", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      // CopyValue components should be visible immediately
-      expect(screen.getAllByTestId("copy-value")).toHaveLength(2);
-    });
-
-    it("shows redirect URI", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      expect(screen.getByText("Authorized Redirect URI")).toBeInTheDocument();
-    });
-
-    it("shows OAuth scopes", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      expect(screen.getByText("OAuth Scopes (for consent screen)")).toBeInTheDocument();
-    });
-
-    it("shows scopes value with all required scopes", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      const scopesValue = screen
-        .getAllByTestId("copy-value-content")
-        .find((el) => el.textContent?.includes("openid"));
-      expect(scopesValue?.textContent).toContain("openid");
-      expect(scopesValue?.textContent).toContain("email");
-      expect(scopesValue?.textContent).toContain("profile");
-      expect(scopesValue?.textContent).toContain("googleapis.com/auth/calendar");
-    });
-
-    it("shows additional links", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      expect(screen.getByRole("link", { name: /Google Cloud Credentials/i })).toHaveAttribute(
-        "href",
-        "https://console.cloud.google.com/apis/credentials",
-      );
-      expect(screen.getByRole("link", { name: /Full Setup Guide/i })).toHaveAttribute(
-        "href",
-        "https://while.so/docs/setup/google",
-      );
     });
   });
 

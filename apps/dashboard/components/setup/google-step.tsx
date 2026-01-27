@@ -2,6 +2,7 @@
 
 import { Button } from "@while/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
+import { CopyValue } from "./copy-value";
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -247,6 +248,54 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
                   <p className="text-sm text-amber-600 dark:text-amber-400">{error}</p>
                 </div>
               )}
+
+              {/* Google OAuth Configuration Values */}
+              <div className="rounded-lg border p-3 space-y-3">
+                <h3 className="font-medium">Configure Google OAuth</h3>
+                <p className="text-sm text-muted-foreground">
+                  Add these values to your Google Cloud OAuth credentials before signing in:
+                </p>
+
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      1. Go to{" "}
+                      <a
+                        href="https://console.cloud.google.com/apis/credentials"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Google Cloud Credentials
+                      </a>{" "}
+                      and edit your OAuth 2.0 Client
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      2. Add this <strong>Authorized redirect URI</strong>:
+                    </p>
+                    <CopyValue value={redirectUri} />
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      3. Add these <strong>OAuth Scopes</strong> to your consent screen:
+                    </p>
+                    <CopyValue value="openid email profile https://www.googleapis.com/auth/calendar" />
+                  </div>
+                </div>
+
+                <a
+                  href="https://while.so/docs/setup/google"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline inline-block"
+                >
+                  Full Setup Guide →
+                </a>
+              </div>
 
               <div className="rounded-lg bg-muted/50 p-4 text-sm">
                 <p className="font-medium mb-2">What permissions are requested:</p>
