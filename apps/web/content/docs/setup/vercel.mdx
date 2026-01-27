@@ -38,9 +38,10 @@ During deployment, you'll need to configure these environment variables:
   { name: "NEXTAUTH_SECRET", description: "Session encryption key", generate: "base64" },
   { name: "GOOGLE_CLIENT_ID", description: "Google OAuth client ID (auth + calendar)", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "GOOGLE_CLIENT_SECRET", description: "Google OAuth client secret", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
+  { name: "NOTION_API_TOKEN", description: "Notion integration token", howToGetLink: { href: "/docs/setup/notion", label: "Notion Setup" } },
   { name: "AUTHORIZED_EMAILS", description: "Emails allowed to sign in", howToGet: <>Your email or pattern (e.g., <code>*@company.com</code>)</> },
-  { name: "UPSTASH_REDIS_REST_URL", description: "Upstash Redis REST endpoint", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" } },
-  { name: "UPSTASH_REDIS_REST_TOKEN", description: "Upstash Redis auth token", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" } },
+  { name: "UPSTASH_REDIS_REST_URL", description: "Upstash Redis REST endpoint", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" }, hideInput: true },
+  { name: "UPSTASH_REDIS_REST_TOKEN", description: "Upstash Redis auth token", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" }, hideInput: true },
 ]} />
 
 <Callout type="info">

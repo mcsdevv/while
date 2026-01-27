@@ -26,6 +26,7 @@ interface EnvVar {
   howToGetLink?: EnvVarLink;
   default?: React.ReactNode;
   generate?: "base64";
+  hideInput?: boolean;
 }
 
 interface EnvVarsTableProps {
@@ -40,10 +41,11 @@ function generateBase64Secret(bytes = 32): string {
   return btoa(String.fromCharCode(...array));
 }
 
-function EnvVarRow({ envVar, showHowToGet, showDefault }: {
+function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
   envVar: EnvVar;
   showHowToGet: boolean;
   showDefault: boolean;
+  showYourValue: boolean;
 }) {
   const [value, setValue] = React.useState("");
   const [copied, setCopied] = React.useState(false);
@@ -112,28 +114,34 @@ function EnvVarRow({ envVar, showHowToGet, showDefault }: {
       {showDefault && (
         <TableCell className="text-sm font-mono">{envVar.default}</TableCell>
       )}
-      <TableCell className="min-w-[200px]">
-        <div className="flex items-center gap-2">
-          <Input
-            type="text"
-            value={value}
-            onChange={handleChange}
-            placeholder="Enter value..."
-            className="h-8 text-sm font-mono"
-          />
-          {envVar.generate && !value && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleGenerate}
-              className="shrink-0 h-8"
-            >
-              <Sparkles className="h-3.5 w-3.5 mr-1" />
-              Generate
-            </Button>
+      {showYourValue && (
+        <TableCell className="min-w-[200px]">
+          {envVar.hideInput ? (
+            <span className="text-sm text-muted-foreground">—</span>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Input
+                type="text"
+                value={value}
+                onChange={handleChange}
+                placeholder="Enter value..."
+                className="h-8 text-sm font-mono"
+              />
+              {envVar.generate && !value && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleGenerate}
+                  className="shrink-0 h-8"
+                >
+                  <Sparkles className="h-3.5 w-3.5 mr-1" />
+                  Generate
+                </Button>
+              )}
+            </div>
           )}
-        </div>
-      </TableCell>
+        </TableCell>
+      )}
     </TableRow>
   );
 }
@@ -143,6 +151,7 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
     (v) => v.howToGet !== undefined || v.howToGetLink !== undefined,
   );
   const showDefault = vars.some((v) => v.default !== undefined);
+  const showYourValue = vars.some((v) => !v.hideInput);
 
   return (
     <div className="not-prose my-4">
@@ -153,7 +162,7 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
             <TableHead>Description</TableHead>
             {showHowToGet && <TableHead>How to Get</TableHead>}
             {showDefault && <TableHead>Default</TableHead>}
-            <TableHead>Your Value</TableHead>
+            {showYourValue && <TableHead>Your Value</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -163,6 +172,7 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
               envVar={envVar}
               showHowToGet={showHowToGet}
               showDefault={showDefault}
+              showYourValue={showYourValue}
             />
           ))}
         </TableBody>
