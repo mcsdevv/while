@@ -4,6 +4,7 @@ import { Button } from "@while/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import { CopyValue } from "./copy-value";
 
 interface GoogleStepProps {
   status?: {
@@ -104,7 +105,7 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
     try {
       // Trigger NextAuth sign-in with Google
       // This will redirect to Google, get consent, store refresh token, and redirect back
-      await signIn("google", { callbackUrl: "/setup?google=connected" });
+      await signIn("google", { callbackUrl: "/setup/3" });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to sign in";
       setError(getActionableErrorMessage(errorMessage, redirectUri));
