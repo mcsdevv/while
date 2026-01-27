@@ -21,15 +21,6 @@ describe("Environment Variables", () => {
           .map((email) => email.trim().toLowerCase())
           .filter(Boolean),
       ),
-    AUTHORIZED_DOMAINS: z
-      .string()
-      .optional()
-      .transform((str) =>
-        str
-          ?.split(",")
-          .map((domain) => domain.trim().toLowerCase())
-          .filter(Boolean),
-      ),
     SETUP_TOKEN: z.string().optional(),
   });
 
@@ -148,7 +139,7 @@ describe("Environment Variables", () => {
         NEXTAUTH_SECRET: "secret",
         GOOGLE_CLIENT_ID: "test",
         GOOGLE_CLIENT_SECRET: "test",
-        // No AUTHORIZED_EMAILS - allowed when using AUTHORIZED_DOMAINS or SETUP_TOKEN
+        // No AUTHORIZED_EMAILS - allowed when using SETUP_TOKEN
       });
 
       expect(result.success).toBe(true);
@@ -229,68 +220,6 @@ describe("Environment Variables", () => {
     });
   });
 
-  describe("AUTHORIZED_DOMAINS", () => {
-    it("should allow AUTHORIZED_DOMAINS to be optional", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_EMAILS: "test@example.com",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
-      }
-    });
-
-    it("should parse single domain", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: "company.com",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com"]);
-      }
-    });
-
-    it("should parse multiple domains", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: "company.com,subsidiary.org,partner.net",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual([
-          "company.com",
-          "subsidiary.org",
-          "partner.net",
-        ]);
-      }
-    });
-
-    it("should trim whitespace and lowercase domains", () => {
-      const result = authEnvSchema.safeParse({
-        NEXTAUTH_SECRET: "secret",
-        GOOGLE_CLIENT_ID: "test",
-        GOOGLE_CLIENT_SECRET: "test",
-        AUTHORIZED_DOMAINS: " Company.COM , OTHER.org ",
-      });
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "other.org"]);
-      }
-    });
-  });
-
   describe("SETUP_TOKEN", () => {
     it("should allow SETUP_TOKEN to be optional", () => {
       const result = authEnvSchema.safeParse({
@@ -343,23 +272,6 @@ describe("Environment Variables", () => {
       }
     });
 
-    it("should validate configuration with domains instead of emails", () => {
-      const validConfig = {
-        NEXTAUTH_SECRET: "my-super-secret-key",
-        GOOGLE_CLIENT_ID: "test.apps.googleusercontent.com",
-        GOOGLE_CLIENT_SECRET: "GOCSPX-test",
-        AUTHORIZED_DOMAINS: "company.com,partner.org",
-      };
-
-      const result = authEnvSchema.safeParse(validConfig);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.AUTHORIZED_DOMAINS).toEqual(["company.com", "partner.org"]);
-        expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
-      }
-    });
-
     it("should validate configuration with setup token only", () => {
       const validConfig = {
         NEXTAUTH_SECRET: "my-super-secret-key",
@@ -374,7 +286,6 @@ describe("Environment Variables", () => {
       if (result.success) {
         expect(result.data.SETUP_TOKEN).toBe("initial-setup-token-12345");
         expect(result.data.AUTHORIZED_EMAILS).toBeUndefined();
-        expect(result.data.AUTHORIZED_DOMAINS).toBeUndefined();
       }
     });
 
