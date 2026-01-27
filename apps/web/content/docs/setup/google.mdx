@@ -18,7 +18,6 @@ OAuth tokens expire every **7 days** while your app is in "Testing" mode. You'll
   <SetupChecklistItem>Created Google Cloud project</SetupChecklistItem>
   <SetupChecklistItem>Enabled Google Calendar API</SetupChecklistItem>
   <SetupChecklistItem>Configured OAuth consent screen</SetupChecklistItem>
-  <SetupChecklistItem>Added myself as test user</SetupChecklistItem>
   <SetupChecklistItem>Created OAuth credentials (Web application)</SetupChecklistItem>
   <SetupChecklistItem>Added redirect URI to credentials</SetupChecklistItem>
   <SetupChecklistItem>Copied Client ID and Secret to Vercel</SetupChecklistItem>
@@ -118,15 +117,6 @@ You'll see "Your app requires verification" - ignore this. Verification is only 
 5. Click **Save and Continue**
 
 </Step>
-<Step>
-
-### Add Test Users
-
-1. Go to **OAuth consent screen** > **Test users** (or click "Add Users")
-2. Add your Google email address
-3. Click **Save**
-
-</Step>
 </Steps>
 
 <Callout type="info">
@@ -210,7 +200,7 @@ After completing this setup, you'll have:
 
 <FAQAccordion>
   <FAQAccordionItem title="Access Blocked Error">
-    - Ensure your email is added as a test user
+    - If in Testing mode, ensure your email is added as a test user
     - Check that Calendar API is enabled
     - Verify redirect URIs match exactly (including trailing slashes)
   </FAQAccordionItem>
