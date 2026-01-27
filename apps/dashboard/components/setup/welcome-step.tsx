@@ -22,19 +22,19 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
       : "https://your-app.vercel.app/api/auth/callback/google";
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <p className="text-muted-foreground">
+    <div className="space-y-4">
+      <div className="space-y-3">
+        <p className="text-muted-foreground text-sm">
           This wizard will help you connect your Google Calendar and Notion database for
           bidirectional synchronization.
         </p>
 
         {/* 7-day token warning */}
-        <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 space-y-2">
+        <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-3 py-2">
           <div className="flex items-start gap-2">
             <svg
               aria-hidden="true"
-              className="h-5 w-5 text-amber-600 shrink-0 mt-0.5"
+              className="h-4 w-4 text-amber-600 shrink-0 mt-0.5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -44,30 +44,28 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
                 clipRule="evenodd"
               />
             </svg>
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-amber-700 dark:text-amber-500">
-                Token expiration notice
-              </p>
-              <p className="text-sm text-amber-600 dark:text-amber-400">
-                OAuth tokens expire every 7 days in "Testing" mode. You'll need to re-authenticate
-                weekly unless you{" "}
-                <a
-                  href="https://while.so/docs/setup/google#step-5-publish-app-optional"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline font-medium"
-                >
-                  publish your OAuth app
-                </a>
-                .
-              </p>
-            </div>
+            <p className="text-sm text-amber-600 dark:text-amber-400">
+              <span className="font-medium text-amber-700 dark:text-amber-500">
+                Token expiration notice:
+              </span>{" "}
+              OAuth tokens expire every 7 days in "Testing" mode. You'll need to re-authenticate
+              weekly unless you{" "}
+              <a
+                href="https://while.so/docs/setup/google#step-5-publish-app-optional"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline font-medium"
+              >
+                publish your OAuth app
+              </a>
+              .
+            </p>
           </div>
         </div>
 
-        <div className="rounded-lg border p-4 space-y-3">
-          <h3 className="font-medium">Prerequisites</h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+        <div className="rounded-lg border px-3 py-2 space-y-2">
+          <h3 className="font-medium text-sm">Prerequisites</h3>
+          <ul className="space-y-1 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
               <span className="text-primary">1.</span>
               <span>
@@ -107,9 +105,9 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
         </div>
 
         {/* Google OAuth Configuration Values - always visible */}
-        <div className="rounded-lg border p-4 space-y-4">
-          <h3 className="font-medium">Google OAuth Configuration Values</h3>
-          <p className="text-sm text-muted-foreground">
+        <div className="rounded-lg border px-3 py-2 space-y-2">
+          <h3 className="font-medium text-sm">Google OAuth Configuration Values</h3>
+          <p className="text-xs text-muted-foreground">
             Copy these values when configuring your Google Cloud OAuth credentials:
           </p>
 
@@ -117,21 +115,21 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
 
           <CopyValue label="OAuth Scopes (for consent screen)" value={GOOGLE_SCOPES} />
 
-          <div className="flex gap-2 pt-2">
+          <div className="flex gap-2 pt-1">
             <a
               href="https://console.cloud.google.com/apis/credentials"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-primary underline"
+              className="text-xs text-primary underline"
             >
               Google Cloud Credentials
             </a>
-            <span className="text-muted-foreground">|</span>
+            <span className="text-muted-foreground text-xs">|</span>
             <a
               href="https://while.so/docs/setup/google"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-primary underline"
+              className="text-xs text-primary underline"
             >
               Full Setup Guide
             </a>

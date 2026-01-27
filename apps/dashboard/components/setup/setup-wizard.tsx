@@ -115,7 +115,7 @@ export function SetupWizard() {
   const currentStepData = STEPS[currentStep - 1];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="space-y-6 animate-in fade-in duration-300">
       {/* Progress bar */}
       <div className="bg-muted h-1 overflow-hidden">
         <div
@@ -171,7 +171,7 @@ export function SetupWizard() {
       </nav>
 
       {/* Step labels (desktop only) */}
-      <div className="hidden sm:flex justify-center">
+      <div className="hidden sm:flex justify-center -mt-3">
         <div className="flex items-center gap-2 sm:gap-3">
           {STEPS.map((step, index) => (
             <div key={step.id} className="flex items-center">
@@ -191,8 +191,8 @@ export function SetupWizard() {
 
       {/* Step content */}
       <Card className="animate-in slide-in-from-bottom duration-300">
-        <CardHeader>
-          <CardTitle className="text-2xl">{currentStepData.name}</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">{currentStepData.name}</CardTitle>
           <CardDescription>{currentStepData.description}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -221,7 +221,7 @@ export function SetupWizard() {
       </Card>
 
       {/* Step counter */}
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-xs text-muted-foreground">
         Step {currentStep} of {STEPS.length}
       </p>
     </div>

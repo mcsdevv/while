@@ -46,7 +46,7 @@ describe("WelcomeStep", () => {
     it("renders the 7-day token warning", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
-      expect(screen.getByText("Token expiration notice")).toBeInTheDocument();
+      expect(screen.getByText(/Token expiration notice:/)).toBeInTheDocument();
       expect(screen.getByText(/OAuth tokens expire every 7 days/)).toBeInTheDocument();
     });
 
@@ -162,7 +162,7 @@ describe("WelcomeStep", () => {
     it("warning icon has aria-hidden", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
-      const warningContainer = screen.getByText("Token expiration notice").closest("div");
+      const warningContainer = screen.getByText(/Token expiration notice:/).closest("p");
       const warningIcon = warningContainer?.parentElement?.querySelector("svg");
       expect(warningIcon).toHaveAttribute("aria-hidden", "true");
     });
