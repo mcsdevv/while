@@ -51,7 +51,7 @@ Redis storage (`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`) is autom
 ### Optional Variables
 
 <EnvVarsTable vars={[
-  { name: "NEXTAUTH_URL", description: "App URL (auto-detected on Vercel)", default: "Auto" },
+  { name: "NEXTAUTH_URL", description: "App URL (auto-detected on Vercel)", default: "Auto", hideInput: true },
   { name: "SETTINGS_ENCRYPTION_KEY", description: "Credential encryption key", generate: "base64", default: "None" },
   { name: "AUTHORIZED_DOMAINS", description: "Domain allowlist (e.g., company.com)", default: "None" },
   { name: "SETUP_TOKEN", description: "One-time setup access token", default: "None" },
