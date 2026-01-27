@@ -46,3 +46,7 @@ yarn-error.log*
 
 # Local development
 .claude/
+
+# Bun (use pnpm instead)
+bun.lock
+bun.lockb
