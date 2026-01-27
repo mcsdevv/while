@@ -269,7 +269,7 @@ See \`.env.example\` for all configuration options.
 | \`GOOGLE_CLIENT_SECRET\` | Yes | Google OAuth client secret |
 | \`NEXTAUTH_SECRET\` | Yes | Session encryption key |
 | \`AUTHORIZED_EMAILS\` | One of | Allowed email patterns |
-| \`SETUP_TOKEN\` | One of | One-time setup token |
+| \`AUTHORIZED_DOMAINS\` | One of | Allowed email domains |
 
 ## Documentation
 
