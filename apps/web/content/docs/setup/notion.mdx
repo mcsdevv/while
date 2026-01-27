@@ -15,7 +15,6 @@ This guide walks through creating a Notion integration and connecting it to your
   <SetupChecklistItem>Configured capabilities (read, update, insert)</SetupChecklistItem>
   <SetupChecklistItem>Copied integration token</SetupChecklistItem>
   <SetupChecklistItem>Connected integration to database</SetupChecklistItem>
-  <SetupChecklistItem>Copied database ID</SetupChecklistItem>
 </SetupChecklist>
 
 ## Step 1: Create Integration
@@ -114,31 +113,6 @@ Click **Confirm** to grant access
 
 </Step>
 </Steps>
-
-## Step 5: Get Database ID
-
-You'll need your database ID for configuration.
-
-### From the URL
-
-1. Open your database in Notion (as a full page, not inline)
-2. Look at the URL:
-
-```
-https://notion.so/workspace/DATABASE_ID?v=VIEW_ID
-```
-
-3. The DATABASE_ID is the 32-character string before the `?`
-
-### Example
-
-URL: `https://notion.so/myworkspace/a1b2c3d4e5f6789012345678901234ab?v=...`
-
-Database ID: `a1b2c3d4e5f6789012345678901234ab`
-
-<Callout type="info" title="Tip">
-The setup wizard accepts the database ID with or without dashes.
-</Callout>
 
 ## Database Schema
 
