@@ -2,7 +2,6 @@
 
 import { Button } from "@while/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
-import { CopyValue } from "./copy-value";
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { CopyValue } from "./copy-value";
