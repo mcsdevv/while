@@ -191,8 +191,8 @@ export function SetupWizard() {
 
       {/* Step content */}
       <Card className="animate-in slide-in-from-bottom duration-300">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{currentStepData.name}</CardTitle>
+        <CardHeader className="pb-4">
+          <CardTitle>{currentStepData.name}</CardTitle>
           <CardDescription>{currentStepData.description}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -221,7 +221,7 @@ export function SetupWizard() {
       </Card>
 
       {/* Step counter */}
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="text-center text-sm text-muted-foreground">
         Step {currentStep} of {STEPS.length}
       </p>
     </div>
