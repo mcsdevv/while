@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@while/ui";
-import { Check, Copy, Sparkles } from "lucide-react";
+import { Check, Copy, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
@@ -147,14 +147,33 @@ function EnvVarRow({ envVar, showHowToGet, showDefault, showYourValue }: {
 }
 
 export function EnvVarsTable({ vars }: EnvVarsTableProps) {
+  const [clearKey, setClearKey] = React.useState(0);
+
   const showHowToGet = vars.some(
     (v) => v.howToGet !== undefined || v.howToGetLink !== undefined,
   );
   const showDefault = vars.some((v) => v.default !== undefined);
   const showYourValue = vars.some((v) => !v.hideInput);
 
+  const handleClearAll = () => {
+    vars.forEach((v) => {
+      if (!v.hideInput) {
+        localStorage.removeItem(`${STORAGE_PREFIX}${v.name}`);
+      }
+    });
+    setClearKey((k) => k + 1);
+  };
+
   return (
     <div className="not-prose my-4">
+      {showYourValue && (
+        <div className="flex justify-end mb-2">
+          <Button variant="ghost" size="sm" onClick={handleClearAll}>
+            <Trash2 className="h-3.5 w-3.5 mr-1" />
+            Clear All
+          </Button>
+        </div>
+      )}
       <Table>
         <TableHeader>
           <TableRow>
@@ -168,7 +187,7 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
         <TableBody>
           {vars.map((envVar) => (
             <EnvVarRow
-              key={envVar.name}
+              key={`${envVar.name}-${clearKey}`}
               envVar={envVar}
               showHowToGet={showHowToGet}
               showDefault={showDefault}

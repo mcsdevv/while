@@ -35,7 +35,7 @@ During deployment, you'll need to configure these environment variables:
 ### Required Variables
 
 <EnvVarsTable vars={[
-  { name: "NEXTAUTH_SECRET", description: "Session encryption key", generate: "base64" },
+  { name: "NEXTAUTH_SECRET", description: "Session encryption key", howToGet: <>Generate with <code>openssl rand -base64 32</code></>, generate: "base64" },
   { name: "GOOGLE_CLIENT_ID", description: "Google OAuth client ID (auth + calendar)", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "GOOGLE_CLIENT_SECRET", description: "Google OAuth client secret", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "NOTION_API_TOKEN", description: "Notion integration token", howToGetLink: { href: "/docs/setup/notion", label: "Notion Setup" } },
