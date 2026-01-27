@@ -102,7 +102,7 @@ During deployment, you'll need to provide these environment variables:
   { name: "NEXTAUTH_SECRET", description: "Random string for session encryption", generate: "base64" },
   { name: "GOOGLE_CLIENT_ID", description: "From Google OAuth credentials" },
   { name: "GOOGLE_CLIENT_SECRET", description: "From Google OAuth credentials" },
-  { name: "AUTHORIZED_EMAILS", description: "Your email (e.g., you@gmail.com)" },
+  { name: "AUTHORIZED_EMAILS", description: "Comma-separated emails, spaces trimmed (e.g., you@gmail.com, admin@company.com)" },
 ]} />
 
 Redis storage is automatically configured when you add the Upstash integration from the Vercel Marketplace during deployment.

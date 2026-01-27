@@ -54,7 +54,7 @@ Before deploying, you'll need:
 | `GOOGLE_CLIENT_ID` | Yes | Google OAuth client ID (for auth + calendar) |
 | `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth client secret |
 | `NEXTAUTH_SECRET` | Yes | Session encryption key |
-| `AUTHORIZED_EMAILS` | One of these | Comma-separated emails or patterns (`user@example.com`, `*@company.com`) |
+| `AUTHORIZED_EMAILS` | One of these | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
 | `AUTHORIZED_DOMAINS` | One of these | Comma-separated domains without @ (`company.com,other.org`) |
 | `SETUP_TOKEN` | One of these | One-time token for initial setup (remove after first sign-in) |
 | `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
