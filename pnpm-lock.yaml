@@ -39,6 +39,9 @@ importers:
       '@while/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      geist:
+        specifier: ^1.5.1
+        version: 1.5.1(next@16.1.4(@playwright/test@1.58.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       google-auth-library:
         specifier: ^9.0.0
         version: 9.15.1
