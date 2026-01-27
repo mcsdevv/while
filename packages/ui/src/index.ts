@@ -7,6 +7,18 @@ export { Button, buttonVariants, type ButtonProps } from "./button";
 // Card
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./card";
 
+// Glass Card
+export {
+  GlassCard,
+  GlassCardHeader,
+  GlassCardFooter,
+  GlassCardTitle,
+  GlassCardDescription,
+  GlassCardContent,
+  glassCardVariants,
+  type GlassCardProps,
+} from "./glass-card";
+
 // Dropdown Menu
 export {
   DropdownMenu,
@@ -46,6 +58,17 @@ export {
 // Separator
 export { Separator } from "./separator";
 
+// Sidebar
+export {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarNavItem,
+} from "./sidebar";
+
 // Switch
 export { Switch, type SwitchProps } from "./switch";
 
@@ -63,6 +86,9 @@ export {
   TableCell,
   TableCaption,
 } from "./table";
+
+// Theme Toggle
+export { ThemeToggle } from "./theme-toggle";
 
 // Toast
 export { Toast, ToastProvider, useToast, type ToastProps } from "./toast";

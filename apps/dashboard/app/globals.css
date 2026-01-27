@@ -29,6 +29,25 @@
     --chart-3: 0 0% 60%;
     --chart-4: 0 0% 75%;
     --chart-5: 0 0% 85%;
+
+    /* Apple Liquid Glass tokens - Light mode */
+    --glass-blur: 20px;
+    --glass-blur-lg: 40px;
+    --glass-blur-sm: 8px;
+    --glass-bg: 255 255 255 / 0.72;
+    --glass-bg-elevated: 255 255 255 / 0.85;
+    --glass-bg-subtle: 255 255 255 / 0.5;
+    --glass-border: 255 255 255 / 0.4;
+    --glass-border-prominent: 0 0 0 / 0.08;
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --glass-shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.12);
+    --glass-highlight: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.2) 40%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    --glass-inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
   }
 
   .dark {
@@ -56,6 +75,22 @@
     --chart-3: 0 0% 50%;
     --chart-4: 0 0% 35%;
     --chart-5: 0 0% 20%;
+
+    /* Apple Liquid Glass tokens - Dark mode */
+    --glass-bg: 20 20 20 / 0.65;
+    --glass-bg-elevated: 30 30 30 / 0.78;
+    --glass-bg-subtle: 20 20 20 / 0.45;
+    --glass-border: 255 255 255 / 0.12;
+    --glass-border-prominent: 255 255 255 / 0.18;
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --glass-shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --glass-highlight: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      rgba(255, 255, 255, 0.01) 100%
+    );
+    --glass-inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
   }
 }
 
@@ -65,5 +100,109 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Apple Liquid Glass component classes */
+@layer components {
+  .glass {
+    background: rgb(var(--glass-bg));
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid rgb(var(--glass-border));
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+  }
+
+  .glass-subtle {
+    background: rgb(var(--glass-bg-subtle));
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(150%);
+    border: 1px solid rgb(var(--glass-border));
+  }
+
+  .glass-elevated {
+    background: rgb(var(--glass-bg-elevated));
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(200%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(200%);
+    border: 1px solid rgb(var(--glass-border-prominent));
+    box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow);
+  }
+
+  .glass-highlight {
+    position: relative;
+  }
+
+  .glass-highlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-highlight);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+}
+
+/* Entry animations */
+@layer utilities {
+  .animate-in {
+    animation: animate-in 0.4s ease-out forwards;
+  }
+
+  .fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  .slide-in-from-bottom {
+    animation: slide-in-from-bottom 0.4s ease-out forwards;
+  }
+
+  @keyframes animate-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-from-bottom {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in,
+    .fade-in,
+    .slide-in-from-bottom {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

@@ -1,11 +1,16 @@
 "use client";
 
-import { UserMenu } from "@/components/auth/user-menu";
 import { LogsViewer } from "@/components/dashboard/logs-viewer";
 import type { SyncMetrics } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@while/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
+import {
+  GlassCard,
+  GlassCardContent,
+  GlassCardDescription,
+  GlassCardHeader,
+  GlassCardTitle,
+} from "@while/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
 import { Separator } from "@while/ui";
 import { Skeleton } from "@while/ui";
@@ -21,15 +26,15 @@ const ActivityTimelineChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <Card>
-        <CardHeader>
+      <GlassCard>
+        <GlassCardHeader>
           <Skeleton className="h-6 w-40" />
           <Skeleton className="h-4 w-60" />
-        </CardHeader>
-        <CardContent>
+        </GlassCardHeader>
+        <GlassCardContent>
           <Skeleton className="h-[300px] w-full" />
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
     ),
   },
 );
@@ -113,152 +118,159 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-4xl font-semibold tracking-tight">While</h1>
-            <p className="text-muted-foreground mt-2">
-              Real-time bidirectional synchronization dashboard
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Select
-              value={timeWindow}
-              onValueChange={(value) => setTimeWindow(value as TimeWindow)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select time range" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="24h">{timeWindowLabels["24h"]}</SelectItem>
-                <SelectItem value="7d">{timeWindowLabels["7d"]}</SelectItem>
-                <SelectItem value="30d">{timeWindowLabels["30d"]}</SelectItem>
-                <SelectItem value="90d">{timeWindowLabels["90d"]}</SelectItem>
-              </SelectContent>
-            </Select>
-            <UserMenu />
-          </div>
+    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">
+            Real-time synchronization overview
+          </p>
         </div>
-
-        {/* Status Overview */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>System Status</CardTitle>
-              <Badge variant={getHealthBadgeVariant()}>
-                {successRateNumeric !== null && successRateNumeric > 99
-                  ? "Healthy"
-                  : successRateNumeric !== null && successRateNumeric >= 90
-                    ? "Degraded"
-                    : "Issues Detected"}
-              </Badge>
-            </div>
-            <CardDescription>{status?.message}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Last Sync: Notion → GCal</p>
-                  <p className="text-lg font-medium">
-                    {status?.lastSync.notionToGcal
-                      ? formatDate(new Date(status.lastSync.notionToGcal))
-                      : "Never"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Last Sync: GCal → Notion</p>
-                  <p className="text-lg font-medium">
-                    {status?.lastSync.gcalToNotion
-                      ? formatDate(new Date(status.lastSync.gcalToNotion))
-                      : "Never"}
-                  </p>
-                </div>
-              </div>
-
-              {!status?.healthy && metrics && (
-                <div className="rounded-md border border-border bg-muted p-4 space-y-2">
-                  <p className="text-sm font-medium text-destructive">
-                    {metrics.totalFailures} sync{" "}
-                    {metrics.totalFailures === 1 ? "failure" : "failures"} detected
-                  </p>
-                  {metrics.recentLogs.filter((log) => log.status === "failure").slice(0, 3).length >
-                    0 && (
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Recent errors:</p>
-                      {metrics.recentLogs
-                        .filter((log) => log.status === "failure")
-                        .slice(0, 3)
-                        .map((log) => (
-                          <p key={log.id} className="text-xs text-destructive">
-                            • {log.eventTitle}: {log.error || "Unknown error"}
-                          </p>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Success Rate
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className={`text-3xl font-semibold ${getSuccessRateColor()}`}>{successRate}%</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Synced
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold">{metrics?.totalSuccess || 0}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Failures</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold">{metrics?.totalFailures || 0}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Operations
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold">
-                {(metrics?.totalSuccess || 0) + (metrics?.totalFailures || 0)}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Charts */}
-        <ActivityTimelineChart metrics={metrics} timeWindow={timeWindow} />
-
-        <Separator />
-
-        {/* Logs Viewer */}
-        <LogsViewer logs={metrics?.recentLogs || []} />
+        <Select
+          value={timeWindow}
+          onValueChange={(value) => setTimeWindow(value as TimeWindow)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select time range" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="24h">{timeWindowLabels["24h"]}</SelectItem>
+            <SelectItem value="7d">{timeWindowLabels["7d"]}</SelectItem>
+            <SelectItem value="30d">{timeWindowLabels["30d"]}</SelectItem>
+            <SelectItem value="90d">{timeWindowLabels["90d"]}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
+
+      {/* Status Overview */}
+      <GlassCard variant="elevated">
+        <GlassCardHeader>
+          <div className="flex items-center justify-between">
+            <GlassCardTitle>System Status</GlassCardTitle>
+            <Badge variant={getHealthBadgeVariant()}>
+              {successRateNumeric !== null && successRateNumeric > 99
+                ? "Healthy"
+                : successRateNumeric !== null && successRateNumeric >= 90
+                  ? "Degraded"
+                  : "Issues Detected"}
+            </Badge>
+          </div>
+          <GlassCardDescription>{status?.message}</GlassCardDescription>
+        </GlassCardHeader>
+        <GlassCardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="glass-subtle rounded-glass p-4">
+                <p className="text-sm text-muted-foreground">Last Sync: Notion → GCal</p>
+                <p className="text-lg font-medium mt-1">
+                  {status?.lastSync.notionToGcal
+                    ? formatDate(new Date(status.lastSync.notionToGcal))
+                    : "Never"}
+                </p>
+              </div>
+              <div className="glass-subtle rounded-glass p-4">
+                <p className="text-sm text-muted-foreground">Last Sync: GCal → Notion</p>
+                <p className="text-lg font-medium mt-1">
+                  {status?.lastSync.gcalToNotion
+                    ? formatDate(new Date(status.lastSync.gcalToNotion))
+                    : "Never"}
+                </p>
+              </div>
+            </div>
+
+            {!status?.healthy && metrics && (
+              <div className="rounded-glass border border-destructive/20 bg-destructive/5 p-4 space-y-2">
+                <p className="text-sm font-medium text-destructive">
+                  {metrics.totalFailures} sync{" "}
+                  {metrics.totalFailures === 1 ? "failure" : "failures"} detected
+                </p>
+                {metrics.recentLogs.filter((log) => log.status === "failure").slice(0, 3).length >
+                  0 && (
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground">Recent errors:</p>
+                    {metrics.recentLogs
+                      .filter((log) => log.status === "failure")
+                      .slice(0, 3)
+                      .map((log) => (
+                        <p key={log.id} className="text-xs text-destructive">
+                          {log.eventTitle}: {log.error || "Unknown error"}
+                        </p>
+                      ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </GlassCardContent>
+      </GlassCard>
+
+      {/* Metrics Grid - interactive glass cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <GlassCard interactive className="group">
+          <GlassCardHeader className="pb-2">
+            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+              Success Rate
+            </GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <p className={`text-3xl font-semibold ${getSuccessRateColor()}`}>{successRate}%</p>
+          </GlassCardContent>
+        </GlassCard>
+
+        <GlassCard interactive className="group">
+          <GlassCardHeader className="pb-2">
+            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+              Total Synced
+            </GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <p className="text-3xl font-semibold">{metrics?.totalSuccess || 0}</p>
+          </GlassCardContent>
+        </GlassCard>
+
+        <GlassCard interactive className="group">
+          <GlassCardHeader className="pb-2">
+            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+              Failures
+            </GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <p className="text-3xl font-semibold">{metrics?.totalFailures || 0}</p>
+          </GlassCardContent>
+        </GlassCard>
+
+        <GlassCard interactive className="group">
+          <GlassCardHeader className="pb-2">
+            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+              Total Operations
+            </GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <p className="text-3xl font-semibold">
+              {(metrics?.totalSuccess || 0) + (metrics?.totalFailures || 0)}
+            </p>
+          </GlassCardContent>
+        </GlassCard>
+      </div>
+
+      {/* Charts */}
+      <GlassCard>
+        <ActivityTimelineChart metrics={metrics} timeWindow={timeWindow} />
+      </GlassCard>
+
+      <Separator className="bg-glass-border" />
+
+      {/* Logs Viewer */}
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Recent Activity</GlassCardTitle>
+          <GlassCardDescription>Sync events from the selected time period</GlassCardDescription>
+        </GlassCardHeader>
+        <GlassCardContent>
+          <LogsViewer logs={metrics?.recentLogs || []} />
+        </GlassCardContent>
+      </GlassCard>
     </div>
   );
 }
