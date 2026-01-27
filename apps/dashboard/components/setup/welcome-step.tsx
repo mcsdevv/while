@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@while/ui";
-import { useState } from "react";
 import { CopyValue } from "./copy-value";
 
 interface WelcomeStepProps {
@@ -16,8 +15,6 @@ const GOOGLE_SCOPES = [
 ].join(" ");
 
 export function WelcomeStep({ onNext }: WelcomeStepProps) {
-  const [showHelper, setShowHelper] = useState(false);
-
   // Generate redirect URI from current host
   const redirectUri =
     typeof window !== "undefined"
@@ -109,68 +106,36 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
           </ul>
         </div>
 
-        {/* Setup helper - expandable */}
-        <div className="rounded-lg border p-4 space-y-3">
-          <button
-            type="button"
-            onClick={() => setShowHelper(!showHelper)}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="font-medium">Google OAuth Configuration Values</h3>
-            <svg
-              aria-hidden="true"
-              className={`h-5 w-5 text-muted-foreground transition-transform ${showHelper ? "rotate-180" : ""}`}
-              viewBox="0 0 20 20"
-              fill="currentColor"
+        {/* Google OAuth Configuration Values - always visible */}
+        <div className="rounded-lg border p-4 space-y-4">
+          <h3 className="font-medium">Google OAuth Configuration Values</h3>
+          <p className="text-sm text-muted-foreground">
+            Copy these values when configuring your Google Cloud OAuth credentials:
+          </p>
+
+          <CopyValue label="Authorized Redirect URI" value={redirectUri} />
+
+          <CopyValue label="OAuth Scopes (for consent screen)" value={GOOGLE_SCOPES} />
+
+          <div className="flex gap-2 pt-2">
+            <a
+              href="https://console.cloud.google.com/apis/credentials"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-primary underline"
             >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-
-          {showHelper && (
-            <div className="space-y-4 pt-2 border-t">
-              <p className="text-sm text-muted-foreground">
-                Copy these values when configuring your Google Cloud OAuth credentials:
-              </p>
-
-              <CopyValue label="Authorized Redirect URI" value={redirectUri} />
-
-              <CopyValue label="OAuth Scopes (for consent screen)" value={GOOGLE_SCOPES} />
-
-              <div className="flex gap-2 pt-2">
-                <a
-                  href="https://console.cloud.google.com/apis/credentials"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary underline"
-                >
-                  Google Cloud Credentials
-                </a>
-                <span className="text-muted-foreground">|</span>
-                <a
-                  href="https://while.so/docs/setup/google"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary underline"
-                >
-                  Full Setup Guide
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="rounded-lg bg-muted/50 p-4 space-y-2">
-          <h3 className="font-medium">What you'll configure</h3>
-          <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>- Google Calendar OAuth connection</li>
-            <li>- Notion API integration</li>
-            <li>- Field mapping between Notion properties and Google Calendar</li>
-          </ul>
+              Google Cloud Credentials
+            </a>
+            <span className="text-muted-foreground">|</span>
+            <a
+              href="https://while.so/docs/setup/google"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-primary underline"
+            >
+              Full Setup Guide
+            </a>
+          </div>
         </div>
       </div>
 

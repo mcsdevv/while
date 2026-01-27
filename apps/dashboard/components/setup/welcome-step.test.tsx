@@ -88,15 +88,6 @@ describe("WelcomeStep", () => {
       expect(notionLink).toHaveAttribute("rel", "noopener noreferrer");
     });
 
-    it("renders the 'What you'll configure' section", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      expect(screen.getByText("What you'll configure")).toBeInTheDocument();
-      expect(screen.getByText(/Google Calendar OAuth connection/)).toBeInTheDocument();
-      expect(screen.getByText(/Notion API integration/)).toBeInTheDocument();
-      expect(screen.getByText(/Field mapping between Notion properties/)).toBeInTheDocument();
-    });
-
     it("renders the Get Started button", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
@@ -104,63 +95,34 @@ describe("WelcomeStep", () => {
     });
   });
 
-  describe("setup helper section", () => {
-    it("renders the setup helper header", () => {
+  describe("OAuth configuration section", () => {
+    it("renders the OAuth configuration header", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
       expect(screen.getByText("Google OAuth Configuration Values")).toBeInTheDocument();
     });
 
-    it("setup helper is collapsed by default", () => {
+    it("OAuth configuration values are always visible", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
-      // CopyValue components should not be visible when collapsed
-      expect(screen.queryByTestId("copy-value")).not.toBeInTheDocument();
-    });
-
-    it("expands setup helper when clicked", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      fireEvent.click(helperButton);
-
-      // CopyValue components should now be visible
+      // CopyValue components should be visible immediately
       expect(screen.getAllByTestId("copy-value")).toHaveLength(2);
     });
 
-    it("shows redirect URI in expanded helper", () => {
+    it("shows redirect URI", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      fireEvent.click(helperButton);
-
-      // Check label is shown
       expect(screen.getByText("Authorized Redirect URI")).toBeInTheDocument();
     });
 
-    it("shows OAuth scopes in expanded helper", () => {
+    it("shows OAuth scopes", () => {
       render(<WelcomeStep onNext={() => {}} />);
 
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      fireEvent.click(helperButton);
-
-      // Check label is shown
       expect(screen.getByText("OAuth Scopes (for consent screen)")).toBeInTheDocument();
     });
 
     it("shows scopes value with all required scopes", () => {
       render(<WelcomeStep onNext={() => {}} />);
-
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      fireEvent.click(helperButton);
 
       const scopesValue = screen
         .getAllByTestId("copy-value-content")
@@ -171,29 +133,8 @@ describe("WelcomeStep", () => {
       expect(scopesValue?.textContent).toContain("googleapis.com/auth/calendar");
     });
 
-    it("collapses setup helper when clicked again", () => {
+    it("shows additional links", () => {
       render(<WelcomeStep onNext={() => {}} />);
-
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-
-      // Expand
-      fireEvent.click(helperButton);
-      expect(screen.getAllByTestId("copy-value")).toHaveLength(2);
-
-      // Collapse
-      fireEvent.click(helperButton);
-      expect(screen.queryByTestId("copy-value")).not.toBeInTheDocument();
-    });
-
-    it("shows additional links when helper is expanded", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      fireEvent.click(helperButton);
 
       expect(screen.getByRole("link", { name: /Google Cloud Credentials/i })).toHaveAttribute(
         "href",
@@ -203,22 +144,6 @@ describe("WelcomeStep", () => {
         "href",
         "https://while.so/docs/setup/google",
       );
-    });
-
-    it("chevron icon rotates when helper is expanded", () => {
-      render(<WelcomeStep onNext={() => {}} />);
-
-      const helperButton = screen.getByRole("button", {
-        name: /Google OAuth Configuration Values/i,
-      });
-      const chevronIcon = helperButton.querySelector("svg");
-
-      // Initially not rotated
-      expect(chevronIcon).not.toHaveClass("rotate-180");
-
-      // Click to expand
-      fireEvent.click(helperButton);
-      expect(chevronIcon).toHaveClass("rotate-180");
     });
   });
 
