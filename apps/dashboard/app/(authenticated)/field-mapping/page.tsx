@@ -2,11 +2,11 @@
 
 import { FieldMappingEditor } from "@/components/settings/field-mapping-editor";
 import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardDescription,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Skeleton,
 } from "@while/ui";
 import { useEffect, useState } from "react";
@@ -44,9 +44,9 @@ export default function FieldMappingPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 space-y-8">
+      <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <Skeleton className="h-9 w-48" />
+          <Skeleton className="h-8 w-48" />
           <Skeleton className="h-5 w-72 mt-2" />
         </div>
         <Skeleton className="h-96" />
@@ -55,41 +55,41 @@ export default function FieldMappingPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Field Mapping</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Field Mapping</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Configure how Notion properties map to Google Calendar fields
         </p>
       </div>
 
       {/* Info Card */}
-      <GlassCard variant="subtle">
-        <GlassCardHeader className="pb-3">
-          <GlassCardTitle className="text-base">How it works</GlassCardTitle>
-        </GlassCardHeader>
-        <GlassCardContent>
-          <GlassCardDescription>
+      <Card className="bg-muted/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">How it works</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>
             Field mapping defines how data flows between your Notion database and
             Google Calendar. Each Notion property can be mapped to a corresponding
             calendar field. Changes are synchronized bidirectionally.
-          </GlassCardDescription>
-        </GlassCardContent>
-      </GlassCard>
+          </CardDescription>
+        </CardContent>
+      </Card>
 
       {/* Field Mapping Editor */}
-      <GlassCard variant="elevated">
-        <GlassCardHeader>
-          <GlassCardTitle>Property Mappings</GlassCardTitle>
-          <GlassCardDescription>
+      <Card>
+        <CardHeader>
+          <CardTitle>Property Mappings</CardTitle>
+          <CardDescription>
             Select which Notion properties to use for each calendar field
-          </GlassCardDescription>
-        </GlassCardHeader>
-        <GlassCardContent>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <FieldMappingEditor initialMapping={mapping} onSave={fetchMapping} />
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
     </div>
   );
 }

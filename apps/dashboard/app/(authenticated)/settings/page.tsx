@@ -5,7 +5,7 @@ import { DangerZone } from "@/components/settings/danger-zone";
 import { FieldMappingEditor } from "@/components/settings/field-mapping-editor";
 import { GoogleSettings } from "@/components/settings/google-settings";
 import { NotionSettings } from "@/components/settings/notion-settings";
-import { Button, GlassCard, GlassCardContent, GlassCardHeader, GlassCardTitle } from "@while/ui";
+import { Button, Card, CardContent } from "@while/ui";
 import { SkeletonSettingsPage } from "@while/ui";
 import { useEffect, useState } from "react";
 
@@ -64,20 +64,20 @@ export default function SettingsPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <GlassCard className="p-8 text-center space-y-4">
+        <Card className="p-8 text-center space-y-4">
           <p className="text-destructive">{error}</p>
           <Button onClick={() => window.location.reload()}>Retry</Button>
-        </GlassCard>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Manage your sync configuration and connections
         </p>
       </div>

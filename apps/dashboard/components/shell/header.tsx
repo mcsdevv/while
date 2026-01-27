@@ -15,15 +15,15 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-20 flex h-16 items-center gap-4 px-4 lg:px-6",
-        "border-b border-glass-border glass-subtle",
-        "transition-[padding-left] duration-300",
+        "sticky top-0 z-20 flex h-14 items-center gap-4 px-4 lg:px-6",
+        "border-b border-border bg-background",
+        "transition-[padding-left] duration-200",
       )}
     >
       {/* Mobile menu trigger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden p-2 rounded-glass hover:bg-foreground/10 transition-colors"
+        className="lg:hidden p-2 hover:bg-muted transition-colors"
         aria-label="Open menu"
       >
         <Menu className="w-5 h-5" />

@@ -2,12 +2,11 @@
 
 import {
   Badge,
-  Button,
-  GlassCard,
-  GlassCardContent,
-  GlassCardDescription,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Skeleton,
 } from "@while/ui";
 import { Calendar, Database, ExternalLink } from "lucide-react";
@@ -53,9 +52,9 @@ export default function ConnectionsPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 space-y-8">
+      <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <Skeleton className="h-9 w-48" />
+          <Skeleton className="h-8 w-48" />
           <Skeleton className="h-5 w-72 mt-2" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -67,11 +66,11 @@ export default function ConnectionsPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Connections</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Connections</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Manage your service integrations
         </p>
       </div>
@@ -79,19 +78,19 @@ export default function ConnectionsPage() {
       {/* Connection Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Google Calendar */}
-        <GlassCard interactive className="group">
+        <Card className="hover:bg-muted/50 transition-colors group">
           <Link href="/connections/google" className="block">
-            <GlassCardHeader>
+            <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-glass bg-foreground/5 flex items-center justify-center">
+                  <div className="w-10 h-10 bg-muted flex items-center justify-center">
                     <Calendar className="w-5 h-5" />
                   </div>
                   <div>
-                    <GlassCardTitle>Google Calendar</GlassCardTitle>
-                    <GlassCardDescription>
+                    <CardTitle>Google Calendar</CardTitle>
+                    <CardDescription>
                       {status?.google?.calendarName || "Not connected"}
-                    </GlassCardDescription>
+                    </CardDescription>
                   </div>
                 </div>
                 <Badge
@@ -100,8 +99,8 @@ export default function ConnectionsPage() {
                   {status?.google?.isConnected ? "Connected" : "Disconnected"}
                 </Badge>
               </div>
-            </GlassCardHeader>
-            <GlassCardContent>
+            </CardHeader>
+            <CardContent>
               <p className="text-sm text-muted-foreground">
                 Sync events between your Google Calendar and Notion database.
               </p>
@@ -109,24 +108,24 @@ export default function ConnectionsPage() {
                 <span>Manage connection</span>
                 <ExternalLink className="w-4 h-4 ml-1" />
               </div>
-            </GlassCardContent>
+            </CardContent>
           </Link>
-        </GlassCard>
+        </Card>
 
         {/* Notion */}
-        <GlassCard interactive className="group">
+        <Card className="hover:bg-muted/50 transition-colors group">
           <Link href="/connections/notion" className="block">
-            <GlassCardHeader>
+            <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-glass bg-foreground/5 flex items-center justify-center">
+                  <div className="w-10 h-10 bg-muted flex items-center justify-center">
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
-                    <GlassCardTitle>Notion</GlassCardTitle>
-                    <GlassCardDescription>
+                    <CardTitle>Notion</CardTitle>
+                    <CardDescription>
                       {status?.notion?.databaseName || "Not connected"}
-                    </GlassCardDescription>
+                    </CardDescription>
                   </div>
                 </div>
                 <Badge
@@ -135,8 +134,8 @@ export default function ConnectionsPage() {
                   {status?.notion?.isConnected ? "Connected" : "Disconnected"}
                 </Badge>
               </div>
-            </GlassCardHeader>
-            <GlassCardContent>
+            </CardHeader>
+            <CardContent>
               <p className="text-sm text-muted-foreground">
                 Connect to your Notion workspace and select a database to sync.
               </p>
@@ -144,9 +143,9 @@ export default function ConnectionsPage() {
                 <span>Manage connection</span>
                 <ExternalLink className="w-4 h-4 ml-1" />
               </div>
-            </GlassCardContent>
+            </CardContent>
           </Link>
-        </GlassCard>
+        </Card>
       </div>
     </div>
   );

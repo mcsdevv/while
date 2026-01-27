@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 import * as React from "react";
 
 const buttonVariants = tv({
-  base: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-sm font-normal transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  base: "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-normal transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   variants: {
     variant: {
       default: "bg-foreground text-background shadow hover:bg-foreground/90",
@@ -14,10 +14,6 @@ const buttonVariants = tv({
       secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
       ghost: "hover:bg-accent hover:text-accent-foreground",
       link: "text-foreground underline underline-offset-4",
-      glass:
-        "glass rounded-glass text-foreground hover:bg-foreground/10 active:scale-[0.98]",
-      "glass-outline":
-        "glass-subtle rounded-glass border border-glass-border text-foreground hover:bg-foreground/10 active:scale-[0.98]",
     },
     size: {
       default: "h-9 px-4 py-2",

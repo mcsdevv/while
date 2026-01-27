@@ -5,11 +5,11 @@ import type { SyncMetrics } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@while/ui";
 import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardDescription,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@while/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@while/ui";
 import { Separator } from "@while/ui";
@@ -26,15 +26,15 @@ const ActivityTimelineChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <GlassCard>
-        <GlassCardHeader>
+      <Card>
+        <CardHeader>
           <Skeleton className="h-6 w-40" />
           <Skeleton className="h-4 w-60" />
-        </GlassCardHeader>
-        <GlassCardContent>
+        </CardHeader>
+        <CardContent>
           <Skeleton className="h-[300px] w-full" />
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
     ),
   },
 );
@@ -118,12 +118,12 @@ export function Dashboard() {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground text-sm mt-1">
             Real-time synchronization overview
           </p>
         </div>
@@ -144,10 +144,10 @@ export function Dashboard() {
       </div>
 
       {/* Status Overview */}
-      <GlassCard variant="elevated">
-        <GlassCardHeader>
+      <Card>
+        <CardHeader>
           <div className="flex items-center justify-between">
-            <GlassCardTitle>System Status</GlassCardTitle>
+            <CardTitle>System Status</CardTitle>
             <Badge variant={getHealthBadgeVariant()}>
               {successRateNumeric !== null && successRateNumeric > 99
                 ? "Healthy"
@@ -156,12 +156,12 @@ export function Dashboard() {
                   : "Issues Detected"}
             </Badge>
           </div>
-          <GlassCardDescription>{status?.message}</GlassCardDescription>
-        </GlassCardHeader>
-        <GlassCardContent>
+          <CardDescription>{status?.message}</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="glass-subtle rounded-glass p-4">
+              <div className="bg-muted p-4">
                 <p className="text-sm text-muted-foreground">Last Sync: Notion → GCal</p>
                 <p className="text-lg font-medium mt-1">
                   {status?.lastSync.notionToGcal
@@ -169,7 +169,7 @@ export function Dashboard() {
                     : "Never"}
                 </p>
               </div>
-              <div className="glass-subtle rounded-glass p-4">
+              <div className="bg-muted p-4">
                 <p className="text-sm text-muted-foreground">Last Sync: GCal → Notion</p>
                 <p className="text-lg font-medium mt-1">
                   {status?.lastSync.gcalToNotion
@@ -180,7 +180,7 @@ export function Dashboard() {
             </div>
 
             {!status?.healthy && metrics && (
-              <div className="rounded-glass border border-destructive/20 bg-destructive/5 p-4 space-y-2">
+              <div className="border border-destructive/20 bg-destructive/5 p-4 space-y-2">
                 <p className="text-sm font-medium text-destructive">
                   {metrics.totalFailures} sync{" "}
                   {metrics.totalFailures === 1 ? "failure" : "failures"} detected
@@ -202,75 +202,75 @@ export function Dashboard() {
               </div>
             )}
           </div>
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
 
-      {/* Metrics Grid - interactive glass cards */}
+      {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <GlassCard interactive className="group">
-          <GlassCardHeader className="pb-2">
-            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+        <Card className="hover:bg-muted/50 transition-colors">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Success Rate
-            </GlassCardTitle>
-          </GlassCardHeader>
-          <GlassCardContent>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <p className={`text-3xl font-semibold ${getSuccessRateColor()}`}>{successRate}%</p>
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
 
-        <GlassCard interactive className="group">
-          <GlassCardHeader className="pb-2">
-            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+        <Card className="hover:bg-muted/50 transition-colors">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Synced
-            </GlassCardTitle>
-          </GlassCardHeader>
-          <GlassCardContent>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <p className="text-3xl font-semibold">{metrics?.totalSuccess || 0}</p>
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
 
-        <GlassCard interactive className="group">
-          <GlassCardHeader className="pb-2">
-            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+        <Card className="hover:bg-muted/50 transition-colors">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Failures
-            </GlassCardTitle>
-          </GlassCardHeader>
-          <GlassCardContent>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <p className="text-3xl font-semibold">{metrics?.totalFailures || 0}</p>
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
 
-        <GlassCard interactive className="group">
-          <GlassCardHeader className="pb-2">
-            <GlassCardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+        <Card className="hover:bg-muted/50 transition-colors">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Operations
-            </GlassCardTitle>
-          </GlassCardHeader>
-          <GlassCardContent>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <p className="text-3xl font-semibold">
               {(metrics?.totalSuccess || 0) + (metrics?.totalFailures || 0)}
             </p>
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Charts */}
-      <GlassCard>
+      <Card>
         <ActivityTimelineChart metrics={metrics} timeWindow={timeWindow} />
-      </GlassCard>
+      </Card>
 
-      <Separator className="bg-glass-border" />
+      <Separator />
 
       {/* Logs Viewer */}
-      <GlassCard>
-        <GlassCardHeader>
-          <GlassCardTitle>Recent Activity</GlassCardTitle>
-          <GlassCardDescription>Sync events from the selected time period</GlassCardDescription>
-        </GlassCardHeader>
-        <GlassCardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+          <CardDescription>Sync events from the selected time period</CardDescription>
+        </CardHeader>
+        <CardContent>
           <LogsViewer logs={metrics?.recentLogs || []} />
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
     </div>
   );
 }

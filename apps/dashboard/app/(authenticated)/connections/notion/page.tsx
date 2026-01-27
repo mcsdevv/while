@@ -2,10 +2,10 @@
 
 import { NotionSettings } from "@/components/settings/notion-settings";
 import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Skeleton,
 } from "@while/ui";
 import { ArrowLeft } from "lucide-react";
@@ -42,15 +42,15 @@ export default function NotionConnectionPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 space-y-8">
-        <Skeleton className="h-9 w-48" />
+      <div className="p-6 lg:p-8 space-y-6">
+        <Skeleton className="h-8 w-48" />
         <Skeleton className="h-64" />
       </div>
     );
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Back link */}
       <Link
         href="/connections"
@@ -62,21 +62,21 @@ export default function NotionConnectionPage() {
 
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Notion</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Notion</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Manage your Notion workspace connection
         </p>
       </div>
 
       {/* Settings Card */}
-      <GlassCard variant="elevated">
-        <GlassCardHeader>
-          <GlassCardTitle>Connection Details</GlassCardTitle>
-        </GlassCardHeader>
-        <GlassCardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle>Connection Details</CardTitle>
+        </CardHeader>
+        <CardContent>
           <NotionSettings settings={settings} />
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
     </div>
   );
 }

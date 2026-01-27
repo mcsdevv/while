@@ -3,10 +3,10 @@
 import { LogsViewer } from "@/components/dashboard/logs-viewer";
 import type { SyncLog } from "@/lib/types";
 import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Select,
   SelectContent,
   SelectItem,
@@ -52,12 +52,12 @@ export default function ActivityPage() {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 lg:p-8 space-y-6 animate-in fade-in duration-300">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Activity</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Activity</h1>
+          <p className="text-muted-foreground text-sm mt-1">
             View sync history and event logs
           </p>
         </div>
@@ -79,27 +79,27 @@ export default function ActivityPage() {
 
       {/* Logs */}
       {loading ? (
-        <GlassCard>
-          <GlassCardHeader>
+        <Card>
+          <CardHeader>
             <Skeleton className="h-6 w-40" />
-          </GlassCardHeader>
-          <GlassCardContent>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-4">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full" />
               ))}
             </div>
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
       ) : (
-        <GlassCard>
-          <GlassCardHeader>
-            <GlassCardTitle>Sync Events</GlassCardTitle>
-          </GlassCardHeader>
-          <GlassCardContent>
+        <Card>
+          <CardHeader>
+            <CardTitle>Sync Events</CardTitle>
+          </CardHeader>
+          <CardContent>
             <LogsViewer logs={logs} />
-          </GlassCardContent>
-        </GlassCard>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

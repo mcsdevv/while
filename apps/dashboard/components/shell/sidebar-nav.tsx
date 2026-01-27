@@ -62,10 +62,10 @@ function NavItemComponent({
         <button
           onClick={() => setExpanded(!expanded)}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-glass text-sm transition-all duration-200",
+            "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors",
             isActive
-              ? "glass bg-foreground/10 text-foreground font-medium"
-              : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+              ? "bg-muted text-foreground font-medium"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
         >
           <Icon className="w-5 h-5 flex-shrink-0" />
@@ -78,7 +78,7 @@ function NavItemComponent({
           />
         </button>
         {expanded && (
-          <div className="ml-4 pl-4 border-l border-glass-border space-y-1">
+          <div className="ml-4 pl-4 border-l border-border space-y-1">
             {item.children!.map((child) => (
               <NavItemComponent
                 key={child.href}

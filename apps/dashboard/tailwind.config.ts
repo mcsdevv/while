@@ -45,44 +45,20 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        glass: {
-          DEFAULT: "rgb(var(--glass-bg))",
-          elevated: "rgb(var(--glass-bg-elevated))",
-          subtle: "rgb(var(--glass-bg-subtle))",
-          border: "rgb(var(--glass-border))",
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          border: "hsl(var(--sidebar-border))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        glass: "16px",
-        "glass-lg": "24px",
-        "glass-xl": "32px",
-      },
-      backdropBlur: {
-        glass: "var(--glass-blur)",
-        "glass-sm": "var(--glass-blur-sm)",
-        "glass-lg": "var(--glass-blur-lg)",
-      },
-      boxShadow: {
-        glass: "var(--glass-shadow)",
-        "glass-elevated": "var(--glass-shadow-elevated)",
-        "glass-inner": "var(--glass-inner-glow)",
-      },
-      transitionTimingFunction: {
-        glass: "cubic-bezier(0.4, 0, 0.2, 1)",
       },
       animation: {
-        "fade-in": "fade-in 0.3s ease-out forwards",
-        "slide-up": "slide-in-from-bottom 0.4s ease-out forwards",
-        "scale-in": "scale-in 0.2s ease-out forwards",
-      },
-      keyframes: {
-        "scale-in": {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
+        "fade-in": "fade-in 0.2s ease-out forwards",
+        "slide-up": "slide-in-from-bottom 0.3s ease-out forwards",
       },
     },
   },

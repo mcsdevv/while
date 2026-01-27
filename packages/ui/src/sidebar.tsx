@@ -13,7 +13,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     <aside
       ref={ref}
       className={cn(
-        "glass-elevated h-screen sticky top-0 flex flex-col transition-all duration-300 ease-glass rounded-none",
+        "h-screen sticky top-0 flex flex-col transition-all duration-200 border-r border-border bg-card",
         collapsed ? "w-16" : "w-64",
         className,
       )}
@@ -32,7 +32,7 @@ const SidebarHeader = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex h-16 items-center gap-2 px-4 border-b border-glass-border",
+      "flex h-14 items-center gap-2 px-4 border-b border-border",
       className,
     )}
     {...props}
@@ -58,7 +58,7 @@ const SidebarFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("p-4 border-t border-glass-border", className)}
+    className={cn("p-4 border-t border-border", className)}
     {...props}
   />
 ));
@@ -99,10 +99,10 @@ const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
     <button
       ref={ref}
       className={cn(
-        "w-full flex items-center gap-3 px-3 py-2.5 rounded-glass text-sm transition-all duration-200",
+        "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors",
         active
-          ? "glass bg-foreground/10 text-foreground font-medium"
-          : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+          ? "bg-muted text-foreground font-medium"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground",
         collapsed && "justify-center px-2",
         className,
       )}

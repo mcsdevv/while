@@ -17,7 +17,7 @@ export function MobileNav() {
       {/* Backdrop */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden",
+          "fixed inset-0 z-40 bg-background/80 lg:hidden",
           "animate-in fade-in duration-200",
         )}
         onClick={() => setMobileOpen(false)}
@@ -28,12 +28,12 @@ export function MobileNav() {
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-72 lg:hidden",
-          "glass-elevated border-r border-glass-border",
-          "animate-in slide-in-from-left duration-300",
+          "bg-sidebar border-r border-sidebar-border",
+          "animate-in slide-in-from-left duration-200",
         )}
       >
         {/* Header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-glass-border">
+        <div className="flex h-14 items-center justify-between px-4 border-b border-sidebar-border">
           <Link
             href="/"
             className="font-semibold text-xl tracking-tight"
@@ -43,7 +43,7 @@ export function MobileNav() {
           </Link>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-2 rounded-glass hover:bg-foreground/10 transition-colors"
+            className="p-2 hover:bg-muted transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -56,7 +56,7 @@ export function MobileNav() {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-glass-border">
+        <div className="p-4 border-t border-sidebar-border">
           <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
             {footerLinks.map((link) => (
               <a

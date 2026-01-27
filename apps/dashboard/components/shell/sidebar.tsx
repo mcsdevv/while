@@ -17,15 +17,15 @@ export function AppSidebar() {
     <aside
       className={cn(
         "hidden lg:flex flex-col h-screen sticky top-0 z-30",
-        "glass-elevated rounded-none border-r border-glass-border",
-        "transition-all duration-300 ease-glass",
+        "bg-sidebar border-r border-sidebar-border",
+        "transition-all duration-200",
         collapsed ? "w-16" : "w-64",
       )}
     >
       {/* Header */}
       <div
         className={cn(
-          "flex h-16 items-center border-b border-glass-border",
+          "flex h-14 items-center border-b border-sidebar-border",
           collapsed ? "justify-center px-2" : "justify-between px-4",
         )}
       >
@@ -41,8 +41,8 @@ export function AppSidebar() {
         <button
           onClick={toggleCollapsed}
           className={cn(
-            "p-1.5 rounded-glass hover:bg-foreground/10 transition-colors",
-            collapsed && "absolute -right-3 top-5 glass shadow-glass",
+            "p-1.5 hover:bg-muted transition-colors",
+            collapsed && "absolute -right-3 top-4 bg-sidebar border border-sidebar-border",
           )}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -60,7 +60,7 @@ export function AppSidebar() {
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-glass-border space-y-4">
+      <div className="p-4 border-t border-sidebar-border space-y-4">
         <div className={cn("flex items-center", collapsed ? "justify-center" : "justify-between")}>
           <ThemeToggle theme={theme} setTheme={setTheme} />
           {!collapsed && (

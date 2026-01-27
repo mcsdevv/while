@@ -2,11 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardDescription,
-  GlassCardHeader,
-  GlassCardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   SkeletonSetupWizard,
 } from "@while/ui";
 import { Calendar, Check, Database, GitBranch, Sparkles, TestTube } from "lucide-react";
@@ -115,16 +115,16 @@ export function SetupWizard() {
   const currentStepData = STEPS[currentStep - 1];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Glass progress bar */}
-      <div className="glass-subtle rounded-full h-1.5 overflow-hidden">
+    <div className="space-y-8 animate-in fade-in duration-300">
+      {/* Progress bar */}
+      <div className="bg-muted h-1 overflow-hidden">
         <div
-          className="h-full bg-foreground/80 transition-all duration-500 ease-out"
+          className="h-full bg-foreground transition-all duration-300 ease-out"
           style={{ width: `${(currentStep / STEPS.length) * 100}%` }}
         />
       </div>
 
-      {/* Glass stepper */}
+      {/* Stepper */}
       <nav aria-label="Progress" className="flex justify-center">
         <ol className="flex items-center gap-2 sm:gap-3">
           {STEPS.map((step, index) => {
@@ -140,27 +140,27 @@ export function SetupWizard() {
                   onClick={() => goToStep(step.id)}
                   disabled={isDisabled}
                   className={cn(
-                    "w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300",
-                    isCurrent && "glass-elevated scale-110 shadow-glass-elevated",
-                    isComplete && "glass bg-foreground/10",
-                    !isCurrent && !isComplete && "glass-subtle opacity-50",
-                    !isDisabled && "hover:scale-105 cursor-pointer",
+                    "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border transition-colors",
+                    isCurrent && "bg-foreground text-background border-foreground",
+                    isComplete && "bg-muted border-border",
+                    !isCurrent && !isComplete && "bg-background border-border opacity-50",
+                    !isDisabled && "hover:bg-muted cursor-pointer",
                     isDisabled && "cursor-not-allowed",
                   )}
                   aria-label={`Step ${step.id}: ${step.name}`}
                   aria-current={isCurrent ? "step" : undefined}
                 >
                   {isComplete ? (
-                    <Check className="w-5 h-5 text-foreground" />
+                    <Check className="w-5 h-5" />
                   ) : (
-                    <Icon className={cn("w-5 h-5", isCurrent ? "text-foreground" : "text-muted-foreground")} />
+                    <Icon className="w-5 h-5" />
                   )}
                 </button>
                 {index < STEPS.length - 1 && (
                   <div
                     className={cn(
-                      "w-6 sm:w-10 h-0.5 mx-1 transition-colors duration-300",
-                      isComplete ? "bg-foreground/30" : "bg-foreground/10",
+                      "w-6 sm:w-10 h-px mx-1 transition-colors",
+                      isComplete ? "bg-foreground/30" : "bg-border",
                     )}
                   />
                 )}
@@ -177,7 +177,7 @@ export function SetupWizard() {
             <div key={step.id} className="flex items-center">
               <span
                 className={cn(
-                  "w-10 sm:w-12 text-center text-xs font-medium transition-colors duration-300",
+                  "w-10 sm:w-12 text-center text-xs font-medium transition-colors",
                   step.id === currentStep ? "text-foreground" : "text-muted-foreground",
                 )}
               >
@@ -189,13 +189,13 @@ export function SetupWizard() {
         </div>
       </div>
 
-      {/* Step content in glass card */}
-      <GlassCard variant="elevated" className="animate-in slide-in-from-bottom duration-500">
-        <GlassCardHeader>
-          <GlassCardTitle className="text-2xl">{currentStepData.name}</GlassCardTitle>
-          <GlassCardDescription>{currentStepData.description}</GlassCardDescription>
-        </GlassCardHeader>
-        <GlassCardContent>
+      {/* Step content */}
+      <Card className="animate-in slide-in-from-bottom duration-300">
+        <CardHeader>
+          <CardTitle className="text-2xl">{currentStepData.name}</CardTitle>
+          <CardDescription>{currentStepData.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
           {currentStep === 1 && <WelcomeStep onNext={handleStepComplete} />}
           {currentStep === 2 && (
             <GoogleStep
@@ -217,8 +217,8 @@ export function SetupWizard() {
           {currentStep === 5 && (
             <TestStep onBack={() => goToStep(4)} setupComplete={status?.setupComplete || false} />
           )}
-        </GlassCardContent>
-      </GlassCard>
+        </CardContent>
+      </Card>
 
       {/* Step counter */}
       <p className="text-center text-sm text-muted-foreground">
