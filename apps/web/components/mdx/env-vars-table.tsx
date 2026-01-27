@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Button,
   Input,
   Table,
   TableBody,
@@ -9,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@while/ui";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Sparkles } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
@@ -24,6 +25,7 @@ interface EnvVar {
   howToGet?: React.ReactNode;
   howToGetLink?: EnvVarLink;
   default?: React.ReactNode;
+  generate?: "base64";
 }
 
 interface EnvVarsTableProps {
@@ -31,6 +33,12 @@ interface EnvVarsTableProps {
 }
 
 const STORAGE_PREFIX = "while-env-";
+
+function generateBase64Secret(bytes = 32): string {
+  const array = new Uint8Array(bytes);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array));
+}
 
 function EnvVarRow({ envVar, showHowToGet, showDefault }: {
   envVar: EnvVar;
@@ -55,6 +63,12 @@ function EnvVarRow({ envVar, showHowToGet, showDefault }: {
     } else {
       localStorage.removeItem(`${STORAGE_PREFIX}${envVar.name}`);
     }
+  };
+
+  const handleGenerate = () => {
+    const generated = generateBase64Secret();
+    setValue(generated);
+    localStorage.setItem(`${STORAGE_PREFIX}${envVar.name}`, generated);
   };
 
   const copyName = async () => {
@@ -99,13 +113,26 @@ function EnvVarRow({ envVar, showHowToGet, showDefault }: {
         <TableCell className="text-sm font-mono">{envVar.default}</TableCell>
       )}
       <TableCell className="min-w-[200px]">
-        <Input
-          type="text"
-          value={value}
-          onChange={handleChange}
-          placeholder="Enter value..."
-          className="h-8 text-sm font-mono"
-        />
+        <div className="flex items-center gap-2">
+          <Input
+            type="text"
+            value={value}
+            onChange={handleChange}
+            placeholder="Enter value..."
+            className="h-8 text-sm font-mono"
+          />
+          {envVar.generate && !value && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleGenerate}
+              className="shrink-0 h-8"
+            >
+              <Sparkles className="h-3.5 w-3.5 mr-1" />
+              Generate
+            </Button>
+          )}
+        </div>
       </TableCell>
     </TableRow>
   );
