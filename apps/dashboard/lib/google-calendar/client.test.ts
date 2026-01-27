@@ -48,7 +48,7 @@ describe("gcalEventToEvent - recurrence parsing", () => {
       recurrence: ["RRULE:FREQ=DAILY"],
     });
 
-    expect(result?.recurrence).toBe("Every day");
+    expect(result?.recurrence).toBe("Daily");
   });
 
   test("parses weekly with specific day", () => {
@@ -60,7 +60,7 @@ describe("gcalEventToEvent - recurrence parsing", () => {
       recurrence: ["RRULE:FREQ=WEEKLY;BYDAY=MO"],
     });
 
-    expect(result?.recurrence).toBe("Every Monday");
+    expect(result?.recurrence).toBe("Weekly on Monday");
   });
 
   test("parses weekly with multiple days", () => {
@@ -72,7 +72,7 @@ describe("gcalEventToEvent - recurrence parsing", () => {
       recurrence: ["RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR"],
     });
 
-    expect(result?.recurrence).toBe("Every Monday, Wednesday, Friday");
+    expect(result?.recurrence).toBe("Weekly on Monday, Wednesday, and Friday");
   });
 
   test("parses monthly on specific day", () => {
@@ -96,7 +96,7 @@ describe("gcalEventToEvent - recurrence parsing", () => {
       recurrence: ["RRULE:FREQ=YEARLY"],
     });
 
-    expect(result?.recurrence).toBe("Every year");
+    expect(result?.recurrence).toBe("Yearly");
   });
 
   test("handles event without recurrence", () => {
