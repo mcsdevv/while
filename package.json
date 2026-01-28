@@ -17,6 +17,8 @@
     "build": "turbo build",
     "build:standalone": "tsx scripts/build-standalone.ts",
     "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=@while/web",
+    "dev:dashboard": "turbo dev --filter=@while/dashboard",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
