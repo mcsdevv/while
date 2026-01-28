@@ -15,7 +15,6 @@ This guide walks through deploying the sync application to Vercel.
   <SetupChecklistItem>Set NEXTAUTH_SECRET environment variable</SetupChecklistItem>
   <SetupChecklistItem>Set Google OAuth credentials</SetupChecklistItem>
   <SetupChecklistItem>Set AUTHORIZED_EMAILS</SetupChecklistItem>
-  <SetupChecklistItem>Added Redis storage (Upstash)</SetupChecklistItem>
   <SetupChecklistItem>Updated Google OAuth redirect URI</SetupChecklistItem>
   <SetupChecklistItem>Completed setup wizard</SetupChecklistItem>
 </SetupChecklist>
@@ -24,7 +23,7 @@ This guide walks through deploying the sync application to Vercel.
 
 The easiest way to deploy is using the deploy button:
 
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_API_TOKEN,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while" target="_blank" rel="noopener noreferrer">
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_API_TOKEN,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22upstash%22%2C%22productSlug%22%3A%22upstash-kv%22%7D%5D" target="_blank" rel="noopener noreferrer">
   <img src="https://vercel.com/button" alt="Deploy with Vercel" />
 </a>
 
@@ -40,12 +39,10 @@ During deployment, you'll need to configure these environment variables:
   { name: "GOOGLE_CLIENT_SECRET", description: "Google OAuth client secret", howToGetLink: { href: "/docs/setup/google", label: "Google OAuth Setup" } },
   { name: "NOTION_API_TOKEN", description: "Notion integration token", howToGetLink: { href: "/docs/setup/notion", label: "Notion Setup" } },
   { name: "AUTHORIZED_EMAILS", description: "Comma-separated emails, spaces trimmed", howToGet: <>Your email or pattern (e.g., <code>you@gmail.com, *@company.com</code>)</> },
-  { name: "KV_REST_API_URL", description: "Upstash Redis REST endpoint", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" }, hideInput: true },
-  { name: "KV_REST_API_TOKEN", description: "Upstash Redis auth token", howToGetLink: { href: "#add-redis-storage", label: "Add via Vercel Storage" }, hideInput: true },
 ]} />
 
 <Callout type="info">
-Redis storage (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) is automatically configured when you add the Upstash integration from the Vercel Marketplace.
+Redis storage (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) is automatically provisioned via the deploy button. No manual setup needed.
 </Callout>
 
 ### Optional Variables
@@ -74,20 +71,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 <Callout type="info">
 If using `SETTINGS_ENCRYPTION_KEY`, generate a separate value from `NEXTAUTH_SECRET`.
-</Callout>
-
-## Add Redis Storage
-
-During or after deployment, add Redis storage via the Vercel Marketplace:
-
-1. Go to your Vercel project dashboard
-2. Click **Storage** in the sidebar
-3. Click **Connect Store** and select **Upstash Redis**
-4. Follow the prompts to create a new Redis database
-5. The environment variables (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) are automatically added to your project
-
-<Callout type="info">
-The Vercel Marketplace integration handles all configuration automatically. No separate Upstash account is needed.
 </Callout>
 
 ## Post-Deployment Steps
@@ -141,9 +124,9 @@ To use a custom domain:
     - Clear browser cookies and try again
   </FAQAccordionItem>
   <FAQAccordionItem title="Redis Connection Failed">
-    - Verify Redis is connected via Vercel Storage tab
-    - Check environment variables are set in project settings
-    - Try disconnecting and reconnecting the Upstash integration
+    - Redis is auto-provisioned via the deploy button. If missing, redeploy using the deploy button above.
+    - Verify `KV_REST_API_URL` and `KV_REST_API_TOKEN` are set in project settings
+    - Try disconnecting and reconnecting the Upstash integration from the Vercel Storage tab
   </FAQAccordionItem>
 </FAQAccordion>
 

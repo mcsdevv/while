@@ -4,7 +4,6 @@
  */
 
 import { env, getGoogleClientConfig } from "@/lib/env";
-import { isRedisConfigured } from "@/lib/redis";
 import { getSettings, isSetupComplete } from "@/lib/settings";
 import { NextResponse } from "next/server";
 
@@ -19,9 +18,6 @@ export async function GET() {
 
     return NextResponse.json({
       setupComplete,
-      storage: {
-        configured: isRedisConfigured(),
-      },
       google: {
         // Client credentials are configured via env vars
         configured: googleClientConfig !== null,
