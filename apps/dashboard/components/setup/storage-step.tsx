@@ -123,7 +123,7 @@ export function StorageStep({ onBack, onNext }: StorageStepProps) {
                 <span>
                   Select{" "}
                   <span className="font-medium text-foreground">Upstash for Redis</span> and follow the
-                  prompts
+                  prompts (the free tier works great)
                 </span>
               </li>
               <li className="flex items-start gap-2">
