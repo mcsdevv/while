@@ -28,12 +28,12 @@ export function Hero() {
             <Button size="lg" asChild className="gap-2">
               <a href={DEPLOY_URL} target="_blank" rel="noopener noreferrer">
                 Deploy to Vercel
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="gap-2">
               <Link href="/docs">
-                <BookOpen className="h-4 w-4" />
+                <BookOpen aria-hidden="true" className="h-4 w-4" />
                 View Documentation
               </Link>
             </Button>

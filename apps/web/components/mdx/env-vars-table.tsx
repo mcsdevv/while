@@ -110,13 +110,13 @@ function EnvVarRow({
           type="button"
           onClick={copyName}
           className="inline-flex items-center gap-1.5 hover:text-primary transition-colors"
-          title="Copy variable name"
+          aria-label={copied ? `Copied ${envVar.name}` : `Copy ${envVar.name} to clipboard`}
         >
           <code className="bg-muted px-1.5 py-0.5 rounded">{envVar.name}</code>
           {copied ? (
-            <Check className="h-3.5 w-3.5 text-green-500" />
+            <Check aria-hidden="true" className="h-3.5 w-3.5 text-green-500" />
           ) : (
-            <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+            <Copy aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
           )}
         </button>
       </TableCell>
@@ -133,7 +133,7 @@ function EnvVarRow({
                 type="text"
                 value={value}
                 onChange={handleChange}
-                placeholder="Enter value..."
+                placeholder="Enter value…"
                 className="h-8 text-sm font-mono"
               />
               {value && (
@@ -142,12 +142,12 @@ function EnvVarRow({
                   size="sm"
                   onClick={copyValue}
                   className="shrink-0 h-8 px-2"
-                  title="Copy value"
+                  aria-label={valueCopied ? "Copied" : "Copy value to clipboard"}
                 >
                   {valueCopied ? (
-                    <Check className="h-3.5 w-3.5 text-green-500" />
+                    <Check aria-hidden="true" className="h-3.5 w-3.5 text-green-500" />
                   ) : (
-                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                    <Copy aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
                   )}
                 </Button>
               )}
@@ -158,7 +158,7 @@ function EnvVarRow({
                   onClick={handleGenerate}
                   className="shrink-0 h-8"
                 >
-                  <Sparkles className="h-3.5 w-3.5 mr-1" />
+                  <Sparkles aria-hidden="true" className="h-3.5 w-3.5 mr-1" />
                   Generate
                 </Button>
               )}
@@ -191,7 +191,7 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
       {showYourValue && (
         <div className="flex justify-end mb-2">
           <Button variant="ghost" size="sm" onClick={handleClearAll}>
-            <Trash2 className="h-3.5 w-3.5 mr-1" />
+            <Trash2 aria-hidden="true" className="h-3.5 w-3.5 mr-1" />
             Clear All
           </Button>
         </div>
