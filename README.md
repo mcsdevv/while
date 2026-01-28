@@ -57,8 +57,8 @@ Before deploying, you'll need:
 | `AUTHORIZED_EMAILS` | Yes | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
 | `NOTION_API_TOKEN` | Yes | Notion integration token ([setup guide](https://while.so/docs/setup/notion)) |
 | `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
-| `UPSTASH_REDIS_REST_URL` | Auto | Auto-configured via Vercel Marketplace |
-| `UPSTASH_REDIS_REST_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
+| `KV_REST_API_URL` | Auto | Auto-configured via Vercel Marketplace |
+| `KV_REST_API_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
 
 **Authorization**: Use wildcard patterns like `*@company.com` to allow all emails from a domain.
 
