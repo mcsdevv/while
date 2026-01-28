@@ -58,3 +58,29 @@ Never create bun.lock, bun.lockb, package-lock.json, or yarn.lock files.
 - [ ] No console errors related to changes
 - [ ] No failed network requests
 - [ ] Interactive elements function correctly
+
+## Web Interface Guidelines
+
+**All UI changes must be reviewed against Web Interface Guidelines before committing.**
+
+After making UI changes, run:
+```
+/web-interface-guidelines
+```
+
+This audits code against 100+ rules covering:
+- Accessibility
+- Forms
+- Animations
+- Performance
+- Design patterns
+
+### When to Run
+
+- After any component/styling changes
+- After adding new UI features
+- Before committing UI-related code
+
+### Integration with Visual Validation
+
+Run `/web-interface-guidelines` **after** visual validation confirms the UI looks correct. This ensures both visual correctness and guideline compliance.
