@@ -4,7 +4,7 @@
 
 Bidirectional, real-time sync between Notion calendar databases and Google Calendar. Built with Next.js and deployable to Vercel with one click.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_API_TOKEN,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NOTION_API_TOKEN,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22upstash%22%2C%22productSlug%22%3A%22upstash-kv%22%7D%5D)
 
 ## Features
 
@@ -57,8 +57,8 @@ Before deploying, you'll need:
 | `AUTHORIZED_EMAILS` | Yes | Comma-separated emails or patterns, spaces trimmed (`user@example.com, *@company.com`) |
 | `NOTION_API_TOKEN` | Yes | Notion integration token ([setup guide](https://while.so/docs/setup/notion)) |
 | `SETTINGS_ENCRYPTION_KEY` | Recommended | 32-byte base64 key for credential encryption |
-| `KV_REST_API_URL` | Auto | Auto-configured via Vercel Marketplace |
-| `KV_REST_API_TOKEN` | Auto | Auto-configured via Vercel Marketplace |
+| `KV_REST_API_URL` | Auto | Auto-provisioned via deploy button |
+| `KV_REST_API_TOKEN` | Auto | Auto-provisioned via deploy button |
 
 **Authorization**: Use wildcard patterns like `*@company.com` to allow all emails from a domain.
 

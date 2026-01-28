@@ -92,7 +92,7 @@ OAuth tokens expire every 7 days in "Testing" mode. You'll need to re-authentica
 
 Click the button below to deploy:
 
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while" target="_blank" rel="noopener noreferrer">
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmcsdevv%2Fwhile-dashboard-template&env=NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,AUTHORIZED_EMAILS&envDescription=Required%20environment%20variables%20for%20While&envLink=https%3A%2F%2Fwhile.so%2Fdocs%2Fsetup%2Fvercel&project-name=while&repository-name=while&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22upstash%22%2C%22productSlug%22%3A%22upstash-kv%22%7D%5D" target="_blank" rel="noopener noreferrer">
   <img src="https://vercel.com/button" alt="Deploy with Vercel" />
 </a>
 
@@ -105,7 +105,7 @@ During deployment, you'll need to provide these environment variables:
   { name: "AUTHORIZED_EMAILS", description: "Comma-separated emails, spaces trimmed (e.g., you@gmail.com, admin@company.com)" },
 ]} />
 
-Redis storage is automatically configured when you add the Upstash integration from the Vercel Marketplace during deployment.
+Redis storage is automatically provisioned via the deploy button — no manual setup needed.
 
 <Callout type="info" title="Generate secrets">
 ```bash
