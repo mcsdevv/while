@@ -122,7 +122,7 @@ export function StorageStep({ onBack, onNext }: StorageStepProps) {
                 <span className="text-primary font-medium">3.</span>
                 <span>
                   Select{" "}
-                  <span className="font-medium text-foreground">Upstash KV</span> and follow the
+                  <span className="font-medium text-foreground">Upstash for Redis</span> and follow the
                   prompts
                 </span>
               </li>
