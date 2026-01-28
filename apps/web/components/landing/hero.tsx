@@ -25,17 +25,22 @@ export function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild className="gap-2">
-              <a href={DEPLOY_URL} target="_blank" rel="noopener noreferrer">
-                Deploy to Vercel
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </a>
+            <Button
+              size="lg"
+              render={<a href={DEPLOY_URL} target="_blank" rel="noopener noreferrer" />}
+              className="gap-2"
+            >
+              Deploy to Vercel
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" asChild className="gap-2">
-              <Link href="/docs">
-                <BookOpen aria-hidden="true" className="h-4 w-4" />
-                View Documentation
-              </Link>
+            <Button
+              variant="outline"
+              size="lg"
+              render={<Link href="/docs" />}
+              className="gap-2"
+            >
+              <BookOpen aria-hidden="true" className="h-4 w-4" />
+              View Documentation
             </Button>
           </div>
 
