@@ -16,7 +16,28 @@ const DropdownMenuPortal = Menu.Portal;
 
 const DropdownMenuSub = Menu.Root;
 
-const DropdownMenuRadioGroup = Menu.RadioGroup;
+interface DropdownMenuRadioGroupProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>, "onValueChange"> {
+  onValueChange?: (value: string) => void;
+}
+
+const DropdownMenuRadioGroup = React.forwardRef<HTMLDivElement, DropdownMenuRadioGroupProps>(
+  ({ onValueChange, value, ...props }, ref) => {
+    const handleValueChange = React.useCallback(
+      (newValue: unknown) => {
+        if (onValueChange) {
+          onValueChange(newValue as string);
+        }
+      },
+      [onValueChange],
+    );
+
+    return (
+      <Menu.RadioGroup ref={ref} value={value} onValueChange={handleValueChange} {...props} />
+    );
+  },
+);
+DropdownMenuRadioGroup.displayName = "DropdownMenuRadioGroup";
 
 const DropdownMenuSubTrigger = React.forwardRef<
   HTMLDivElement,
@@ -27,7 +48,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <Menu.SubmenuTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center gap-2 rounded-none px-2 py-1.5 text-sm outline-none focus:bg-accent data-[popup-open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      "flex cursor-pointer select-none items-center gap-2 rounded-none px-2 py-1.5 text-sm outline-none focus:bg-accent data-[popup-open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
       inset && "pl-8",
       className,
     )}
@@ -93,12 +114,13 @@ const DropdownMenuItem = React.forwardRef<
 >(({ className, inset, ...props }, ref) => (
   <Menu.Item
     ref={ref}
+    closeOnClick
+    {...props}
     className={cn(
-      "relative flex cursor-default select-none items-center gap-2 rounded-none px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
+      "relative flex cursor-pointer select-none items-center gap-2 rounded-none px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
       inset && "pl-8",
       className,
     )}
-    {...props}
   />
 ));
 DropdownMenuItem.displayName = "DropdownMenuItem";
@@ -110,7 +132,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <Menu.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-none py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-pointer select-none items-center rounded-none py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     checked={checked}
@@ -132,8 +154,9 @@ const DropdownMenuRadioItem = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <Menu.RadioItem
     ref={ref}
+    closeOnClick
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-none py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-pointer select-none items-center rounded-none py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
