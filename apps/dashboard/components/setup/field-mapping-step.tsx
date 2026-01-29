@@ -19,9 +19,11 @@ import {
   Switch,
 } from "@while/ui";
 import { ArrowRight, Plus } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ExtendedFieldMapping, FieldConfig, NotionPropertyType } from "@/lib/settings/types";
 import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";
+import { useNotionProperties } from "@/hooks/use-notion-properties";
+import { useToast } from "@/lib/toast";
 
 interface FieldMappingStepProps {
   onBack: () => void;
@@ -96,9 +98,18 @@ const EMPTY_VALUE = "__none__";
 const CREATE_FIELD_VALUE = "__create__";
 
 export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
+  const {
+    properties,
+    fieldMapping: initialMapping,
+    isLoading: loading,
+    error: loadError,
+    refresh,
+  } = useNotionProperties("/api/setup/field-mapping");
+
+  const { addToast } = useToast();
+  const lastLoadError = useRef<string | null>(null);
+
   const [mapping, setMapping] = useState<ExtendedFieldMapping>(DEFAULT_EXTENDED_FIELD_MAPPING);
-  const [properties, setProperties] = useState<NotionProperty[]>([]);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -108,24 +119,28 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
   const [newFieldName, setNewFieldName] = useState("");
   const [creatingField, setCreatingField] = useState(false);
 
-  const loadMapping = useCallback(async () => {
-    try {
-      const response = await fetch("/api/setup/field-mapping");
-      if (response.ok) {
-        const data = await response.json();
-        setMapping(data.fieldMapping);
-        setProperties(data.notionProperties || []);
-      }
-    } catch (err) {
-      console.error("Failed to load field mapping:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    loadMapping();
-  }, [loadMapping]);
+    if (!loadError) {
+      lastLoadError.current = null;
+      return;
+    }
+    const message =
+      loadError instanceof Error ? loadError.message : "Failed to load Notion fields";
+    if (lastLoadError.current === message) return;
+    lastLoadError.current = message;
+    addToast({
+      title: "Unable to load Notion fields",
+      description: message,
+      variant: "destructive",
+    });
+  }, [loadError, addToast]);
+
+  // Sync mapping state when initial data loads
+  useEffect(() => {
+    if (initialMapping) {
+      setMapping(initialMapping as ExtendedFieldMapping);
+    }
+  }, [initialMapping]);
 
   const isCompatiblePropertyType = (field: FieldKey, type: string) => {
     const compatibleTypes = PROPERTY_TYPE_COMPATIBILITY[field];
@@ -170,11 +185,8 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
 
       const data = await response.json();
 
-      // Add the new property to the list
-      setProperties((prev) => [
-        ...prev,
-        { id: data.property.id, name: data.property.name, type: data.property.type },
-      ]);
+      // Refresh properties from API to ensure sync with Notion
+      await refresh();
 
       // Auto-select the newly created property
       setMapping((prev) => ({
@@ -307,7 +319,7 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
         }
 
         if (createdProperties.length > 0) {
-          setProperties((prev) => [...prev, ...createdProperties]);
+          await refresh();
         }
 
         if (updatedMapping !== currentMapping) {
@@ -349,7 +361,7 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       : undefined;
     const hasMissingCurrent = Boolean(config.notionPropertyName && !currentProperty);
     const hasIncompatibleCurrent =
-      Boolean(currentProperty) && !isCompatiblePropertyType(field, currentProperty.type);
+      currentProperty !== undefined && !isCompatiblePropertyType(field, currentProperty.type);
 
     return (
       <div key={field} className="flex items-center gap-4 py-2">
@@ -381,6 +393,7 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
           {properties.length > 0 ? (
             <Select
               value={currentValue}
+              onOpenChange={(open) => open && refresh()}
               onValueChange={(val) => {
                 if (val === CREATE_FIELD_VALUE) {
                   openCreateDialog(field);
