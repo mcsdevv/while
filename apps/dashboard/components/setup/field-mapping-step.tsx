@@ -215,17 +215,17 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       </div>
 
       {/* Service Headers */}
-      <div className="flex items-center justify-between py-4 px-5 rounded-lg bg-muted/30 border border-border">
+      <div className="flex items-center justify-between py-4 px-3 rounded-lg bg-muted/30 border border-border">
         <div className="flex items-center gap-3">
           <img
             src="/icons/google-calendar.png"
             alt="Google Calendar"
-            className="w-8 h-8"
+            className="w-7 h-7"
           />
           <span className="text-base font-medium">Google Calendar</span>
         </div>
         <div className="flex items-center gap-3">
-          <img src="/icons/notion.png" alt="Notion" className="w-8 h-8" />
+          <img src="/icons/notion.png" alt="Notion" className="w-7 h-7" />
           <span className="text-base font-medium">Notion</span>
         </div>
       </div>
