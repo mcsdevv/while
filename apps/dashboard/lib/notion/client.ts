@@ -85,7 +85,9 @@ export function getPropertyValue(properties: PageObjectResponse["properties"], k
   }
 }
 
-type NotionPropertyValue = NonNullable<CreatePageParameters["properties"]>[string];
+type NotionPropertyValue =
+  | CreatePageParameters["properties"][string]
+  | NonNullable<UpdatePageParameters["properties"]>[string];
 
 export function buildNotionPropertyValue(
   type: NotionPropertyType,
