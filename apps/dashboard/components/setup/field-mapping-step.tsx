@@ -2,14 +2,6 @@
 
 import {
   Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  Input,
-  Label,
   Select,
   SelectContent,
   SelectItem,
@@ -18,12 +10,13 @@ import {
   SelectValue,
   Switch,
 } from "@while/ui";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, Pencil, Plus } from "lucide-react";
+import { PropertyDialog } from "@/components/notion/property-dialog";
 import { useEffect, useRef, useState } from "react";
-import type { ExtendedFieldMapping, FieldConfig, NotionPropertyType } from "@/lib/settings/types";
-import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";
 import { useNotionProperties } from "@/hooks/use-notion-properties";
 import { useToast } from "@/lib/toast";
+import type { ExtendedFieldMapping, FieldConfig, NotionPropertyType } from "@/lib/settings/types";
+import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";
 
 interface FieldMappingStepProps {
   onBack: () => void;
@@ -96,6 +89,7 @@ const TYPE_DISPLAY_NAMES: Record<string, string> = {
 
 const EMPTY_VALUE = "__none__";
 const CREATE_FIELD_VALUE = "__create__";
+const RENAME_FIELD_VALUE = "__rename__";
 
 export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
   const {
@@ -113,11 +107,10 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Create field dialog state
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  const [createFieldFor, setCreateFieldFor] = useState<FieldKey | null>(null);
-  const [newFieldName, setNewFieldName] = useState("");
-  const [creatingField, setCreatingField] = useState(false);
+  // Property dialog state
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "rename">("create");
+  const [dialogFieldFor, setDialogFieldFor] = useState<FieldKey | null>(null);
 
   useEffect(() => {
     if (!loadError) {
@@ -152,60 +145,30 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
     return properties.filter((prop) => isCompatiblePropertyType(field, prop.type));
   };
 
-  // Open create field dialog
-  const openCreateDialog = (field: FieldKey) => {
-    const config = mapping[field];
-    setCreateFieldFor(field);
-    setNewFieldName(config.notionPropertyName); // Suggest default name
-    setCreateDialogOpen(true);
+  // Open property dialog for create or rename
+  const openPropertyDialog = (field: FieldKey, mode: "create" | "rename") => {
+    setDialogFieldFor(field);
+    setDialogMode(mode);
+    setDialogOpen(true);
   };
 
-  // Create a new property in Notion
-  const handleCreateProperty = async () => {
-    if (!createFieldFor || !newFieldName.trim()) return;
+  // Handle property dialog success
+  const handlePropertyDialogSuccess = (property: { id: string; name: string; type: string }) => {
+    if (!dialogFieldFor) return;
 
-    setCreatingField(true);
-    setError(null);
+    // Update mapping to use the new/renamed property
+    setMapping((prev) => ({
+      ...prev,
+      [dialogFieldFor]: {
+        ...prev[dialogFieldFor],
+        notionPropertyName: property.name,
+        propertyType: property.type as NotionPropertyType,
+      },
+    }));
 
-    try {
-      const config = mapping[createFieldFor];
-      const response = await fetch("/api/setup/notion/property", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: newFieldName.trim(),
-          type: config.propertyType,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to create property");
-      }
-
-      const data = await response.json();
-
-      // Refresh properties from API to ensure sync with Notion
-      await refresh();
-
-      // Auto-select the newly created property
-      setMapping((prev) => ({
-        ...prev,
-        [createFieldFor]: {
-          ...prev[createFieldFor],
-          notionPropertyName: data.property.name,
-          propertyType: data.property.type,
-        },
-      }));
-
-      setCreateDialogOpen(false);
-      setCreateFieldFor(null);
-      setNewFieldName("");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create property");
-    } finally {
-      setCreatingField(false);
-    }
+    setDialogOpen(false);
+    setDialogFieldFor(null);
+    void refresh();
   };
 
   const handleToggle = (field: FieldKey, enabled: boolean) => {
@@ -396,7 +359,9 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
               onOpenChange={(open) => open && refresh()}
               onValueChange={(val) => {
                 if (val === CREATE_FIELD_VALUE) {
-                  openCreateDialog(field);
+                  openPropertyDialog(field, "create");
+                } else if (val === RENAME_FIELD_VALUE) {
+                  openPropertyDialog(field, "rename");
                 } else {
                   const selectedProperty = properties.find((prop) => prop.name === val);
                   handlePropertyChange(
@@ -451,12 +416,21 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
                   </div>
                 )}
                 <SelectSeparator />
-                <SelectItem value={CREATE_FIELD_VALUE}>
-                  <div className="flex items-center gap-2 text-primary">
-                    <Plus className="h-3 w-3" />
-                    <span>Create {typeDisplayName.toLowerCase()} field...</span>
-                  </div>
-                </SelectItem>
+                {field === "title" ? (
+                  <SelectItem value={RENAME_FIELD_VALUE}>
+                    <div className="flex items-center gap-2 text-primary">
+                      <Pencil className="h-3 w-3" />
+                      <span>Change field name...</span>
+                    </div>
+                  </SelectItem>
+                ) : (
+                  <SelectItem value={CREATE_FIELD_VALUE}>
+                    <div className="flex items-center gap-2 text-primary">
+                      <Plus className="h-3 w-3" />
+                      <span>Create {typeDisplayName.toLowerCase()} field...</span>
+                    </div>
+                  </SelectItem>
+                )}
               </SelectContent>
             </Select>
           ) : (
@@ -542,64 +516,19 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
         </Button>
       </div>
 
-      {/* Create Field Dialog */}
-      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create Notion Property</DialogTitle>
-            <DialogDescription>
-              {createFieldFor && (
-                <>
-                  Create a new{" "}
-                  <span className="font-medium">
-                    {TYPE_DISPLAY_NAMES[mapping[createFieldFor].propertyType] ||
-                      mapping[createFieldFor].propertyType}
-                  </span>{" "}
-                  property in your Notion database for{" "}
-                  <span className="font-medium">
-                    {mapping[createFieldFor].displayLabel}
-                  </span>
-                  .
-                </>
-              )}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="property-name">Property Name</Label>
-              <Input
-                id="property-name"
-                value={newFieldName}
-                onChange={(e) => setNewFieldName(e.target.value)}
-                placeholder="Enter property name..."
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && newFieldName.trim()) {
-                    handleCreateProperty();
-                  }
-                }}
-              />
-            </div>
-            {createFieldFor && (
-              <div className="text-xs text-muted-foreground">
-                Type:{" "}
-                <span className="font-medium">
-                  {TYPE_DISPLAY_NAMES[mapping[createFieldFor].propertyType] ||
-                    mapping[createFieldFor].propertyType}
-                </span>{" "}
-                (required for this field)
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleCreateProperty} disabled={creatingField || !newFieldName.trim()}>
-              {creatingField ? "Creating..." : "Create Property"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Property Dialog (Create or Rename) */}
+      {dialogFieldFor && (
+        <PropertyDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          mode={dialogMode}
+          fieldLabel={mapping[dialogFieldFor].displayLabel}
+          propertyType={mapping[dialogFieldFor].propertyType}
+          currentPropertyName={mapping[dialogFieldFor].notionPropertyName}
+          onSuccess={handlePropertyDialogSuccess}
+          onError={(err) => setError(err)}
+        />
+      )}
     </div>
   );
 }
