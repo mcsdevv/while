@@ -136,14 +136,11 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       <div key={field} className="flex items-center gap-4 py-2">
         {/* Toggle */}
         <div className="w-12 flex justify-center">
-          {isRequired ? (
-            <div className="text-xs text-muted-foreground">Required</div>
-          ) : (
-            <Switch
-              checked={config.enabled}
-              onCheckedChange={(checked) => handleToggle(field, checked)}
-            />
-          )}
+          <Switch
+            checked={isRequired ? true : config.enabled}
+            onCheckedChange={(checked) => handleToggle(field, checked)}
+            disabled={isRequired}
+          />
         </div>
 
         {/* Label and description */}
@@ -218,18 +215,18 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       </div>
 
       {/* Service Headers */}
-      <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/30 border border-border">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between py-4 px-5 rounded-lg bg-muted/30 border border-border">
+        <div className="flex items-center gap-3">
           <img
             src="/icons/google-calendar.png"
             alt="Google Calendar"
-            className="w-5 h-5"
+            className="w-8 h-8"
           />
-          <span className="text-sm font-medium">Google Calendar</span>
+          <span className="text-base font-medium">Google Calendar</span>
         </div>
-        <div className="flex items-center gap-2">
-          <img src="/icons/notion.png" alt="Notion" className="w-5 h-5" />
-          <span className="text-sm font-medium">Notion</span>
+        <div className="flex items-center gap-3">
+          <img src="/icons/notion.png" alt="Notion" className="w-8 h-8" />
+          <span className="text-base font-medium">Notion</span>
         </div>
       </div>
 

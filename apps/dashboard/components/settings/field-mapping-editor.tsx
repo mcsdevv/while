@@ -167,18 +167,18 @@ export function FieldMappingEditor({ initialMapping, onSave }: FieldMappingEdito
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Service Headers */}
-        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/30 border border-border">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between py-4 px-5 rounded-lg bg-muted/30 border border-border">
+          <div className="flex items-center gap-3">
             <img
               src="/icons/google-calendar.png"
               alt="Google Calendar"
-              className="w-5 h-5"
+              className="w-8 h-8"
             />
-            <span className="text-sm font-medium">Google Calendar</span>
+            <span className="text-base font-medium">Google Calendar</span>
           </div>
-          <div className="flex items-center gap-2">
-            <img src="/icons/notion.png" alt="Notion" className="w-5 h-5" />
-            <span className="text-sm font-medium">Notion</span>
+          <div className="flex items-center gap-3">
+            <img src="/icons/notion.png" alt="Notion" className="w-8 h-8" />
+            <span className="text-base font-medium">Notion</span>
           </div>
         </div>
 
