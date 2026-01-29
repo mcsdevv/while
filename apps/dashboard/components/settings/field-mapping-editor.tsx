@@ -176,7 +176,6 @@ export function FieldMappingEditor({ initialMapping, onSave }: FieldMappingEdito
             />
             <span className="text-sm font-medium">Google Calendar</span>
           </div>
-          <ArrowRight className="w-4 h-4 text-muted-foreground" />
           <div className="flex items-center gap-2">
             <img src="/icons/notion.png" alt="Notion" className="w-5 h-5" />
             <span className="text-sm font-medium">Notion</span>
