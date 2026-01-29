@@ -9,6 +9,7 @@ import {
   SelectValue,
   Switch,
 } from "@while/ui";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ExtendedFieldMapping, FieldConfig } from "@/lib/settings/types";
 import { DEFAULT_EXTENDED_FIELD_MAPPING } from "@/lib/settings/types";
@@ -154,6 +155,11 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
           <p className="text-xs text-muted-foreground truncate">{FIELD_DESCRIPTIONS[field]}</p>
         </div>
 
+        {/* Flow arrow */}
+        <ArrowRight
+          className={`w-4 h-4 flex-shrink-0 ${!isRequired && !config.enabled ? "text-muted-foreground/30" : "text-muted-foreground"}`}
+        />
+
         {/* Property selector */}
         <div className="w-48">
           {properties.length > 0 ? (
@@ -209,6 +215,23 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       <div className="text-sm text-muted-foreground">
         Configure which Google Calendar fields sync to your Notion database. Toggle fields on/off
         and map them to your Notion properties.
+      </div>
+
+      {/* Service Headers */}
+      <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/30 border border-border">
+        <div className="flex items-center gap-2">
+          <img
+            src="/icons/google-calendar.png"
+            alt="Google Calendar"
+            className="w-5 h-5"
+          />
+          <span className="text-sm font-medium">Google Calendar</span>
+        </div>
+        <ArrowRight className="w-4 h-4 text-muted-foreground" />
+        <div className="flex items-center gap-2">
+          <img src="/icons/notion.png" alt="Notion" className="w-5 h-5" />
+          <span className="text-sm font-medium">Notion</span>
+        </div>
       </div>
 
       {/* Required Fields Section */}
