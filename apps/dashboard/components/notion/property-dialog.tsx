@@ -62,6 +62,12 @@ export function PropertyDialog({
 
   const handleSubmit = async () => {
     if (!propertyName.trim()) return;
+    if (isRename && !currentPropertyName) {
+      const errorMessage = "Current property name is missing";
+      setError(errorMessage);
+      onError?.(errorMessage);
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -163,7 +169,10 @@ export function PropertyDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={loading || !propertyName.trim()}>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading || !propertyName.trim() || (isRename && !currentPropertyName)}
+          >
             {loading
               ? isRename
                 ? "Renaming..."
