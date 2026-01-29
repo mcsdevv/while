@@ -349,7 +349,7 @@ export function FieldMappingStep({ onBack, onNext }: FieldMappingStepProps) {
       : undefined;
     const hasMissingCurrent = Boolean(config.notionPropertyName && !currentProperty);
     const hasIncompatibleCurrent =
-      Boolean(currentProperty) && !isCompatiblePropertyType(field, currentProperty.type);
+      currentProperty !== undefined && !isCompatiblePropertyType(field, currentProperty.type);
 
     return (
       <div key={field} className="flex items-center gap-4 py-2">
