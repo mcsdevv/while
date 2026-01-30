@@ -88,6 +88,20 @@ import { FAQAccordion, FAQAccordionItem } from "@/components/mdx/faq-accordion";
 
     If you're using a custom domain and encounter issues, you may need to verify it in Google Search Console.
   </FAQAccordionItem>
+
+  <FAQAccordionItem title="Can I test webhooks on localhost?">
+    No, webhooks require a publicly accessible URL. Both Google Calendar and Notion need to reach your server to deliver webhook events, which isn't possible with localhost.
+
+    **Options:**
+
+    1. **Deploy first**: Complete the setup on Vercel, then enable webhooks. This is the recommended approach.
+
+    2. **Use a tunneling service**: Tools like ngrok, cloudflared, or localtunnel can expose your local server to the internet. This allows webhook providers to reach your localhost during development.
+
+    **Important:** No implementation guidance is provided for tunneling services. Refer to their respective documentation if you choose this approach.
+
+    The setup wizard will detect localhost and show a warning, allowing you to skip the webhook step and return after deployment.
+  </FAQAccordionItem>
 </FAQAccordion>
 
 ## Sync Behavior
