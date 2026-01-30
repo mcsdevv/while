@@ -1,14 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  SkeletonSetupWizard,
-} from "@while/ui";
+import { Card, CardContent, SkeletonSetupWizard } from "@while/ui";
 import confetti from "canvas-confetti";
 import { Calendar, Check, Database, GitBranch, RefreshCw, Sparkles, TestTube } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -29,6 +22,7 @@ interface SetupStatus {
     configured: boolean;
     connected: boolean;
     calendarSelected: boolean;
+    calendarName: string | null;
     oauthAppPublished?: boolean;
   };
   notion: {
@@ -160,21 +154,18 @@ export function SetupWizard({ currentStep }: SetupWizardProps) {
               const Icon = step.icon;
               const isComplete = step.id < currentStep;
               const isCurrent = step.id === currentStep;
-              const isDisabled = step.id > currentStep + 1;
 
               return (
                 <li key={step.id} className="flex items-center">
                   <button
                     type="button"
                     onClick={() => goToStep(step.id)}
-                    disabled={isDisabled}
                     className={cn(
                       "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border transition-colors",
                       isCurrent && "bg-foreground text-background border-foreground",
                       isComplete && "bg-muted border-border",
                       !isCurrent && !isComplete && "bg-background border-border opacity-50",
-                      !isDisabled && "hover:bg-muted cursor-pointer",
-                      isDisabled && "cursor-not-allowed",
+                      "hover:bg-muted cursor-pointer",
                     )}
                     aria-label={`Step ${step.id}: ${step.name}`}
                     aria-current={isCurrent ? "step" : undefined}
@@ -253,11 +244,7 @@ export function SetupWizard({ currentStep }: SetupWizardProps) {
         )}
         {/* Step content */}
         <Card className="animate-in slide-in-from-bottom duration-300">
-          <CardHeader className="pb-4">
-            <CardTitle>{currentStepData.name}</CardTitle>
-            <CardDescription>{currentStepData.description}</CardDescription>
-          </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             {currentStep === 1 && (
               <WelcomeStep
                 onNext={handleStepComplete}

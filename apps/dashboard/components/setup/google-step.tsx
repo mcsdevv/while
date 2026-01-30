@@ -5,12 +5,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { CopyValue } from "./copy-value";
+import { StepHeader } from "./step-header";
 
 interface GoogleStepProps {
   status?: {
     configured: boolean;
     connected: boolean;
     calendarSelected: boolean;
+    calendarName?: string | null;
   };
   onBack: () => void;
   onNext: () => void;
@@ -171,6 +173,10 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
 
   return (
     <div className="space-y-6">
+      <StepHeader
+        title="Google"
+        description="Connect your Google account to enable calendar synchronization."
+      />
       {!isConnected ? (
         <>
           {showConfigError ? (
@@ -404,7 +410,11 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
         <>
           <ConnectionStatusCard
             title="Google Calendar"
-            subtitle={calendars.find((c) => c.id === selectedCalendar)?.name || selectedCalendar}
+            subtitle={
+              calendars.find((c) => c.id === selectedCalendar)?.name ||
+              status?.calendarName ||
+              "Loading calendar..."
+            }
             subtitleLabel="Calendar"
           />
 
