@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { CopyValue } from "./copy-value";
+import { StepHeader } from "./step-header";
 
 interface GoogleStepProps {
   status?: {
@@ -171,6 +172,10 @@ export function GoogleStep({ status, onBack, onNext }: GoogleStepProps) {
 
   return (
     <div className="space-y-6">
+      <StepHeader
+        title="Google"
+        description="Connect your Google account to enable calendar synchronization."
+      />
       {!isConnected ? (
         <>
           {showConfigError ? (
