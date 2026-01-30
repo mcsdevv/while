@@ -92,14 +92,15 @@ interface SidebarNavItemProps
   active?: boolean;
   icon?: React.ReactNode;
   collapsed?: boolean;
+  indicator?: React.ReactNode;
 }
 
 const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
-  ({ className, active, icon, collapsed, children, ...props }, ref) => (
+  ({ className, active, icon, collapsed, indicator, children, ...props }, ref) => (
     <button
       ref={ref}
       className={cn(
-        "w-full flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "relative w-full flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         active
           ? "bg-muted text-foreground font-medium"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -114,6 +115,8 @@ const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
         </span>
       )}
       {!collapsed && <span className="truncate">{children}</span>}
+      {!collapsed && indicator && <span className="ml-auto">{indicator}</span>}
+      {collapsed && indicator && <span className="absolute right-1.5 top-1.5">{indicator}</span>}
     </button>
   ),
 );
