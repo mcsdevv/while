@@ -178,11 +178,11 @@ export function EnvVarsTable({ vars }: EnvVarsTableProps) {
   const showYourValue = vars.some((v) => !v.hideInput);
 
   const handleClearAll = () => {
-    vars.forEach((v) => {
-      if (!v.hideInput) {
-        localStorage.removeItem(`${STORAGE_PREFIX}${v.name}`);
+    for (const envVar of vars) {
+      if (!envVar.hideInput) {
+        localStorage.removeItem(`${STORAGE_PREFIX}${envVar.name}`);
       }
-    });
+    }
     setClearKey((k) => k + 1);
   };
 

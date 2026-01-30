@@ -1,13 +1,7 @@
 "use client";
 
 import { NotionSettings } from "@/components/settings/notion-settings";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Skeleton,
-} from "@while/ui";
+import { Card, CardContent, CardHeader, CardTitle, Skeleton } from "@while/ui";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
