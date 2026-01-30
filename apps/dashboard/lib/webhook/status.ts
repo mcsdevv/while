@@ -71,10 +71,7 @@ export async function getGoogleWebhookStatus(): Promise<GoogleWebhookStatus> {
   } catch (error) {
     return {
       active: false,
-      reason:
-        error instanceof Error
-          ? error.message
-          : "Google Calendar configuration is missing.",
+      reason: error instanceof Error ? error.message : "Google Calendar configuration is missing.",
       expiresAt,
       expiresInHours,
       channelId: channel.channelId,
@@ -161,10 +158,7 @@ export async function getNotionWebhookStatus(): Promise<NotionWebhookStatus> {
       active: false,
       verified: subscription.verified,
       subscriptionId: subscription.subscriptionId,
-      reason:
-        error instanceof Error
-          ? error.message
-          : "Unable to verify Notion webhook status.",
+      reason: error instanceof Error ? error.message : "Unable to verify Notion webhook status.",
     };
   }
 }

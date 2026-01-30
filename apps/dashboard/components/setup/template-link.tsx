@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@while/ui";
 import { TEMPLATE_URL } from "@/lib/notion/template";
+import { Button } from "@while/ui";
 
 interface TemplateLinkProps {
   onContinue?: () => void;

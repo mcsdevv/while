@@ -211,8 +211,7 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
   }, [googleStatus.status, notionStatus.status]);
 
   const showStatuses =
-    loadingStatus === false &&
-    (googleStatus.status !== "idle" || notionStatus.status !== "idle");
+    loadingStatus === false && (googleStatus.status !== "idle" || notionStatus.status !== "idle");
 
   const showVerificationInstructions =
     notionStatus.status === "warning" && notionStatus.instructions?.length;
@@ -250,7 +249,13 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
       {showStatuses && (
         <div className="space-y-4">
           <StatusCard
-            icon={googleStatus.status === "pending" ? Loader2 : googleStatus.status === "success" ? CheckCircle2 : XCircle}
+            icon={
+              googleStatus.status === "pending"
+                ? Loader2
+                : googleStatus.status === "success"
+                  ? CheckCircle2
+                  : XCircle
+            }
             title="Google Calendar"
             message={
               googleStatus.status === "pending"
@@ -258,7 +263,13 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
                 : googleStatus.message || "Not configured"
             }
             details={googleStatus.details}
-            variant={googleStatus.status === "success" ? "success" : googleStatus.status === "pending" ? "warning" : "error"}
+            variant={
+              googleStatus.status === "success"
+                ? "success"
+                : googleStatus.status === "pending"
+                  ? "warning"
+                  : "error"
+            }
             iconClassName={googleStatus.status === "pending" ? "animate-spin" : undefined}
             className={googleStatus.status === "pending" ? "animate-pulse" : undefined}
           />

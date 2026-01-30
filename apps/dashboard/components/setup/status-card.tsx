@@ -52,12 +52,7 @@ export function StatusCard({
 
   return (
     <div
-      className={cn(
-        "border p-4 transition-all duration-300",
-        styles.border,
-        styles.bg,
-        className
-      )}
+      className={cn("border p-4 transition-all duration-300", styles.border, styles.bg, className)}
     >
       <div className="flex items-center gap-3">
         <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center", styles.iconBg)}>
@@ -70,9 +65,7 @@ export function StatusCard({
           </p>
         </div>
       </div>
-      {details && (
-        <p className="mt-2 pl-11 text-sm text-muted-foreground">{details}</p>
-      )}
+      {details && <p className="mt-2 pl-11 text-sm text-muted-foreground">{details}</p>}
     </div>
   );
 }

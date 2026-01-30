@@ -184,14 +184,13 @@ async function setupNotionWebhook(request: NextRequest): Promise<{
       } catch (error) {
         return {
           success: false,
-          error:
-            error instanceof Error
-              ? error.message
-              : "Failed to check Notion webhooks",
+          error: error instanceof Error ? error.message : "Failed to check Notion webhooks",
         };
       }
 
-      const matching = apiWebhooks.find((webhook) => webhook.id === existingSubscription.subscriptionId);
+      const matching = apiWebhooks.find(
+        (webhook) => webhook.id === existingSubscription.subscriptionId,
+      );
 
       if (matching) {
         if (matching.state === "active") {
@@ -222,7 +221,10 @@ async function setupNotionWebhook(request: NextRequest): Promise<{
         }
       }
 
-      if (existingSubscription.subscriptionId && existingSubscription.subscriptionId !== "pending") {
+      if (
+        existingSubscription.subscriptionId &&
+        existingSubscription.subscriptionId !== "pending"
+      ) {
         try {
           await deleteNotionWebhookAPI(existingSubscription.subscriptionId);
         } catch (error) {

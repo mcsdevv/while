@@ -1,14 +1,14 @@
 "use client";
 
+import type { NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarNavItem } from "@while/ui";
 import { AlertTriangle, ChevronDown } from "lucide-react";
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
-import type { NavItem } from "@/lib/navigation";
+import { type ReactNode, useEffect, useState } from "react";
 import { useSidebar } from "./sidebar-context";
-import type { Route } from "next";
 
 interface SidebarNavProps {
   items: NavItem[];
@@ -93,8 +93,7 @@ function NavItemComponent({
   depth = 0,
 }: NavItemComponentProps) {
   const isActive =
-    pathname === item.href ||
-    (item.children && item.children.some((child) => pathname === child.href));
+    pathname === item.href || item.children?.some((child) => pathname === child.href);
   const [expanded, setExpanded] = useState(isActive);
 
   const hasChildren = item.children && item.children.length > 0;
@@ -104,6 +103,7 @@ function NavItemComponent({
     return (
       <div className="space-y-1">
         <button
+          type="button"
           onClick={() => setExpanded(!expanded)}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
@@ -116,10 +116,7 @@ function NavItemComponent({
           <span className="flex-1 text-left truncate">{item.title}</span>
           <ChevronDown
             aria-hidden="true"
-            className={cn(
-              "w-4 h-4 transition-transform duration-200",
-              expanded && "rotate-180",
-            )}
+            className={cn("w-4 h-4 transition-transform duration-200", expanded && "rotate-180")}
           />
         </button>
         {expanded && (
@@ -154,12 +151,7 @@ function NavItemComponent({
 
   if (item.external) {
     return (
-      <a
-        href={item.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
+      <a href={item.href} target="_blank" rel="noopener noreferrer" className="block">
         {content}
       </a>
     );
