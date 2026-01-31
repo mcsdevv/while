@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/mcsdevv/while/compare/v1.2.0...v1.2.1) (2026-01-31)
+
+
+### Bug Fixes
+
+* Hide theme toggle in collapsed sidebar to prevent overflow ([#206](https://github.com/mcsdevv/while/issues/206)) ([70a9397](https://github.com/mcsdevv/while/commit/70a93970e0a31f4dae4cedd07b9559f67095bed9))
+* Remove nested Card from Activity page and improve accessibility ([#207](https://github.com/mcsdevv/while/issues/207)) ([93f9120](https://github.com/mcsdevv/while/commit/93f9120b029062330ebbe19364e26387cef156fa))
+
 # [1.2.0](https://github.com/mcsdevv/while/compare/v1.1.1...v1.2.0) (2026-01-31)
 
 
