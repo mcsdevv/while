@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/mcsdevv/while/compare/v1.0.2...v1.0.3) (2026-01-31)
+
+
+### Bug Fixes
+
+* Display database name instead of ID in Notion selector dropdown ([#195](https://github.com/mcsdevv/while/issues/195)) ([7c8c2e0](https://github.com/mcsdevv/while/commit/7c8c2e00fc6c2695d06fc86f4c7780d3309771ae))
+
 ## [1.0.2](https://github.com/mcsdevv/while/compare/v1.0.1...v1.0.2) (2026-01-31)
 
 
