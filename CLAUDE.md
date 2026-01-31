@@ -84,3 +84,38 @@ This audits code against 100+ rules covering:
 ### Integration with Visual Validation
 
 Run `/web-interface-guidelines` **after** visual validation confirms the UI looks correct. This ensures both visual correctness and guideline compliance.
+
+## Semantic Versioning
+
+**Version bumps are automated via semantic-release when PRs merge to main.**
+
+### Commit Message Format
+```
+<type>[scope]: <description>
+
+[body]
+
+[footer]
+```
+
+### Version Bump Rules
+
+| Commit Type | Version Bump | Example |
+|-------------|--------------|---------|
+| `fix:` | PATCH (0.1.2 → 0.1.3) | Bug fixes |
+| `feat:` | MINOR (0.1.2 → 0.2.0) | New features |
+| `BREAKING CHANGE:` or `feat!:` | MAJOR (0.1.2 → 1.0.0) | Breaking changes |
+| `docs:`, `style:`, `refactor:`, `test:`, `chore:` | No release | Non-user-facing |
+
+### What Happens on Merge
+1. GitHub Actions runs semantic-release
+2. Analyzes commit messages since last release
+3. Determines version bump (if any)
+4. Updates `package.json` version
+5. Generates/updates `CHANGELOG.md`
+6. Creates GitHub release with notes
+
+### Writing Commit Messages
+- Use imperative mood: "Add feature" not "Added feature"
+- Keep subject under 50 characters
+- For breaking changes, add `BREAKING CHANGE:` in footer or `!` after type
