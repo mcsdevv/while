@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/mcsdevv/while/compare/v1.3.0...v1.4.0) (2026-01-31)
+
+
+### Features
+
+* Hide warning indicator on collapsed sidebar and add tooltip ([#211](https://github.com/mcsdevv/while/issues/211)) ([cd40797](https://github.com/mcsdevv/while/commit/cd407971c0fb3659b573beb4365f90d1da591f43))
+* Replace inline banners with toast notifications ([#210](https://github.com/mcsdevv/while/issues/210)) ([3fcb667](https://github.com/mcsdevv/while/commit/3fcb667b8484a7dd2418d6376ffdb31bad77082e))
+
 # [1.3.0](https://github.com/mcsdevv/while/compare/v1.2.1...v1.3.0) (2026-01-31)
 
 
