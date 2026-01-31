@@ -1,7 +1,8 @@
 "use client";
 
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "@while/ui";
-import { AlertTriangle, Calendar, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock, XCircle } from "lucide-react";
+import Image from "next/image";
 
 interface GoogleWebhookDebugStatus {
   configured: boolean;
@@ -81,7 +82,13 @@ export function GoogleWebhookCard({ status }: GoogleWebhookCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-blue-500" />
+            <Image
+              src="/icons/google-calendar.png"
+              alt="Google Calendar"
+              width={20}
+              height={20}
+              className="h-5 w-5"
+            />
             <CardTitle className="text-base">Google Calendar</CardTitle>
           </div>
           <StatusBadge status={status} />
