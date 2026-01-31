@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/mcsdevv/while/compare/v1.4.2...v1.4.3) (2026-01-31)
+
+
+### Bug Fixes
+
+* **build:** Use local package.json for version in next.config ([#218](https://github.com/mcsdevv/while/issues/218)) ([c0d27e0](https://github.com/mcsdevv/while/commit/c0d27e0a9fd4c96ed6d7baf69e9b5d796bc61a99))
+
 ## [1.4.2](https://github.com/mcsdevv/while/compare/v1.4.1...v1.4.2) (2026-01-31)
 
 
