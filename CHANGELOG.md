@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/mcsdevv/while/compare/v1.0.3...v1.0.4) (2026-01-31)
+
+
+### Bug Fixes
+
+* Sync OAuth toggle state immediately without page refresh ([#196](https://github.com/mcsdevv/while/issues/196)) ([4daaec9](https://github.com/mcsdevv/while/commit/4daaec998bffc45aa6da3ee2f846a3a169c44f20))
+
 ## [1.0.3](https://github.com/mcsdevv/while/compare/v1.0.2...v1.0.3) (2026-01-31)
 
 
