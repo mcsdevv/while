@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/mcsdevv/while/compare/v1.0.6...v1.0.7) (2026-01-31)
+
+
+### Bug Fixes
+
+* Show full dropdown text instead of shortened value ([#200](https://github.com/mcsdevv/while/issues/200)) ([9d868ad](https://github.com/mcsdevv/while/commit/9d868ad45a5a37b0e7a9d4b377b6c7499fd21b80))
+
 ## [1.0.6](https://github.com/mcsdevv/while/compare/v1.0.5...v1.0.6) (2026-01-31)
 
 
