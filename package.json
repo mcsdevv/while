@@ -12,15 +12,7 @@
   "bugs": {
     "url": "https://github.com/mcsdevv/while/issues"
   },
-  "keywords": [
-    "notion",
-    "google-calendar",
-    "sync",
-    "automation",
-    "nextjs",
-    "vercel",
-    "turborepo"
-  ],
+  "keywords": ["notion", "google-calendar", "sync", "automation", "nextjs", "vercel", "turborepo"],
   "scripts": {
     "build": "turbo build",
     "build:standalone": "tsx scripts/build-standalone.ts",
@@ -44,11 +36,7 @@
     "typescript": "^5.9.3"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "esbuild",
-      "sharp"
-    ]
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "sharp"]
   },
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
