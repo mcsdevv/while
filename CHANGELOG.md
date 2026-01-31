@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/mcsdevv/while/compare/v1.1.0...v1.1.1) (2026-01-31)
+
+
+### Bug Fixes
+
+* Display dashboard version dynamically from package.json ([#204](https://github.com/mcsdevv/while/issues/204)) ([2a0e95e](https://github.com/mcsdevv/while/commit/2a0e95ed0ef8bcc4a8e5918dbedbe386d21eaf1d))
+
 # [1.1.0](https://github.com/mcsdevv/while/compare/v1.0.7...v1.1.0) (2026-01-31)
 
 
