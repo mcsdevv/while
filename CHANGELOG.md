@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/mcsdevv/while/compare/v1.0.5...v1.0.6) (2026-01-31)
+
+
+### Bug Fixes
+
+* Remove duplicate header in field mapping page ([#198](https://github.com/mcsdevv/while/issues/198)) ([ec3126c](https://github.com/mcsdevv/while/commit/ec3126c03dec42b05fa1264e4d3606e3becd973a))
+
 ## [1.0.5](https://github.com/mcsdevv/while/compare/v1.0.4...v1.0.5) (2026-01-31)
 
 
