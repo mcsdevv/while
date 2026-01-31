@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/mcsdevv/while/compare/v1.4.0...v1.4.1) (2026-01-31)
+
+
+### Bug Fixes
+
+* Wrap DropdownMenuLabel in DropdownMenuGroup to provide MenuGroupRootContext ([#214](https://github.com/mcsdevv/while/issues/214)) ([39806bc](https://github.com/mcsdevv/while/commit/39806bc12fa88001c814382f95d7ade34146fa39))
+
 # [1.4.0](https://github.com/mcsdevv/while/compare/v1.3.0...v1.4.0) (2026-01-31)
 
 
