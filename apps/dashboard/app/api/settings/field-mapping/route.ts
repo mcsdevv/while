@@ -75,6 +75,7 @@ export async function GET() {
 
     return NextResponse.json({
       fieldMapping,
+      mapping: fieldMapping,
       notionProperties,
       defaults: DEFAULT_EXTENDED_FIELD_MAPPING,
     });
@@ -108,9 +109,30 @@ export async function PUT(request: NextRequest) {
     }
 
     // Validate required fields have property names
-    if (!fieldMapping.title.notionPropertyName || !fieldMapping.date.notionPropertyName) {
+    if (
+      !fieldMapping.title.notionPropertyName.trim() ||
+      !fieldMapping.date.notionPropertyName.trim()
+    ) {
       return NextResponse.json(
         { error: "Title and Date fields require Notion property names" },
+        { status: 400 },
+      );
+    }
+
+    // Validate enabled fields have property names
+    const missingEnabledFields = Object.entries(fieldMapping)
+      .filter(([, config]) => {
+        const fieldConfig = config as FieldConfig;
+        const isEnabled = fieldConfig.required || fieldConfig.enabled;
+        return isEnabled && !fieldConfig.notionPropertyName.trim();
+      })
+      .map(([, config]) => (config as FieldConfig).displayLabel);
+
+    if (missingEnabledFields.length > 0) {
+      return NextResponse.json(
+        {
+          error: `Enabled fields require Notion property names: ${missingEnabledFields.join(", ")}`,
+        },
         { status: 400 },
       );
     }
@@ -120,9 +142,9 @@ export async function PUT(request: NextRequest) {
     for (const [, config] of Object.entries(fieldMapping)) {
       const fieldConfig = config as FieldConfig;
       const isEnabled = fieldConfig.enabled || fieldConfig.required;
-      if (!isEnabled || !fieldConfig.notionPropertyName) continue;
+      const propName = fieldConfig.notionPropertyName.trim();
+      if (!isEnabled || !propName) continue;
 
-      const propName = fieldConfig.notionPropertyName;
       const existing = propertyUsage.get(propName) || [];
       propertyUsage.set(propName, [...existing, fieldConfig.displayLabel]);
     }
@@ -138,13 +160,12 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    await updateSettings({
-      fieldMapping: fieldMapping as unknown as import("@/lib/settings/types").FieldMapping,
-    });
+    await updateSettings({ fieldMapping });
 
     return NextResponse.json({
       success: true,
       fieldMapping,
+      mapping: fieldMapping,
     });
   } catch (error) {
     console.error("Error updating field mapping:", error);
