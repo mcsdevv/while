@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/mcsdevv/while/compare/v1.4.1...v1.4.2) (2026-01-31)
+
+
+### Bug Fixes
+
+* **setup:** Auto-run tests on step 6 and always show continue button ([#216](https://github.com/mcsdevv/while/issues/216)) ([ccf22df](https://github.com/mcsdevv/while/commit/ccf22dfee61e4dfb3d4b23bf76a87ea20156bd5d))
+
 ## [1.4.1](https://github.com/mcsdevv/while/compare/v1.4.0...v1.4.1) (2026-01-31)
 
 
