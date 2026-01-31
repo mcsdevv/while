@@ -59,31 +59,41 @@ Never create bun.lock, bun.lockb, package-lock.json, or yarn.lock files.
 - [ ] No failed network requests
 - [ ] Interactive elements function correctly
 
-## Web Interface Guidelines
+## UI Development Guidelines
 
-**All UI changes must be reviewed against Web Interface Guidelines before committing.**
+**All UI work must be reviewed against both guideline skills before committing.**
 
-After making UI changes, run:
+For ANY UI changes, run both:
 ```
 /web-interface-guidelines
+/vercel-react-best-practices
 ```
 
-This audits code against 100+ rules covering:
+### /web-interface-guidelines
+Audits code against 100+ rules covering:
 - Accessibility
 - Forms
 - Animations
 - Performance
 - Design patterns
 
+### /vercel-react-best-practices
+React and Next.js optimization guidelines covering:
+- Component performance patterns
+- Data fetching strategies
+- Bundle optimization
+- Server/client component decisions
+
 ### When to Run
 
+- Before starting any UI implementation (for guidance)
 - After any component/styling changes
 - After adding new UI features
 - Before committing UI-related code
 
 ### Integration with Visual Validation
 
-Run `/web-interface-guidelines` **after** visual validation confirms the UI looks correct. This ensures both visual correctness and guideline compliance.
+Run both skills **after** visual validation confirms the UI looks correct. This ensures visual correctness, guideline compliance, and optimal React patterns.
 
 ## Semantic Versioning
 
