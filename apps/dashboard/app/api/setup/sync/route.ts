@@ -163,7 +163,14 @@ export async function GET(request: NextRequest) {
     }
 
     const status = await getSyncStatus();
-    return NextResponse.json(status);
+
+    // Include whether external webhook URL is available (for localhost setup guidance)
+    const externalWebhookUrl = hasValidExternalWebhookUrl() ? getWebhookBaseUrl() : null;
+
+    return NextResponse.json({
+      ...status,
+      externalWebhookUrl,
+    });
   } catch (error) {
     console.error("Error fetching sync status:", error);
     return NextResponse.json(

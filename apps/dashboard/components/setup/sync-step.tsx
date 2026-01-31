@@ -35,6 +35,8 @@ interface SyncStatusResponse {
     state?: string;
     subscriptionId?: string;
   };
+  /** External webhook URL if configured (WEBHOOK_URL or VERCEL_PROJECT_PRODUCTION_URL) */
+  externalWebhookUrl?: string | null;
 }
 
 interface SyncSetupResponse {
@@ -68,6 +70,7 @@ function formatExpiration(expiresAt?: string, expiresInHours?: number): string |
 
 export function SyncStep({ onBack, onNext }: SyncStepProps) {
   const [isLocalhost, setIsLocalhost] = useState(false);
+  const [externalWebhookUrl, setExternalWebhookUrl] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +80,9 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
   useEffect(() => {
     setIsLocalhost(typeof window !== "undefined" && LOCAL_HOSTNAMES.has(window.location.hostname));
   }, []);
+
+  // Can setup webhooks if not localhost, OR localhost with external URL configured
+  const canSetupWebhooks = !isLocalhost || !!externalWebhookUrl;
 
   const loadStatus = useCallback(async () => {
     setLoadingStatus(true);
@@ -89,6 +95,9 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
         throw new Error("Failed to check sync status");
       }
       const data = (await response.json()) as SyncStatusResponse;
+
+      // Track if external webhook URL is available for localhost setup
+      setExternalWebhookUrl(data.externalWebhookUrl ?? null);
 
       if (data.google.active) {
         setGoogleStatus(
@@ -239,21 +248,53 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
         description="Enable real-time synchronization between your services."
       />
 
-      {isLocalhost && (
+      {isLocalhost && !externalWebhookUrl && (
         <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-400">
           <div className="flex items-start gap-2">
             <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
             <div className="space-y-1">
               <p className="font-medium text-amber-700 dark:text-amber-400">
-                Webhooks won&apos;t work on localhost
+                Webhooks require a production URL
               </p>
               <p className="text-amber-700/90 dark:text-amber-300">
-                Deploy to a public URL before enabling real-time sync. You can skip this step for
-                now and return after deployment.
+                To set up webhooks from localhost, configure your production URL:
               </p>
-              <p className="text-amber-700/90 dark:text-amber-300">
-                Alternatively, a tunneling service (ngrok, cloudflared, etc.) can expose your local
-                server to the internet. No implementation guidance is provided.
+              <ol className="list-decimal list-inside space-y-1 text-amber-700/90 dark:text-amber-300">
+                <li>
+                  In Vercel Project Settings → Environment Variables, enable{" "}
+                  <span className="font-medium">&quot;Automatically expose System Environment Variables&quot;</span>
+                </li>
+                <li>
+                  Run <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">vercel env pull</code> to
+                  sync environment variables locally
+                </li>
+                <li>Restart your dev server</li>
+              </ol>
+              <p className="text-amber-700/90 dark:text-amber-300 pt-1">
+                Or set <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">WEBHOOK_URL</code> in{" "}
+                <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">.env.local</code> to your production URL.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isLocalhost && externalWebhookUrl && (
+        <div className="rounded-lg border border-blue-500/40 bg-blue-500/10 p-4 text-sm text-blue-700 dark:text-blue-400">
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-600" aria-hidden="true" />
+            <div className="space-y-1">
+              <p className="font-medium text-blue-700 dark:text-blue-400">
+                Production URL configured
+              </p>
+              <p className="text-blue-700/90 dark:text-blue-300">
+                Webhooks will be registered to{" "}
+                <code className="px-1 py-0.5 bg-blue-500/20 rounded font-mono text-xs break-all">
+                  {externalWebhookUrl}
+                </code>
+              </p>
+              <p className="text-blue-700/90 dark:text-blue-300">
+                Your production deployment will receive webhook events. Local changes are synced when you deploy.
               </p>
             </div>
           </div>
@@ -351,17 +392,17 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
           Back
         </Button>
         <div className="flex gap-3">
-          {isLocalhost && (
+          {!canSetupWebhooks && (
             <Button variant="outline" onClick={onNext}>
               Skip for now
             </Button>
           )}
-          {!isLocalhost && (
+          {canSetupWebhooks && (
             <Button variant="outline" onClick={handleEnableSync} disabled={syncing}>
               {syncing ? "Enabling..." : "Enable Real-Time Sync"}
             </Button>
           )}
-          <Button onClick={onNext} disabled={isLocalhost || !canContinue}>
+          <Button onClick={onNext} disabled={!canSetupWebhooks || !canContinue}>
             Continue
           </Button>
         </div>
