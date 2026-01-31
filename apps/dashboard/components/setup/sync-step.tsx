@@ -276,22 +276,9 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
                 Webhooks require a production URL
               </p>
               <p className="text-amber-700/90 dark:text-amber-300">
-                To set up webhooks from localhost, configure your production URL:
-              </p>
-              <ol className="list-decimal list-inside space-y-1 text-amber-700/90 dark:text-amber-300">
-                <li>
-                  In Vercel Project Settings → Environment Variables, enable{" "}
-                  <span className="font-medium">&quot;Automatically expose System Environment Variables&quot;</span>
-                </li>
-                <li>
-                  Run <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">vercel env pull</code> to
-                  sync environment variables locally
-                </li>
-                <li>Restart your dev server</li>
-              </ol>
-              <p className="text-amber-700/90 dark:text-amber-300 pt-1">
-                Or set <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">WEBHOOK_URL</code> in{" "}
-                <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">.env.local</code> to your production URL.
+                Run{" "}
+                <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">vercel env pull</code>{" "}
+                to sync your production URL, then restart your dev server.
               </p>
             </div>
           </div>
