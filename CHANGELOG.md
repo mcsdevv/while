@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/mcsdevv/while/compare/v1.2.1...v1.3.0) (2026-01-31)
+
+
+### Features
+
+* Add unsaved changes warning to setup wizard mapping step ([#209](https://github.com/mcsdevv/while/issues/209)) ([65ddb73](https://github.com/mcsdevv/while/commit/65ddb73bd046e3f4ada3a7ba3f294e60298a0a80))
+
 ## [1.2.1](https://github.com/mcsdevv/while/compare/v1.2.0...v1.2.1) (2026-01-31)
 
 
