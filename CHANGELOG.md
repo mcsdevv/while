@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/mcsdevv/while/compare/v1.0.0...v1.0.1) (2026-01-31)
+
+
+### Bug Fixes
+
+* Add URL validation for Notion webhook setup ([#192](https://github.com/mcsdevv/while/issues/192)) ([0b4ac9f](https://github.com/mcsdevv/while/commit/0b4ac9f2c6cfcbce89d09d1ad54c2d217ab4f6b3))
+
 # 1.0.0 (2026-01-31)
 
 
