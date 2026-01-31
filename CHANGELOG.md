@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/mcsdevv/while/compare/v1.0.7...v1.1.0) (2026-01-31)
+
+
+### Features
+
+* Add copy-to-clipboard for database name and ID ([#203](https://github.com/mcsdevv/while/issues/203)) ([94392ac](https://github.com/mcsdevv/while/commit/94392ac5236d8c81106b682743f5b76ea74607ae))
+
 ## [1.0.7](https://github.com/mcsdevv/while/compare/v1.0.6...v1.0.7) (2026-01-31)
 
 
