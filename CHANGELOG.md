@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/mcsdevv/while/compare/v1.0.4...v1.0.5) (2026-01-31)
+
+
+### Bug Fixes
+
+* Align reconnect buttons vertically in settings cards ([#197](https://github.com/mcsdevv/while/issues/197)) ([90ceb3b](https://github.com/mcsdevv/while/commit/90ceb3bc451434e4a4828797e95a30c196a2dba5))
+
 ## [1.0.4](https://github.com/mcsdevv/while/compare/v1.0.3...v1.0.4) (2026-01-31)
 
 
