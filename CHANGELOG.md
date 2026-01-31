@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/mcsdevv/while/compare/v1.0.1...v1.0.2) (2026-01-31)
+
+
+### Bug Fixes
+
+* Add error handling for step 4 continue button ([#193](https://github.com/mcsdevv/while/issues/193)) ([2137c6c](https://github.com/mcsdevv/while/commit/2137c6cf3db39cf5a03e2cdd388a07747e3c2b4a))
+
 ## [1.0.1](https://github.com/mcsdevv/while/compare/v1.0.0...v1.0.1) (2026-01-31)
 
 
