@@ -115,7 +115,7 @@ function rewriteImports(): void {
   let totalReplacements = 0;
 
   for (const file of files) {
-    let content = readFileSync(file, "utf-8");
+    const content = readFileSync(file, "utf-8");
     let modified = false;
 
     // Replace import statements: from "@while/ui" -> from "@/shared/ui"
