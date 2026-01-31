@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/mcsdevv/while/compare/v1.1.1...v1.2.0) (2026-01-31)
+
+
+### Features
+
+* **release:** sync web and dashboard versions on release ([#205](https://github.com/mcsdevv/while/issues/205)) ([4e08df3](https://github.com/mcsdevv/while/commit/4e08df311cc5274cf84118e94582fbf4b6b22999))
+
 ## [1.1.1](https://github.com/mcsdevv/while/compare/v1.1.0...v1.1.1) (2026-01-31)
 
 
