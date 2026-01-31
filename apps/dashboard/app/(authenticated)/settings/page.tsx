@@ -16,6 +16,7 @@ interface Settings {
     calendarId: string | null;
     calendarName: string | null;
     connectedAt: string | null;
+    oauthAppPublished?: boolean;
   } | null;
   notion: {
     databaseId: string | null;
@@ -87,7 +88,7 @@ export default function SettingsPage() {
 
       {/* Service Settings */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <GoogleSettings settings={settings?.google ?? null} />
+        <GoogleSettings settings={settings?.google ?? null} onSettingsChange={fetchSettings} />
         <NotionSettings settings={settings?.notion ?? null} />
       </div>
 
