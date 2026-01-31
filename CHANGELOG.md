@@ -1,0 +1,123 @@
+# 1.0.0 (2026-01-31)
+
+
+### Bug Fixes
+
+* add favicon for Conductor project icon ([#20](https://github.com/mcsdevv/while/issues/20)) ([7fe321c](https://github.com/mcsdevv/while/commit/7fe321cb846cabdf64a4ebc818771fce005778ea))
+* Add geist dependency to apps for Turbopack build ([#131](https://github.com/mcsdevv/while/issues/131)) ([9f8718d](https://github.com/mcsdevv/while/commit/9f8718da2229ba43f4a4577f0f7c5916d534155c))
+* Add geist dependency to apps/web for Turbopack build ([#126](https://github.com/mcsdevv/while/issues/126)) ([5ffcc44](https://github.com/mcsdevv/while/commit/5ffcc44c22b9da1fc5e269335efca4fe674e2856))
+* Add missing CopyValue import in google-step ([#137](https://github.com/mcsdevv/while/issues/137)) ([cb8bc83](https://github.com/mcsdevv/while/commit/cb8bc83848cf540dbd500ad72e6d4ad68d38de7a))
+* Add pointer cursor to all clickable elements ([#161](https://github.com/mcsdevv/while/issues/161)) ([0153077](https://github.com/mcsdevv/while/commit/015307700b55c00367e87f146aa1fceaa640e75a))
+* add underlines to links for WCAG accessibility ([#54](https://github.com/mcsdevv/while/issues/54)) ([58ceb07](https://github.com/mcsdevv/while/commit/58ceb07a93d00d4b489bdcc61a5120cb372c9f98))
+* Anchor wizard navigation to viewport top ([#139](https://github.com/mcsdevv/while/issues/139)) ([860e174](https://github.com/mcsdevv/while/commit/860e174194b8fd3f3e8807ec50860831f6da0654))
+* Approve pnpm build scripts for @biomejs/biome and sharp ([#8](https://github.com/mcsdevv/while/issues/8)) ([c27b745](https://github.com/mcsdevv/while/commit/c27b7453d8890b96336d1c8c8e297e6c4f8d75bf))
+* **auth:** skip auth check when NEXTAUTH_SECRET not configured ([#23](https://github.com/mcsdevv/while/issues/23)) ([2ee6b27](https://github.com/mcsdevv/while/commit/2ee6b27973753730df98570288f74d0b27ee14e3))
+* **build:** allow esbuild to run build scripts ([#16](https://github.com/mcsdevv/while/issues/16)) ([de314ff](https://github.com/mcsdevv/while/commit/de314ffa0ad946611dfba02ebbb842188cfb93af))
+* correct footer and landing page links ([#33](https://github.com/mcsdevv/while/issues/33)) ([1b408d3](https://github.com/mcsdevv/while/commit/1b408d3a337d1af76892fbd2bbf0f56f357ec4cc))
+* deploy web app instead of dashboard to vercel root ([#30](https://github.com/mcsdevv/while/issues/30)) ([2ba1b04](https://github.com/mcsdevv/while/commit/2ba1b04dfaea29d3cb5bba7df054965975b415df))
+* expand CI detection in git hooks setup script ([#17](https://github.com/mcsdevv/while/issues/17)) ([188813a](https://github.com/mcsdevv/while/commit/188813a465d5be8495a213d6996faaef08947894))
+* Fetch databases when Notion token is configured but no database selected ([#160](https://github.com/mcsdevv/while/issues/160)) ([c91e4d0](https://github.com/mcsdevv/while/commit/c91e4d0224c7a08f1b53b34f87dcd20f2414b19e))
+* Fire confetti when Test Connections succeeds ([#176](https://github.com/mcsdevv/while/issues/176)) ([a6a73f2](https://github.com/mcsdevv/while/commit/a6a73f2923fe02cf88168aeb6c1108dcc8575add))
+* Fix theme selection by connecting to next-themes context ([#164](https://github.com/mcsdevv/while/issues/164)) ([0547acc](https://github.com/mcsdevv/while/commit/0547acc06d46dd04bea3fed5ccc247963599335b))
+* **hooks:** support git worktrees and improve emoji spacing ([#24](https://github.com/mcsdevv/while/issues/24)) ([a10f962](https://github.com/mcsdevv/while/commit/a10f9620f2f4909e4e27f2c3309c62d527fb2934))
+* Improve footer layout and accessibility ([#190](https://github.com/mcsdevv/while/issues/190)) ([29f89c1](https://github.com/mcsdevv/while/commit/29f89c1538918763fd05af82d3b56879af432d2e))
+* Improve web interface guidelines compliance (47 fixes) ([#142](https://github.com/mcsdevv/while/issues/142)) ([387aa34](https://github.com/mcsdevv/while/commit/387aa34b5637c8b0e5f449825c0821d3c60ed4af))
+* Include partial databases in Notion database list ([#159](https://github.com/mcsdevv/while/issues/159)) ([518cd09](https://github.com/mcsdevv/while/commit/518cd09aa67c5a84727502bc387d00a62832fd8c))
+* Link directly to Google OAuth client creation page ([#146](https://github.com/mcsdevv/while/issues/146)) ([ec9b789](https://github.com/mcsdevv/while/commit/ec9b789e75f1a9f19955100621c6796324a17d9f))
+* Prevent layout shift in Google Calendar connection step ([#184](https://github.com/mcsdevv/while/issues/184)) ([b5b8a2b](https://github.com/mcsdevv/while/commit/b5b8a2b8352937d952acfcdacdc1edd6779b75a3))
+* **redis:** handle missing env vars gracefully ([#21](https://github.com/mcsdevv/while/issues/21)) ([3d3c4d3](https://github.com/mcsdevv/while/commit/3d3c4d3cac9963b2e45e6b0bb1a1a26ff98f9f15))
+* Remove AUTHORIZED_DOMAINS regression from SETUP_TOKEN removal ([#122](https://github.com/mcsdevv/while/issues/122)) ([566f5a7](https://github.com/mcsdevv/while/commit/566f5a745fa1b60120b420970069fd6d68a24dca))
+* Remove auto-advance logic in setup wizard ([#133](https://github.com/mcsdevv/while/issues/133)) ([9fd859a](https://github.com/mcsdevv/while/commit/9fd859aabff3eb2d303516a4db1964ee5f810b61))
+* Remove bun.lock and enforce pnpm as exclusive package manager ([#113](https://github.com/mcsdevv/while/issues/113)) ([6c2e741](https://github.com/mcsdevv/while/commit/6c2e741b63e86e14447904b6841bcc8018b5aac5))
+* Remove duplicate CopyValue import ([#136](https://github.com/mcsdevv/while/issues/136)) ([08e06dc](https://github.com/mcsdevv/while/commit/08e06dcc6507a2932d6409df9710a6cb0bb7495a))
+* Remove duplicate pnpm version specification in CI ([#124](https://github.com/mcsdevv/while/issues/124)) ([03619d3](https://github.com/mcsdevv/while/commit/03619d3be237bad6accd6f5055716305415ba74e))
+* remove duplicate section titles and reduce sidebar left padding ([#43](https://github.com/mcsdevv/while/issues/43)) ([6b7f8a9](https://github.com/mcsdevv/while/commit/6b7f8a95797273117851c0205dac2791193e16f2))
+* Remove insecure SETUP_TOKEN feature ([#121](https://github.com/mcsdevv/while/issues/121)) ([1a57dc1](https://github.com/mcsdevv/while/commit/1a57dc1487329719210d11a20934350d8e47f71f))
+* remove left gap in docs sidebar ([#57](https://github.com/mcsdevv/while/issues/57)) ([f8fa894](https://github.com/mcsdevv/while/commit/f8fa894da824f033fb6425aa8af76decd24479cd))
+* Remove step validation redirect in wizard ([#147](https://github.com/mcsdevv/while/issues/147)) ([2ee084d](https://github.com/mcsdevv/while/commit/2ee084d7553b957878653ef81c966806572e8bfb))
+* rename package from notion-gcal-sync to gcal-notion-sync ([#11](https://github.com/mcsdevv/while/issues/11)) ([70ed031](https://github.com/mcsdevv/while/commit/70ed031ed9b189646b52d4c4b0bb0780d073c7da))
+* reorder marketing steps to show credentials first ([#96](https://github.com/mcsdevv/while/issues/96)) ([2457588](https://github.com/mcsdevv/while/commit/2457588c774bab76fc8cf399d6a65aeb10038f27))
+* Reorder Vercel env vars to match docs ([#128](https://github.com/mcsdevv/while/issues/128)) ([09dcdb6](https://github.com/mcsdevv/while/commit/09dcdb620da715aa7db59211ff3fa8408e87922d))
+* Resolve dropdown text overlap in Notion database selector ([#189](https://github.com/mcsdevv/while/issues/189)) ([6edb8fa](https://github.com/mcsdevv/while/commit/6edb8fab88764e2cf452dd6814fdae12a2663025))
+* suppress prepare script output in CI environments ([#14](https://github.com/mcsdevv/while/issues/14)) ([00b3ce5](https://github.com/mcsdevv/while/commit/00b3ce52059742f012c34aea45db89ff5d34c912))
+* suppress Upstash Redis warnings during build ([#13](https://github.com/mcsdevv/while/issues/13)) ([ce3d24c](https://github.com/mcsdevv/while/commit/ce3d24ca70bec34ae20baf23ac517f7eae508961))
+* sync pnpm lockfile with package.json ([#7](https://github.com/mcsdevv/while/issues/7)) ([5b18237](https://github.com/mcsdevv/while/commit/5b18237310365572480d419a7e2a1cbb5a3514d3))
+* Trigger confetti on every successful test connection ([#172](https://github.com/mcsdevv/while/issues/172)) ([102fe89](https://github.com/mcsdevv/while/commit/102fe8954331c9761498ecad742a7469de048a22))
+* Update Upstash product name from 'KV' to 'for Redis' ([#153](https://github.com/mcsdevv/while/issues/153)) ([e04e745](https://github.com/mcsdevv/while/commit/e04e745be3f62b988d22b4b1956751e3002c5dd3))
+* Use validated notionToken for apiToken assignment ([#155](https://github.com/mcsdevv/while/issues/155)) ([6132048](https://github.com/mcsdevv/while/commit/6132048135a00de7b8d46535458eec52750358f4))
+
+
+### chore
+
+* Remove CLI package ([#114](https://github.com/mcsdevv/while/issues/114)) ([e8d9dac](https://github.com/mcsdevv/while/commit/e8d9dac0b9ab4ba1bf338aa647cbf99dc994582d))
+
+
+### Features
+
+* Add 1-click generate button for secret env vars ([#111](https://github.com/mcsdevv/while/issues/111)) ([c5e81f9](https://github.com/mcsdevv/while/commit/c5e81f928aa5bb0b76793d57546ae3b18eb6d9f8))
+* Add automated semantic versioning on PR merge ([#191](https://github.com/mcsdevv/while/issues/191)) ([e2647a9](https://github.com/mcsdevv/while/commit/e2647a9ba7cc7d12ae69a8564c83e2693563d702))
+* add backfill service for new event fields ([#92](https://github.com/mcsdevv/while/issues/92)) ([711a25f](https://github.com/mcsdevv/while/commit/711a25fe85a33eb4daaf015995899bec978fd12e))
+* Add branded icons to field mapping UI ([#162](https://github.com/mcsdevv/while/issues/162)) ([4bc9c30](https://github.com/mcsdevv/while/commit/4bc9c309f14105bc367799eeb5d3c023d8e17d0e))
+* Add clear all button to env var tables and restore NEXTAUTH_SECRET how to get ([#112](https://github.com/mcsdevv/while/issues/112)) ([099a9fe](https://github.com/mcsdevv/while/commit/099a9fed54aaad028b5400514a40bd530ed94926))
+* Add ConnectionStatusCard component for consistent setup step styling ([#179](https://github.com/mcsdevv/while/issues/179)) ([000f067](https://github.com/mcsdevv/while/commit/000f0677f054f4135d349c2bbdabbbc6ea733e78))
+* Add copy-to-clipboard for environment variable values ([#130](https://github.com/mcsdevv/while/issues/130)) ([87c360a](https://github.com/mcsdevv/while/commit/87c360a33a751e9df8d5b766e41e1d0b4d2fca1e))
+* add custom 404 and 500 error pages ([#22](https://github.com/mcsdevv/while/issues/22)) ([52ac6db](https://github.com/mcsdevv/while/commit/52ac6dbaa017a2430c43e3b643a1138ffd0a0d6f))
+* add custom 404 and 500 error pages ([#41](https://github.com/mcsdevv/while/issues/41)) ([080f561](https://github.com/mcsdevv/while/commit/080f56189b0b9ceaa44d982ab9d1c98f63f3a906))
+* Add dev scripts for web and dashboard only ([#145](https://github.com/mcsdevv/while/issues/145)) ([f81b66a](https://github.com/mcsdevv/while/commit/f81b66a4527d678d81178f9c9dea1efb08581f0c))
+* add extended event fields to Event schema ([#85](https://github.com/mcsdevv/while/issues/85)) ([75e6a3d](https://github.com/mcsdevv/while/commit/75e6a3d275edd08a214abb16962cd93b13a1d1fa))
+* add favicon.png alongside favicon.svg ([#51](https://github.com/mcsdevv/while/issues/51)) ([bd0532d](https://github.com/mcsdevv/while/commit/bd0532dd41cea5f6903e3e1f681c9c974766fa27))
+* add field mapping customization foundation types and migration ([#84](https://github.com/mcsdevv/while/issues/84)) ([eb1e5fa](https://github.com/mcsdevv/while/commit/eb1e5fa2db1c1f6b79aa16953a377b8f3d7d4229))
+* Add GitHub issue templates for bug reports and feature requests ([#32](https://github.com/mcsdevv/while/issues/32)) ([b400469](https://github.com/mcsdevv/while/commit/b40046907ffb970a8a434ff0b9182bd7727c60d8))
+* add icons to web app and root public folder ([#50](https://github.com/mcsdevv/while/issues/50)) ([b3522e2](https://github.com/mcsdevv/while/commit/b3522e2d9e7cdd2d5e9ff5c56ce745cce26ed52b))
+* Add incremental port fallback for dev servers ([#163](https://github.com/mcsdevv/while/issues/163)) ([5103104](https://github.com/mcsdevv/while/commit/51031043c18c1a5f4113547a4cec3f61ca29eae3))
+* Add OAuth app published status detection ([#158](https://github.com/mcsdevv/while/issues/158)) ([074c80f](https://github.com/mcsdevv/while/commit/074c80f48747c4226c5350696fed3b9f2b604c9f))
+* Add option to change Notion database in setup step 3 ([#181](https://github.com/mcsdevv/while/issues/181)) ([45ab3ee](https://github.com/mcsdevv/while/commit/45ab3eeb3ba1aa11be8fe9383a55551bf0b76b6c))
+* Add redirect_uri setup guidance to Google OAuth step ([#132](https://github.com/mcsdevv/while/issues/132)) ([42afe65](https://github.com/mcsdevv/while/commit/42afe659af459156687f0e3962497c102149f806))
+* add search API route for CMD K docs search ([#62](https://github.com/mcsdevv/while/issues/62)) ([448727d](https://github.com/mcsdevv/while/commit/448727d5ef4b802c3cf005002eff86f8daa20f2e))
+* Add setup wizard extended field mapping with toggles ([#91](https://github.com/mcsdevv/while/issues/91)) ([fab94e3](https://github.com/mcsdevv/while/commit/fab94e37cae46520763d7d6d456368f757b66cdb))
+* add theme toggle to footer ([#72](https://github.com/mcsdevv/while/issues/72)) ([5f305f5](https://github.com/mcsdevv/while/commit/5f305f595fd0a8fc5661f85cac5234710ce684d5))
+* add Vercel Speed Insights and Web Analytics ([#52](https://github.com/mcsdevv/while/issues/52)) ([9691065](https://github.com/mcsdevv/while/commit/969106531230f3702374512edf4a08ed9b228a7d))
+* Allow navigation to any setup wizard step at any time ([#187](https://github.com/mcsdevv/while/issues/187)) ([dc50eb9](https://github.com/mcsdevv/while/commit/dc50eb95f318dbfec9bf305723c96aaf6967a472))
+* Allow renaming Notion title field in field mapping ([#166](https://github.com/mcsdevv/while/issues/166)) ([893fd0d](https://github.com/mcsdevv/while/commit/893fd0dea828dabd3d6772cd811a9ad9b1c4abec))
+* Allow revisiting setup wizard after completion ([#167](https://github.com/mcsdevv/while/issues/167)) ([07fcea7](https://github.com/mcsdevv/while/commit/07fcea77589df9280885d26aa0e31f3e0a5e0ca9))
+* Convert to Turborepo monorepo with landing page and docs ([#26](https://github.com/mcsdevv/while/issues/26)) ([811c971](https://github.com/mcsdevv/while/commit/811c9716c58765d53eebe626a5e00b33bf830821))
+* Customize NextAuth error pages to match app styling ([#151](https://github.com/mcsdevv/while/issues/151)) ([c59e1cc](https://github.com/mcsdevv/while/commit/c59e1cc274014b421f4fcd68c69589b489aaa875))
+* **dashboard:** Implement Apple Liquid Glass design ([#134](https://github.com/mcsdevv/while/issues/134)) ([af25b2a](https://github.com/mcsdevv/while/commit/af25b2a681c9c1b9c89a8a45747220687285f95c))
+* **docs:** migrate from Mintlify to Fumadocs in web app ([#29](https://github.com/mcsdevv/while/issues/29)) ([c433e5d](https://github.com/mcsdevv/while/commit/c433e5d60afeacd1464047c4e42d1ce673f68f64))
+* **docs:** Open deploy buttons in new tab ([#129](https://github.com/mcsdevv/while/issues/129)) ([90c7aa1](https://github.com/mcsdevv/while/commit/90c7aa1168fa11fded6126ec8a329e1cd153c218))
+* Enable webhook status checks on localhost with tunneling note ([#185](https://github.com/mcsdevv/while/issues/185)) ([8c30a84](https://github.com/mcsdevv/while/commit/8c30a843c96d69a0308373c0dfd6045914875c12))
+* extract extended Google Calendar fields in gcalEventToEvent ([#87](https://github.com/mcsdevv/while/issues/87)) ([33eb70d](https://github.com/mcsdevv/while/commit/33eb70dc43825df77fbfc0ee5d2a1126932edf6b))
+* implement ExtendedFieldMapping in Notion client ([#90](https://github.com/mcsdevv/while/issues/90)) ([f40630d](https://github.com/mcsdevv/while/commit/f40630d66a6931a4680b57d44ac219b9fff20bbe))
+* improve OAuth setup UX with better error messages and token health monitoring ([#79](https://github.com/mcsdevv/while/issues/79)) ([362bc3a](https://github.com/mcsdevv/while/commit/362bc3af427073132043dede5324ee63b1e90291))
+* Improve step 5 design with confetti celebration and styled cards ([#168](https://github.com/mcsdevv/while/issues/168)) ([8ebeb58](https://github.com/mcsdevv/while/commit/8ebeb58104c020ed5c943cbdf73151b16b81d64b))
+* Initial Notion-Google Calendar sync implementation ([#1](https://github.com/mcsdevv/while/issues/1)) ([28f02cb](https://github.com/mcsdevv/while/commit/28f02cbcfa47083bfdc11b8d2ff1d24f969b131c))
+* **phase-6:** Add Polish & Testing (skeletons, mobile responsiveness, E2E tests) ([#6](https://github.com/mcsdevv/while/issues/6)) ([7846deb](https://github.com/mcsdevv/while/commit/7846deb68bff5c0aec3e7ef5386a15d70427406d))
+* Prefill Notion API token from environment variable ([#149](https://github.com/mcsdevv/while/issues/149)) ([25ff003](https://github.com/mcsdevv/while/commit/25ff003857bb2e8c813b8991b7d2effc9f89ca67))
+* **react:** optimize performance with Vercel React best practices ([#18](https://github.com/mcsdevv/while/issues/18)) ([204fbe0](https://github.com/mcsdevv/while/commit/204fbe0b8b98de8e59ad64f799d404b2ada112d0))
+* Replace react-confetti with canvas-confetti for full-screen effect ([#174](https://github.com/mcsdevv/while/issues/174)) ([700a568](https://github.com/mcsdevv/while/commit/700a5688b87ec847696e82ad382af82d4743a0be)), closes [#10b981](https://github.com/mcsdevv/while/issues/10b981) [#34d399](https://github.com/mcsdevv/while/issues/34d399) [#6ee7b7](https://github.com/mcsdevv/while/issues/6ee7b7) [#a7f3d0](https://github.com/mcsdevv/while/issues/a7f3d0)
+* Require NOTION_API_TOKEN at Vercel deployment ([#125](https://github.com/mcsdevv/while/issues/125)) ([41c1e3e](https://github.com/mcsdevv/while/commit/41c1e3e530de2e25090f07c7f90c28223cf46752))
+* **settings:** Add encrypted credentials storage with web UI configuration ([#2](https://github.com/mcsdevv/while/issues/2)) ([51cdcad](https://github.com/mcsdevv/while/commit/51cdcad073b19744e4edda0bcc9c71bf89c51588))
+* **settings:** Add persistent settings page with field mapping editor ([#4](https://github.com/mcsdevv/while/issues/4)) ([9bcab39](https://github.com/mcsdevv/while/commit/9bcab39ba70b95ef1c84b06502b5958ef339f38f))
+* **settings:** update field mapping storage layer to use ExtendedFieldMapping ([#88](https://github.com/mcsdevv/while/issues/88)) ([b964613](https://github.com/mcsdevv/while/commit/b9646135ba07315c4eb9adaa8cee0dc24d415657))
+* **setup:** Add URL-based step navigation to wizard ([#140](https://github.com/mcsdevv/while/issues/140)) ([dd5edb2](https://github.com/mcsdevv/while/commit/dd5edb25cebc36a6116ff97a460e98ed49ceaf9d))
+* **setup:** Implement interactive setup wizard for Google Calendar and Notion ([#3](https://github.com/mcsdevv/while/issues/3)) ([5e5f602](https://github.com/mcsdevv/while/commit/5e5f6020807bea0966e9ba6aad9ccee5e3e742bb))
+* streamline Notion setup with validator, template, and CLI ([#97](https://github.com/mcsdevv/while/issues/97)) ([59b102c](https://github.com/mcsdevv/while/commit/59b102c3ed41f63569dfdcc358e2ef2c786fb669))
+* **sync:** add backfill service for field mapping updates ([#89](https://github.com/mcsdevv/while/issues/89)) ([612424d](https://github.com/mcsdevv/while/commit/612424d84a92c161b942de16193efc93ed8fdc50))
+* **ui:** Add shared Footer component to @while/ui ([#138](https://github.com/mcsdevv/while/issues/138)) ([b3f98d1](https://github.com/mcsdevv/while/commit/b3f98d129f3ead35e68847a8b40031a0e3cda45b))
+* update app icons with venn diagram logo ([#53](https://github.com/mcsdevv/while/issues/53)) ([d46f4ef](https://github.com/mcsdevv/while/commit/d46f4ef460968d1b473ab1456c1ed539daf3b28d))
+* update docs FAQ to use landing page accordion style ([#61](https://github.com/mcsdevv/while/issues/61)) ([f837ce0](https://github.com/mcsdevv/while/commit/f837ce0e8651ea109fe3923275519ab1e6bb02b7))
+* update project icon to Venn overlap design ([#48](https://github.com/mcsdevv/while/issues/48)) ([96888c7](https://github.com/mcsdevv/while/commit/96888c7cda0055f7edaaa62f6dac9396dd593ab6))
+
+
+### Performance Improvements
+
+* optimize Vercel build by replacing googleapis with @googleapis/calendar ([#28](https://github.com/mcsdevv/while/issues/28)) ([90da91d](https://github.com/mcsdevv/while/commit/90da91d10b6cfd02ecdecdb6d822953e7016ec8c))
+* **test:** Parallelize E2E tests in CI ([#127](https://github.com/mcsdevv/while/issues/127)) ([537dcf1](https://github.com/mcsdevv/while/commit/537dcf1eba8af18b30467ab7c69daeb46a965827))
+
+
+### BREAKING CHANGES
+
+* The `denver` CLI is no longer available. Use the web
+setup wizard at /setup instead.
+
+Co-authored-by: Claude Opus 4.5 <noreply@anthropic.com>
