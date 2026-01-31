@@ -229,6 +229,25 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
     }
   };
 
+  const handleMarkNotionComplete = async () => {
+    setError(null);
+    try {
+      const response = await fetch("/api/setup/sync/verify-notion", { method: "POST" });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to mark Notion webhook as complete");
+      }
+
+      setNotionStatus({
+        status: "success",
+        message: "Notion webhook active",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to mark Notion webhook as complete");
+    }
+  };
+
   const canContinue = useMemo(() => {
     const googleReady = googleStatus.status === "success";
     const notionReady = notionStatus.status === "success" || notionStatus.status === "warning";
@@ -361,13 +380,23 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
       )}
 
       {showVerificationInstructions && (
-        <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-400 space-y-2">
-          <p className="font-medium">Finish Notion verification</p>
+        <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-400 space-y-3">
+          <p className="font-medium">Finish Notion webhook setup</p>
           <ol className="list-decimal list-inside space-y-1">
             {notionStatus.instructions?.map((instruction) => (
               <li key={instruction}>{instruction}</li>
             ))}
           </ol>
+          <div className="pt-2 border-t border-amber-500/30">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleMarkNotionComplete}
+              className="bg-amber-500/20 border-amber-500/40 text-amber-700 hover:bg-amber-500/30 dark:text-amber-400"
+            >
+              I&apos;ve completed the setup
+            </Button>
+          </div>
         </div>
       )}
 

@@ -3,19 +3,12 @@ import {
   setupGcalWebhook,
   stopGcalWebhook,
 } from "@/lib/google-calendar/client";
-import {
-  createNotionWebhook,
-  deleteNotionWebhook as deleteNotionWebhookAPI,
-  listNotionWebhooks,
-} from "@/lib/notion/client";
 import { getGoogleConfig, getNotionConfig } from "@/lib/settings";
 import {
-  deleteNotionWebhook,
   deleteWebhookChannel,
   getNotionWebhook,
   getWebhookChannel,
   isChannelExpired,
-  markNotionWebhookVerified,
   saveNotionWebhook,
   saveWebhookChannel,
   updateSyncState,
@@ -148,7 +141,12 @@ export async function GET(request: NextRequest) {
             });
             if (remoteResponse.ok) {
               const remoteStatus = await remoteResponse.json();
-              return NextResponse.json(remoteStatus);
+              // Include local externalWebhookUrl so the UI knows webhooks can be set up
+              const externalWebhookUrl = hasValidExternalWebhookUrl() ? getWebhookBaseUrl() : null;
+              return NextResponse.json({
+                ...remoteStatus,
+                externalWebhookUrl,
+              });
             }
             console.warn(
               "Remote sync status check failed:",
@@ -287,86 +285,37 @@ async function setupNotionWebhook(request: NextRequest): Promise<{
     const webhookUrl = buildWebhookUrl(request, "notion");
     const existingSubscription = await getNotionWebhook();
 
-    if (existingSubscription) {
-      let apiWebhooks: Awaited<ReturnType<typeof listNotionWebhooks>>;
-      try {
-        apiWebhooks = await listNotionWebhooks();
-      } catch (error) {
-        return {
-          success: false,
-          error: error instanceof Error ? error.message : "Failed to check Notion webhooks",
-        };
-      }
-
-      const matching = apiWebhooks.find(
-        (webhook) => webhook.id === existingSubscription.subscriptionId,
-      );
-
-      if (matching) {
-        if (matching.state === "active") {
-          if (!existingSubscription.verified) {
-            try {
-              await markNotionWebhookVerified();
-            } catch (error) {
-              console.warn("Failed to mark Notion webhook as verified:", error);
-            }
-          }
-          return {
-            success: true,
-            message: "Notion webhook already active",
-          };
-        }
-
-        if (matching.state === "verification_required") {
-          return {
-            success: true,
-            message: "Notion webhook created. Verification required.",
-            verificationRequired: true,
-            verificationInstructions: [
-              "Go to https://www.notion.so/my-integrations",
-              "Open your integration and select the Webhooks tab",
-              `Verify the webhook for URL: ${webhookUrl}`,
-            ],
-          };
-        }
-      }
-
-      if (
-        existingSubscription.subscriptionId &&
-        existingSubscription.subscriptionId !== "pending"
-      ) {
-        try {
-          await deleteNotionWebhookAPI(existingSubscription.subscriptionId);
-        } catch (error) {
-          console.warn("Failed to delete existing Notion webhook:", error);
-        }
-      }
-
-      await deleteNotionWebhook();
+    // If already marked as verified, return success
+    if (existingSubscription?.verified) {
+      return {
+        success: true,
+        message: "Notion webhook active",
+      };
     }
 
-    const webhookResponse = await createNotionWebhook({
-      url: webhookUrl,
-      databaseId: notionConfig.databaseId,
-      eventTypes: ["page.content_updated"],
-    });
-
-    await saveNotionWebhook({
-      subscriptionId: webhookResponse.id,
-      databaseId: notionConfig.databaseId,
-      verificationToken: "pending",
-      createdAt: new Date(),
-      verified: false,
-    });
+    // Notion webhooks must be created through the UI, not via API
+    // Save a pending record and guide users to create the webhook manually
+    if (!existingSubscription) {
+      await saveNotionWebhook({
+        subscriptionId: "pending",
+        databaseId: notionConfig.databaseId,
+        verificationToken: "pending",
+        createdAt: new Date(),
+        verified: false,
+      });
+    }
 
     return {
       success: true,
-      message: "Notion webhook created. Verification required.",
+      message: "Notion webhook setup required.",
       verificationRequired: true,
       verificationInstructions: [
         "Go to https://www.notion.so/my-integrations",
         "Open your integration and select the Webhooks tab",
-        `Verify the webhook for URL: ${webhookUrl}`,
+        "Click '+ Create a subscription'",
+        `Enter webhook URL: ${webhookUrl}`,
+        "Select events: Page content updated, Page created, Page deleted, Page properties updated",
+        "Click 'Create' then verify the endpoint when prompted",
       ],
     };
   } catch (error) {
