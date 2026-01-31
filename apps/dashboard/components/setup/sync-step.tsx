@@ -257,9 +257,12 @@ export function SyncStep({ onBack, onNext }: SyncStepProps) {
                 Webhooks require a production URL
               </p>
               <p className="text-amber-700/90 dark:text-amber-300">
-                Run{" "}
-                <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">vercel env pull</code>{" "}
-                to sync your production URL, then restart your dev server.
+                Add{" "}
+                <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">
+                  WEBHOOK_URL=https://your-app.vercel.app
+                </code>{" "}
+                to <code className="px-1 py-0.5 bg-amber-500/20 rounded font-mono text-xs">.env.local</code>,
+                then restart your dev server.
               </p>
             </div>
           </div>
