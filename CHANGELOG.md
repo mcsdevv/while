@@ -1,3 +1,10 @@
+## [1.5.10](https://github.com/mcsdevv/while/compare/v1.5.9...v1.5.10) (2026-02-01)
+
+
+### Bug Fixes
+
+* **settings:** Handle Redis connection failures gracefully ([#234](https://github.com/mcsdevv/while/issues/234)) ([b326af3](https://github.com/mcsdevv/while/commit/b326af336a904ade813386e7bbfcb7adffffc5f4))
+
 ## [1.5.9](https://github.com/mcsdevv/while/compare/v1.5.8...v1.5.9) (2026-02-01)
 
 
