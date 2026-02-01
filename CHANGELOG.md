@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/mcsdevv/while/compare/v1.12.1...v1.13.0) (2026-02-01)
+
+
+### Features
+
+* **ui:** Capitalize badge text by default ([#252](https://github.com/mcsdevv/while/issues/252)) ([702d2be](https://github.com/mcsdevv/while/commit/702d2be5cbfd0ea8b40eb8a64a3f4db5c61f5c38))
+
 ## [1.12.1](https://github.com/mcsdevv/while/compare/v1.12.0...v1.12.1) (2026-02-01)
 
 
