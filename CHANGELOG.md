@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/mcsdevv/while/compare/v1.4.3...v1.4.4) (2026-02-01)
+
+
+### Bug Fixes
+
+* **webhook:** Fix Notion webhook verification schema ([#219](https://github.com/mcsdevv/while/issues/219)) ([7ee9b68](https://github.com/mcsdevv/while/commit/7ee9b6892e4ecdf34d541a2c2fc6ab3f8448089e))
+
 ## [1.4.3](https://github.com/mcsdevv/while/compare/v1.4.2...v1.4.3) (2026-01-31)
 
 
