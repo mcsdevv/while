@@ -33,7 +33,6 @@ export interface NotionWebhookDebugStatus {
   configured: boolean;
   active: boolean;
   verified: boolean;
-  subscriptionId?: string;
   databaseId?: string;
   verificationToken?: string;
   createdAt?: string;
@@ -122,7 +121,6 @@ async function getNotionDebugStatus(
     configured: true,
     active: isActive,
     verified: subscription.verified,
-    subscriptionId: subscription.subscriptionId,
     databaseId: subscription.databaseId,
     verificationToken: subscription.verificationToken === "pending" ? "pending" : "set",
     createdAt: formatDate(subscription.createdAt),
