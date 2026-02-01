@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/mcsdevv/while/compare/v1.12.0...v1.12.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **dashboard:** remove unused footer component ([#251](https://github.com/mcsdevv/while/issues/251)) ([986e646](https://github.com/mcsdevv/while/commit/986e6463356b7fbada3c8ab281c17fdf9d5d555d))
+
 # [1.12.0](https://github.com/mcsdevv/while/compare/v1.11.1...v1.12.0) (2026-02-01)
 
 
