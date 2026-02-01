@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/mcsdevv/while/compare/v1.6.1...v1.6.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* **dashboard:** Fix UserMenu dropdown by applying buttonVariants directly to trigger ([#238](https://github.com/mcsdevv/while/issues/238)) ([2aa665e](https://github.com/mcsdevv/while/commit/2aa665ef2b6c2afb6585f681799e7c7305ff4169))
+
 ## [1.6.1](https://github.com/mcsdevv/while/compare/v1.6.0...v1.6.1) (2026-02-01)
 
 
