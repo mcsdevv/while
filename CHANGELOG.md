@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/mcsdevv/while/compare/v1.6.0...v1.6.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **dashboard:** Fix footer layout to match marketing page ([#237](https://github.com/mcsdevv/while/issues/237)) ([8332f9f](https://github.com/mcsdevv/while/commit/8332f9f8b1eaf1641e12ca4a14d88d02c759b8c8))
+
 # [1.6.0](https://github.com/mcsdevv/while/compare/v1.5.11...v1.6.0) (2026-02-01)
 
 
