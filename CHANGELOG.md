@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/mcsdevv/while/compare/v1.11.1...v1.12.0) (2026-02-01)
+
+
+### Features
+
+* **ui:** Capitalize button text by default ([#250](https://github.com/mcsdevv/while/issues/250)) ([b11b9a3](https://github.com/mcsdevv/while/commit/b11b9a3f3679ca59355fe3b1d8d8eb34ae0e24ab))
+
 ## [1.11.1](https://github.com/mcsdevv/while/compare/v1.11.0...v1.11.1) (2026-02-01)
 
 
