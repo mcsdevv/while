@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/mcsdevv/while/compare/v1.8.1...v1.9.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** add view buttons to metrics cards with scroll-to-logs ([#245](https://github.com/mcsdevv/while/issues/245)) ([86d8796](https://github.com/mcsdevv/while/commit/86d879661b9743749b75882889a76be2e701aef8))
+
 ## [1.8.1](https://github.com/mcsdevv/while/compare/v1.8.0...v1.8.1) (2026-02-01)
 
 
