@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/mcsdevv/while/compare/v1.5.0...v1.5.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Add !important to dropdown background colors ([#223](https://github.com/mcsdevv/while/issues/223)) ([2b6dfad](https://github.com/mcsdevv/while/commit/2b6dfad4b29e1281cb425fa8adc9140b7ae808ed))
+
 # [1.5.0](https://github.com/mcsdevv/while/compare/v1.4.5...v1.5.0) (2026-02-01)
 
 
