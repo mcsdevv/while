@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/mcsdevv/while/compare/v1.7.0...v1.7.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **badges:** Capitalize badge text and standardize width ([#241](https://github.com/mcsdevv/while/issues/241)) ([324e8f4](https://github.com/mcsdevv/while/commit/324e8f4e345713477816818d4d6fb1fa5a417778))
+
 # [1.7.0](https://github.com/mcsdevv/while/compare/v1.6.2...v1.7.0) (2026-02-01)
 
 
