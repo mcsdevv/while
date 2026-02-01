@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/mcsdevv/while/compare/v1.19.1...v1.19.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* **webhooks:** Use descriptive labels for filter dropdowns ([#262](https://github.com/mcsdevv/while/issues/262)) ([31d65e9](https://github.com/mcsdevv/while/commit/31d65e9e0960958959e34b7a0609fee4c917ab35))
+
 ## [1.19.1](https://github.com/mcsdevv/while/compare/v1.19.0...v1.19.1) (2026-02-01)
 
 
