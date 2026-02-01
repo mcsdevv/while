@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@while/ui";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 interface WebhookLog {
@@ -71,6 +72,41 @@ function getTypeBadgeVariant(
 
 function getStatusBadgeVariant(status: WebhookLog["status"]): "success" | "destructive" {
   return status === "success" ? "success" : "destructive";
+}
+
+function SourceIcon({ source }: { source?: "notion" | "gcal" }) {
+  if (!source) return <span className="text-xs">-</span>;
+
+  const iconMap = {
+    gcal: { src: "/icons/google-calendar.png", alt: "Google Calendar" },
+    notion: { src: "/icons/notion.png", alt: "Notion" },
+  };
+
+  const icon = iconMap[source];
+  return (
+    <Image
+      src={icon.src}
+      alt={icon.alt}
+      width={20}
+      height={20}
+      className="h-5 w-5"
+    />
+  );
+}
+
+function getActionBadgeVariant(
+  action?: WebhookLog["action"],
+): "success" | "default" | "destructive" | "outline" {
+  switch (action) {
+    case "create":
+      return "success";
+    case "update":
+      return "default";
+    case "delete":
+      return "destructive";
+    default:
+      return "outline";
+  }
 }
 
 export function WebhookLogsTable({ logs }: WebhookLogsTableProps) {
@@ -157,12 +193,26 @@ export function WebhookLogsTable({ logs }: WebhookLogsTableProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant={getTypeBadgeVariant(log.type)} size="fixed" className="text-xs">
-                        {log.type}
+                        {log.type.charAt(0).toUpperCase() + log.type.slice(1)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-xs">{log.source ?? "-"}</TableCell>
-                    <TableCell className="text-xs">
-                      {log.action ?? log.webhookEventType ?? "-"}
+                    <TableCell>
+                      <div className="flex justify-center">
+                        <SourceIcon source={log.source} />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {log.action ? (
+                        <Badge variant={getActionBadgeVariant(log.action)} size="fixed" className="text-xs">
+                          {log.action}
+                        </Badge>
+                      ) : log.webhookEventType ? (
+                        <Badge variant="outline" size="fixed" className="text-xs">
+                          {log.webhookEventType}
+                        </Badge>
+                      ) : (
+                        <span className="text-xs">-</span>
+                      )}
                     </TableCell>
                     <TableCell
                       className="text-xs max-w-[200px] truncate"
@@ -172,7 +222,7 @@ export function WebhookLogsTable({ logs }: WebhookLogsTableProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant={getStatusBadgeVariant(log.status)} size="fixed" className="text-xs">
-                        {log.status}
+                        {log.status.charAt(0).toUpperCase() + log.status.slice(1)}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-xs text-right font-mono">

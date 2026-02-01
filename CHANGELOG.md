@@ -1,3 +1,31 @@
+## [1.8.1](https://github.com/mcsdevv/while/compare/v1.8.0...v1.8.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* Hide unused Subscription ID and auto-populate Database ID ([#243](https://github.com/mcsdevv/while/issues/243)) ([1490e9e](https://github.com/mcsdevv/while/commit/1490e9e6192f14d4b8a9876262c402b23bf6f18f))
+
+# [1.8.0](https://github.com/mcsdevv/while/compare/v1.7.1...v1.8.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** Display action types as colored badges ([#242](https://github.com/mcsdevv/while/issues/242)) ([5f64c29](https://github.com/mcsdevv/while/commit/5f64c295b90374e3c5498815354b8c74ec84474e))
+
+## [1.7.1](https://github.com/mcsdevv/while/compare/v1.7.0...v1.7.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **badges:** Capitalize badge text and standardize width ([#241](https://github.com/mcsdevv/while/issues/241)) ([324e8f4](https://github.com/mcsdevv/while/commit/324e8f4e345713477816818d4d6fb1fa5a417778))
+
+# [1.7.0](https://github.com/mcsdevv/while/compare/v1.6.2...v1.7.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** Replace source text with official icons in webhook logs table ([#240](https://github.com/mcsdevv/while/issues/240)) ([05ff42c](https://github.com/mcsdevv/while/commit/05ff42c9a63d9c0846200efd04e464abac4a4e92))
+
 ## [1.6.2](https://github.com/mcsdevv/while/compare/v1.6.1...v1.6.2) (2026-02-01)
 
 
