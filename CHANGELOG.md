@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/mcsdevv/while/compare/v1.11.0...v1.11.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **webhooks:** balance vertical padding on collapsible card header ([#249](https://github.com/mcsdevv/while/issues/249)) ([d774a52](https://github.com/mcsdevv/while/commit/d774a52bca6a08dab31befe534addd22d95060d7))
+
 # [1.11.0](https://github.com/mcsdevv/while/compare/v1.10.0...v1.11.0) (2026-02-01)
 
 
