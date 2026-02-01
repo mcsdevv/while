@@ -1,3 +1,11 @@
+## [1.5.6](https://github.com/mcsdevv/while/compare/v1.5.5...v1.5.6) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Use green success variant for webhook status badges ([#228](https://github.com/mcsdevv/while/issues/228)) ([0a20bc6](https://github.com/mcsdevv/while/commit/0a20bc658bdf2094956c6724f5a3ca112e413046))
+* **ui:** Use verified state for Notion webhook status display ([#231](https://github.com/mcsdevv/while/issues/231)) ([323a5bb](https://github.com/mcsdevv/while/commit/323a5bb22969238c759bc1ba7b919d89996c6ad0))
+
 ## [1.5.5](https://github.com/mcsdevv/while/compare/v1.5.4...v1.5.5) (2026-02-01)
 
 
