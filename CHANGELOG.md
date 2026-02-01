@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/mcsdevv/while/compare/v1.8.0...v1.8.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* Hide unused Subscription ID and auto-populate Database ID ([#243](https://github.com/mcsdevv/while/issues/243)) ([1490e9e](https://github.com/mcsdevv/while/commit/1490e9e6192f14d4b8a9876262c402b23bf6f18f))
+
 # [1.8.0](https://github.com/mcsdevv/while/compare/v1.7.1...v1.8.0) (2026-02-01)
 
 

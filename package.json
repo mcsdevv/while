@@ -1,6 +1,6 @@
 {
   "name": "while",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "description": "Sync Google Calendar events with Notion databases",
   "license": "MIT",
