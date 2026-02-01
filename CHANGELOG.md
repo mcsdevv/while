@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/mcsdevv/while/compare/v1.7.1...v1.8.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** Display action types as colored badges ([#242](https://github.com/mcsdevv/while/issues/242)) ([5f64c29](https://github.com/mcsdevv/while/commit/5f64c295b90374e3c5498815354b8c74ec84474e))
+
 ## [1.7.1](https://github.com/mcsdevv/while/compare/v1.7.0...v1.7.1) (2026-02-01)
 
 
