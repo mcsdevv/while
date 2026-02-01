@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/mcsdevv/while/compare/v1.19.2...v1.20.0) (2026-02-01)
+
+
+### Features
+
+* Add auto-refresh controls to events, activity, and webhooks pages ([#263](https://github.com/mcsdevv/while/issues/263)) ([7c5a78a](https://github.com/mcsdevv/while/commit/7c5a78a3ea9b45398a074a0cd2304a90cee73792))
+
 ## [1.19.2](https://github.com/mcsdevv/while/compare/v1.19.1...v1.19.2) (2026-02-01)
 
 
