@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/mcsdevv/while/compare/v1.5.10...v1.5.11) (2026-02-01)
+
+
+### Bug Fixes
+
+* **dashboard:** Make sync event filter labels clear ([#235](https://github.com/mcsdevv/while/issues/235)) ([e929bac](https://github.com/mcsdevv/while/commit/e929bac88a10785a166887eb02016b121f76e40a))
+
 ## [1.5.10](https://github.com/mcsdevv/while/compare/v1.5.9...v1.5.10) (2026-02-01)
 
 
