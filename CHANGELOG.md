@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/mcsdevv/while/compare/v1.15.0...v1.15.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **dashboard:** Make direction badge same size as operation and status badges ([#256](https://github.com/mcsdevv/while/issues/256)) ([4bca9d5](https://github.com/mcsdevv/while/commit/4bca9d51411b2d5f5702ef61232e5f161eb91b3b))
+
 # [1.15.0](https://github.com/mcsdevv/while/compare/v1.14.0...v1.15.0) (2026-02-01)
 
 
