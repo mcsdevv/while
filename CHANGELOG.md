@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/mcsdevv/while/compare/v1.6.2...v1.7.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** Replace source text with official icons in webhook logs table ([#240](https://github.com/mcsdevv/while/issues/240)) ([05ff42c](https://github.com/mcsdevv/while/commit/05ff42c9a63d9c0846200efd04e464abac4a4e92))
+
 ## [1.6.2](https://github.com/mcsdevv/while/compare/v1.6.1...v1.6.2) (2026-02-01)
 
 
