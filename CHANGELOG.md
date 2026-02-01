@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/mcsdevv/while/compare/v1.9.0...v1.10.0) (2026-02-01)
+
+
+### Features
+
+* **dashboard:** Add clickable webhook event detail pages ([#247](https://github.com/mcsdevv/while/issues/247)) ([89fcbe7](https://github.com/mcsdevv/while/commit/89fcbe75773c3b1a1a53386a8ca6a6c864573794))
+
 # [1.9.0](https://github.com/mcsdevv/while/compare/v1.8.1...v1.9.0) (2026-02-01)
 
 
