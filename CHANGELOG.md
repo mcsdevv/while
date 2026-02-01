@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/mcsdevv/while/compare/v1.5.6...v1.5.7) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Change Active badge to success variant for green styling ([#229](https://github.com/mcsdevv/while/issues/229)) ([a6360f0](https://github.com/mcsdevv/while/commit/a6360f03a9a36c383c4a8f0576799d50ec13350b))
+
 ## [1.5.6](https://github.com/mcsdevv/while/compare/v1.5.5...v1.5.6) (2026-02-01)
 
 
