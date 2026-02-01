@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/mcsdevv/while/compare/v1.14.0...v1.15.0) (2026-02-01)
+
+
+### Features
+
+* **dashboard:** Add clickable sync event detail pages ([#254](https://github.com/mcsdevv/while/issues/254)) ([8a90ea0](https://github.com/mcsdevv/while/commit/8a90ea0fbaeb3e645f59270d353bf7fc5bad1cfb))
+
 # [1.14.0](https://github.com/mcsdevv/while/compare/v1.13.0...v1.14.0) (2026-02-01)
 
 
