@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/mcsdevv/while/compare/v1.5.3...v1.5.4) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Increase Badge component padding for better spacing ([#226](https://github.com/mcsdevv/while/issues/226)) ([1c2d408](https://github.com/mcsdevv/while/commit/1c2d408ce0315054342d37aaa937983c8268dc7a))
+
 ## [1.5.3](https://github.com/mcsdevv/while/compare/v1.5.2...v1.5.3) (2026-02-01)
 
 
