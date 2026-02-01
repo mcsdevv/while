@@ -1,3 +1,11 @@
+## [1.5.8](https://github.com/mcsdevv/while/compare/v1.5.7...v1.5.8) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Fix footer spacing and alignment with grid layout ([#232](https://github.com/mcsdevv/while/issues/232)) ([89191f4](https://github.com/mcsdevv/while/commit/89191f4142e751afd206b957e6d708fc76fac5af))
+* **ui:** Fix select dropdown invisible backgrounds ([#230](https://github.com/mcsdevv/while/issues/230)) ([0ce5bf1](https://github.com/mcsdevv/while/commit/0ce5bf11af636a4ee184d4547413c13a1bdf8846))
+
 ## [1.5.7](https://github.com/mcsdevv/while/compare/v1.5.6...v1.5.7) (2026-02-01)
 
 
