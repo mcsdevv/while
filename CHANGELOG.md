@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/mcsdevv/while/compare/v1.5.4...v1.5.5) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Improve Switch component visibility with border and better contrast ([#227](https://github.com/mcsdevv/while/issues/227)) ([12c07de](https://github.com/mcsdevv/while/commit/12c07deb88692bc5273f497681e50cfaed157ea6))
+
 ## [1.5.4](https://github.com/mcsdevv/while/compare/v1.5.3...v1.5.4) (2026-02-01)
 
 
