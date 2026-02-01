@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/mcsdevv/while/compare/v1.18.0...v1.19.0) (2026-02-01)
+
+
+### Features
+
+* **sidebar:** Move Webhooks after Events in navigation menu ([#260](https://github.com/mcsdevv/while/issues/260)) ([82e608c](https://github.com/mcsdevv/while/commit/82e608cd38dab6562df130228b4241a25a8f6807))
+
 # [1.18.0](https://github.com/mcsdevv/while/compare/v1.17.0...v1.18.0) (2026-02-01)
 
 
