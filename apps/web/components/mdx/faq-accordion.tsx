@@ -17,7 +17,7 @@ export function FAQAccordionItem({ title, children }: FAQAccordionItemProps) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between px-6 py-5 text-left"
+        className="flex w-full items-center justify-between px-6 py-5 text-left cursor-pointer"
       >
         <span className="font-medium">{title}</span>
         <ChevronDown
