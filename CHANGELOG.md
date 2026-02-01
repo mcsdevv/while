@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/mcsdevv/while/compare/v1.16.0...v1.17.0) (2026-02-01)
+
+
+### Features
+
+* **dashboard:** Add Events feature with timeline and property diff ([#258](https://github.com/mcsdevv/while/issues/258)) ([16cf29c](https://github.com/mcsdevv/while/commit/16cf29c3e71078678951e62883878861b344012e))
+
 # [1.16.0](https://github.com/mcsdevv/while/compare/v1.15.1...v1.16.0) (2026-02-01)
 
 
