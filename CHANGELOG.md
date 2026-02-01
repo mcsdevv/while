@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/mcsdevv/while/compare/v1.10.0...v1.11.0) (2026-02-01)
+
+
+### Features
+
+* **ui:** Add cursor-pointer to expandable components ([#248](https://github.com/mcsdevv/while/issues/248)) ([92ef5ec](https://github.com/mcsdevv/while/commit/92ef5ec2309c9cfab7997000bbe94d97ad6a3d79))
+
 # [1.10.0](https://github.com/mcsdevv/while/compare/v1.9.0...v1.10.0) (2026-02-01)
 
 
