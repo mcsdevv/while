@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/mcsdevv/while/compare/v1.15.1...v1.16.0) (2026-02-01)
+
+
+### Features
+
+* **webhooks:** Add status badges and brand icons to webhook log details ([#257](https://github.com/mcsdevv/while/issues/257)) ([59d6915](https://github.com/mcsdevv/while/commit/59d6915912ed2c9b5aabb52895c5b8dda238257f))
+
 ## [1.15.1](https://github.com/mcsdevv/while/compare/v1.15.0...v1.15.1) (2026-02-01)
 
 
