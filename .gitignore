@@ -13,6 +13,9 @@ build/
 dist/
 dist-standalone/
 
+# fumadocs-mdx generated files
+.source/
+
 # Production
 *.log
 *.tsbuildinfo
