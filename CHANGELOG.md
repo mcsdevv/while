@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/mcsdevv/while/compare/v1.5.2...v1.5.3) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** Fix footer spacing and alignment with grid layout ([#225](https://github.com/mcsdevv/while/issues/225)) ([6b6fa15](https://github.com/mcsdevv/while/commit/6b6fa15c99e07fd8947eaca23f06d92a766191f2))
+
 ## [1.5.2](https://github.com/mcsdevv/while/compare/v1.5.1...v1.5.2) (2026-02-01)
 
 
