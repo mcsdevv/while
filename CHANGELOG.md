@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/mcsdevv/while/compare/v1.4.5...v1.5.0) (2026-02-01)
+
+
+### Features
+
+* **setup:** Display Notion verification token with copy button ([#221](https://github.com/mcsdevv/while/issues/221)) ([0e446c0](https://github.com/mcsdevv/while/commit/0e446c0fd22f64a597e6ab475531c1cca4656ed9))
+
 ## [1.4.5](https://github.com/mcsdevv/while/compare/v1.4.4...v1.4.5) (2026-02-01)
 
 
