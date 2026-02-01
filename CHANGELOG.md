@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/mcsdevv/while/compare/v1.5.1...v1.5.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* stop calling non-existent Notion webhooks API for status checks ([#224](https://github.com/mcsdevv/while/issues/224)) ([15b0e6b](https://github.com/mcsdevv/while/commit/15b0e6b499d39693d66ff1aa3c63f0d1cc6132f8))
+
 ## [1.5.1](https://github.com/mcsdevv/while/compare/v1.5.0...v1.5.1) (2026-02-01)
 
 
