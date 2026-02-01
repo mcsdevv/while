@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/mcsdevv/while/compare/v1.5.11...v1.6.0) (2026-02-01)
+
+
+### Features
+
+* **ui:** Add fixed size variant for badges in tables ([#236](https://github.com/mcsdevv/while/issues/236)) ([7dc3619](https://github.com/mcsdevv/while/commit/7dc36198f2236dded855e15c7e49d77dc3c1a7d1))
+
 ## [1.5.11](https://github.com/mcsdevv/while/compare/v1.5.10...v1.5.11) (2026-02-01)
 
 
