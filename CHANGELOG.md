@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/mcsdevv/while/compare/v1.13.0...v1.14.0) (2026-02-01)
+
+
+### Features
+
+* **dashboard:** narrow operation column and expand event title column ([#253](https://github.com/mcsdevv/while/issues/253)) ([df5afcc](https://github.com/mcsdevv/while/commit/df5afcc0e15feee9599dc06df3afcffb0aac5e6f))
+
 # [1.13.0](https://github.com/mcsdevv/while/compare/v1.12.1...v1.13.0) (2026-02-01)
 
 
