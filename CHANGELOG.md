@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/mcsdevv/while/compare/v1.19.0...v1.19.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **webhooks:** Center text vertically in Raw Redis State header ([#261](https://github.com/mcsdevv/while/issues/261)) ([99ec178](https://github.com/mcsdevv/while/commit/99ec178a706c4c559f9c5eefd76fea961c380575))
+
 # [1.19.0](https://github.com/mcsdevv/while/compare/v1.18.0...v1.19.0) (2026-02-01)
 
 
