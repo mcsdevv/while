@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/mcsdevv/while/compare/v1.4.4...v1.4.5) (2026-02-01)
+
+
+### Bug Fixes
+
+* **webhook:** Allow Notion verification before config is complete ([#220](https://github.com/mcsdevv/while/issues/220)) ([80ac1f5](https://github.com/mcsdevv/while/commit/80ac1f52f278c8f09fc02f6d4f640513db3b5414))
+
 ## [1.4.4](https://github.com/mcsdevv/while/compare/v1.4.3...v1.4.4) (2026-02-01)
 
 
