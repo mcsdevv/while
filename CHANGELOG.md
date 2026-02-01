@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/mcsdevv/while/compare/v1.17.0...v1.18.0) (2026-02-01)
+
+
+### Features
+
+* **logs:** Add copy to clipboard button for Raw Event Data ([#259](https://github.com/mcsdevv/while/issues/259)) ([a526a4c](https://github.com/mcsdevv/while/commit/a526a4cc54d0cccbebb92cd324f57885acb98e8e))
+
 # [1.17.0](https://github.com/mcsdevv/while/compare/v1.16.0...v1.17.0) (2026-02-01)
 
 
