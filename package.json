@@ -1,6 +1,6 @@
 {
   "name": "while",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "private": true,
   "description": "Sync Google Calendar events with Notion databases",
   "license": "MIT",
@@ -55,12 +55,19 @@
     "geist": "^1.5.1"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
-      ["@semantic-release/npm", { "npmPublish": false }],
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
       [
         "@semantic-release/exec",
         {

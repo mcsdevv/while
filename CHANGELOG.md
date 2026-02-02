@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/mcsdevv/while/compare/v1.22.0...v1.23.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Replace Schedule-X with custom calendar implementation ([#268](https://github.com/mcsdevv/while/issues/268)) ([e5ae5dc](https://github.com/mcsdevv/while/commit/e5ae5dcc9dc34e915e0c75566a435170aca5743b))
+
 # [1.22.0](https://github.com/mcsdevv/while/compare/v1.21.0...v1.22.0) (2026-02-02)
 
 
