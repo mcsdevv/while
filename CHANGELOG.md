@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/mcsdevv/while/compare/v1.23.0...v1.23.1) (2026-02-02)
+
+
+### Bug Fixes
+
+* **calendar:** Deduplicate events from bidirectional Notion/Google Calendar sync ([#269](https://github.com/mcsdevv/while/issues/269)) ([3f2cb7b](https://github.com/mcsdevv/while/commit/3f2cb7b2b4ef04756f6b0a8288d9aaf2a1f12050))
+
 # [1.23.0](https://github.com/mcsdevv/while/compare/v1.22.0...v1.23.0) (2026-02-02)
 
 
