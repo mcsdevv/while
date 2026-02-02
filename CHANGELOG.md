@@ -1,3 +1,10 @@
+# [1.28.0](https://github.com/mcsdevv/while/compare/v1.27.0...v1.28.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Display start time and duration in calendar entries ([#278](https://github.com/mcsdevv/while/issues/278)) ([f9557f9](https://github.com/mcsdevv/while/commit/f9557f9e945053efef4106d099b5c0e9016a0a11))
+
 # [1.27.0](https://github.com/mcsdevv/while/compare/v1.26.0...v1.27.0) (2026-02-02)
 
 
