@@ -1,3 +1,17 @@
+# [1.25.0](https://github.com/mcsdevv/while/compare/v1.24.0...v1.25.0) (2026-02-02)
+
+
+### Bug Fixes
+
+* Allow dynamic rendering for authenticated routes with Redis fetch ([#271](https://github.com/mcsdevv/while/issues/271)) ([286c664](https://github.com/mcsdevv/while/commit/286c664ea0b2a63c9b3a351731b5daf1e32aebc2))
+
+
+### Features
+
+* **calendar:** Add day/week/month view toggle ([#275](https://github.com/mcsdevv/while/issues/275)) ([316f399](https://github.com/mcsdevv/while/commit/316f399374bed60ffb694753d7d810b794ad7f0b))
+* **sidebar:** Add visibility toggles to customize sidebar items ([#273](https://github.com/mcsdevv/while/issues/273)) ([240fd41](https://github.com/mcsdevv/while/commit/240fd4108debf0f49b443e8a4e02ac97a224cd65))
+* **sync:** Add historical event sync from specified time period ([#274](https://github.com/mcsdevv/while/issues/274)) ([351cb97](https://github.com/mcsdevv/while/commit/351cb977601964c6c1fc9d1e72068ec4fe9f8bfe))
+
 # [1.24.0](https://github.com/mcsdevv/while/compare/v1.23.1...v1.24.0) (2026-02-02)
 
 
