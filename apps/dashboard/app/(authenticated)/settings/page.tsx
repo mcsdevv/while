@@ -3,6 +3,7 @@
 import { ConnectionStatus } from "@/components/settings/connection-status";
 import { DangerZone } from "@/components/settings/danger-zone";
 import { GoogleSettings } from "@/components/settings/google-settings";
+import { HistoricalSync } from "@/components/settings/historical-sync";
 import { NotionSettings } from "@/components/settings/notion-settings";
 import { SidebarSettings } from "@/components/settings/sidebar-settings";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
@@ -88,6 +89,9 @@ export default function SettingsPage() {
         <GoogleSettings settings={settings?.google ?? null} onSettingsChange={fetchSettings} />
         <NotionSettings settings={settings?.notion ?? null} />
       </div>
+
+      {/* Historical Sync */}
+      <HistoricalSync />
 
       {/* Danger Zone */}
       <DangerZone />
