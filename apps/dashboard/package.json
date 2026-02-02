@@ -18,14 +18,11 @@
   "dependencies": {
     "@googleapis/calendar": "^9.0.0",
     "@notionhq/client": "^2.2.15",
-    "@schedule-x/calendar": "^4.1.0",
-    "@schedule-x/events-service": "^4.1.0",
-    "@schedule-x/react": "^4.1.0",
-    "@schedule-x/theme-default": "^4.1.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@upstash/redis": "^1.36.0",
     "@while/ui": "workspace:*",
     "canvas-confetti": "^1.9.4",
+    "date-fns": "^4.1.0",
     "geist": "^1.5.1",
     "google-auth-library": "^9.0.0",
     "lucide-react": "^0.563.0",
@@ -36,7 +33,6 @@
     "react-dom": "^19.2.4",
     "recharts": "^3.6.0",
     "swr": "^2.3.8",
-    "temporal-polyfill": "^0.3.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
