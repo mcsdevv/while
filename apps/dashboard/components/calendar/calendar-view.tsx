@@ -1,5 +1,6 @@
 "use client";
 
+import { useCalendarPreferences } from "@/components/shell/calendar-preferences-context";
 import type { SyncLog } from "@/lib/types";
 import { Button, Card, CardContent } from "@while/ui";
 import {
@@ -86,12 +87,13 @@ function transformLogsToEvents(logs: SyncLog[]): CalendarEvent[] {
 export function CalendarView({ logs }: CalendarViewProps) {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const { weekStartsOn } = useCalendarPreferences();
 
   const events = useMemo(() => transformLogsToEvents(logs), [logs]);
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
-  const calendarStart = startOfWeek(monthStart, { weekStartsOn: 0 });
+  const calendarStart = startOfWeek(monthStart, { weekStartsOn });
   const calendarEnd = addDays(calendarStart, 34); // 35 days = 5 rows × 7 days
 
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
@@ -109,7 +111,10 @@ export function CalendarView({ logs }: CalendarViewProps) {
     router.push(`/events/${encodeURIComponent(eventId)}`);
   };
 
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weekDays =
+    weekStartsOn === 1
+      ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+      : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <Card>
