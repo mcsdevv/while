@@ -56,7 +56,7 @@ Server-side endpoints that handle webhooks, scheduled sync jobs, and app configu
 | `/api/cron/renew-webhook` | GET | Renew Google Calendar webhooks |
 | `/api/setup/*` | Various | Setup wizard endpoints |
 | `/api/settings/*` | Various | Settings management |
-| `/api/sync/backfill` | GET/POST | Backfill progress (GET) and trigger (POST) |
+| `/api/sync/backfill/fields` | GET/POST/DELETE | Populate newly-enabled fields on existing Notion pages |
 
 <Callout type="info" title="Note">
 Google Calendar doesn't need a separate fallback cron—its webhook handler includes built-in recovery that performs a full sync when the sync token becomes invalid.

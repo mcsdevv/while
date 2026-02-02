@@ -1,6 +1,7 @@
 /**
- * API endpoints for backfill service.
- * Used to populate existing Notion pages with new field data from Google Calendar.
+ * API endpoints for field backfill service.
+ * Populates newly-enabled fields (attendees, organizer, etc.) on existing Notion pages
+ * using data from their linked Google Calendar events.
  */
 import {
   cancelBackfill,
@@ -28,8 +29,8 @@ const startBackfillSchema = z.object({
 });
 
 /**
- * GET /api/sync/backfill
- * Returns current backfill progress
+ * GET /api/sync/backfill/fields
+ * Returns current field backfill progress
  */
 export async function GET() {
   try {
@@ -45,8 +46,8 @@ export async function GET() {
 }
 
 /**
- * POST /api/sync/backfill
- * Starts a new backfill operation (non-blocking)
+ * POST /api/sync/backfill/fields
+ * Starts a new field backfill operation (non-blocking)
  * Body: { fields: string[] }
  */
 export async function POST(request: NextRequest) {
@@ -95,8 +96,8 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * DELETE /api/sync/backfill
- * Cancels a running backfill operation
+ * DELETE /api/sync/backfill/fields
+ * Cancels a running field backfill operation
  */
 export async function DELETE() {
   try {
