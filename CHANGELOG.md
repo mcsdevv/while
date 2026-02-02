@@ -1,3 +1,10 @@
+# [1.29.0](https://github.com/mcsdevv/while/compare/v1.28.0...v1.29.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Add month and year dropdown selectors ([#279](https://github.com/mcsdevv/while/issues/279)) ([9312f15](https://github.com/mcsdevv/while/commit/9312f1548c43f7c4a69b7c367951c5e4b41c071a))
+
 # [1.28.0](https://github.com/mcsdevv/while/compare/v1.27.0...v1.28.0) (2026-02-02)
 
 
