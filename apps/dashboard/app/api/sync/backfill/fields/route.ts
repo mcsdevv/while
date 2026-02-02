@@ -2,6 +2,9 @@
  * API endpoints for field backfill service.
  * Populates newly-enabled fields (attendees, organizer, etc.) on existing Notion pages
  * using data from their linked Google Calendar events.
+ *
+ * Uses Next.js `after()` to guarantee background task completion
+ * with Vercel Fluid Compute (default 300s timeout, up to 800s on Pro).
  */
 import {
   cancelBackfill,
@@ -9,8 +12,12 @@ import {
   resetBackfill,
   startBackfill,
 } from "@/lib/sync/backfill";
+import { after } from "next/server";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+
+// Allow up to 5 minutes for backfill (default Fluid Compute limit)
+export const maxDuration = 300;
 
 // Valid fields that can be backfilled
 const BACKFILL_FIELDS = [
@@ -74,10 +81,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Start backfill in background (non-blocking)
-    // We don't await this - it runs in the background
-    startBackfill(fields).catch((error) => {
-      console.error("Backfill failed:", error);
+    // Schedule background work using Next.js after()
+    // Guaranteed to complete within maxDuration (Fluid Compute)
+    after(async () => {
+      try {
+        await startBackfill(fields);
+      } catch (error) {
+        console.error("Backfill failed:", error);
+      }
     });
 
     // Return immediately with initial status
