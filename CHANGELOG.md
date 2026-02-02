@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/mcsdevv/while/compare/v1.26.0...v1.27.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Add event search capability ([#277](https://github.com/mcsdevv/while/issues/277)) ([d599ae8](https://github.com/mcsdevv/while/commit/d599ae8ce07454ea486da31fd540d29acd822eba))
+
 # [1.26.0](https://github.com/mcsdevv/while/compare/v1.25.0...v1.26.0) (2026-02-02)
 
 
