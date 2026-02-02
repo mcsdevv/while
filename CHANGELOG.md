@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/mcsdevv/while/compare/v1.23.1...v1.24.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Always display 5 rows in calendar grid ([#270](https://github.com/mcsdevv/while/issues/270)) ([e816a0c](https://github.com/mcsdevv/while/commit/e816a0cae2efe2b6d90ffc231e78c6b198d82529))
+
 ## [1.23.1](https://github.com/mcsdevv/while/compare/v1.23.0...v1.23.1) (2026-02-02)
 
 
