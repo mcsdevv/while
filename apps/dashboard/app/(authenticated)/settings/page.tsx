@@ -4,6 +4,7 @@ import { ConnectionStatus } from "@/components/settings/connection-status";
 import { DangerZone } from "@/components/settings/danger-zone";
 import { GoogleSettings } from "@/components/settings/google-settings";
 import { NotionSettings } from "@/components/settings/notion-settings";
+import { SidebarSettings } from "@/components/settings/sidebar-settings";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@while/ui";
 import { SkeletonSettingsPage } from "@while/ui";
 import { Radio } from "lucide-react";
@@ -78,6 +79,9 @@ export default function SettingsPage() {
 
       {/* Connection Status */}
       <ConnectionStatus google={settings?.google ?? null} notion={settings?.notion ?? null} />
+
+      {/* Sidebar Settings */}
+      <SidebarSettings />
 
       {/* Service Settings */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
