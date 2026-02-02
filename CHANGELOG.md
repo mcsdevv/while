@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/mcsdevv/while/compare/v1.25.0...v1.26.0) (2026-02-02)
+
+
+### Features
+
+* **calendar:** Add week start day preference with Monday default ([#276](https://github.com/mcsdevv/while/issues/276)) ([2a4b16e](https://github.com/mcsdevv/while/commit/2a4b16eb889b253a9a1c118f909a9a874feb03a8))
+
 # [1.25.0](https://github.com/mcsdevv/while/compare/v1.24.0...v1.25.0) (2026-02-02)
 
 
