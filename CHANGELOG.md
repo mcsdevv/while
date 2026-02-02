@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/mcsdevv/while/compare/v1.20.0...v1.21.0) (2026-02-02)
+
+
+### Features
+
+* **dashboard:** Add event start/end time columns to Activity, Events, and Webhooks tables ([#264](https://github.com/mcsdevv/while/issues/264)) ([b4d0e39](https://github.com/mcsdevv/while/commit/b4d0e39a9e8d48fe8e177e8d6ef1f138213e3381))
+
 # [1.20.0](https://github.com/mcsdevv/while/compare/v1.19.2...v1.20.0) (2026-02-01)
 
 
