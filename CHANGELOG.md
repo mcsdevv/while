@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/mcsdevv/while/compare/v1.29.0...v1.30.0) (2026-02-03)
+
+
+### Features
+
+* **dashboard:** Default time window dropdowns to 90 days ([#280](https://github.com/mcsdevv/while/issues/280)) ([31f78c7](https://github.com/mcsdevv/while/commit/31f78c7e159e8da3c538864443edd49bdf007ed5))
+
 # [1.29.0](https://github.com/mcsdevv/while/compare/v1.28.0...v1.29.0) (2026-02-02)
 
 
