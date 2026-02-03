@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/mcsdevv/while/compare/v1.31.1...v1.32.0) (2026-02-03)
+
+
+### Features
+
+* **ui:** Add tooltip to disabled Start Sync button ([#285](https://github.com/mcsdevv/while/issues/285)) ([6b6a0b1](https://github.com/mcsdevv/while/commit/6b6a0b1d54570e3f907be73fec661a30cd359c4f))
+
 ## [1.31.1](https://github.com/mcsdevv/while/compare/v1.31.0...v1.31.1) (2026-02-03)
 
 
