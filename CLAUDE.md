@@ -18,6 +18,10 @@
 
 Never create bun.lock, bun.lockb, package-lock.json, or yarn.lock files.
 
+## Icons
+
+**Use Icons8 exclusively.** All icons in this project come from https://icons8.com/icons/
+
 ## Visual Validation
 
 **All UI changes must be visually verified before completion.**
