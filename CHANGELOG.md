@@ -1,3 +1,10 @@
+## [1.31.1](https://github.com/mcsdevv/while/compare/v1.31.0...v1.31.1) (2026-02-03)
+
+
+### Bug Fixes
+
+* **calendar:** Display day names in week start dropdown ([#284](https://github.com/mcsdevv/while/issues/284)) ([23e219a](https://github.com/mcsdevv/while/commit/23e219adc9abb9246f5e565bc2a8175e28077083))
+
 # [1.31.0](https://github.com/mcsdevv/while/compare/v1.30.0...v1.31.0) (2026-02-03)
 
 
