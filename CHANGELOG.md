@@ -1,3 +1,11 @@
+# [1.31.0](https://github.com/mcsdevv/while/compare/v1.30.0...v1.31.0) (2026-02-03)
+
+
+### Features
+
+* **calendar:** Add timezone selector with auto-detection ([#282](https://github.com/mcsdevv/while/issues/282)) ([a3e6860](https://github.com/mcsdevv/while/commit/a3e68602dc6388c943dbf04eec622665549d4d15))
+* **navigation:** Move Setup Wizard above Settings in sidebar menu ([#281](https://github.com/mcsdevv/while/issues/281)) ([80acd2b](https://github.com/mcsdevv/while/commit/80acd2b285709865b188916cd85a877a909cb671))
+
 # [1.30.0](https://github.com/mcsdevv/while/compare/v1.29.0...v1.30.0) (2026-02-03)
 
 
