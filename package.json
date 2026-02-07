@@ -27,17 +27,20 @@
     "dev": "turbo dev",
     "dev:web": "turbo dev --filter=@while/web",
     "dev:dashboard": "turbo dev --filter=@while/dashboard",
-    "lint": "turbo lint",
+    "lint": "find apps packages scripts -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.mjs' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' -print0 | xargs -0 oxlint",
+    "lint:fix": "find apps packages scripts -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.mjs' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' -print0 | xargs -0 oxlint --fix",
+    "format": "find apps packages scripts -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.mjs' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' -print0 | xargs -0 oxfmt --write",
+    "format:check": "find apps packages scripts -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.mjs' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' -print0 | xargs -0 oxfmt --check",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
-    "format": "biome format --write .",
     "clean": "turbo clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.0.3",
     "@semantic-release/git": "^10.0.1",
+    "oxfmt": "^0.28.0",
+    "oxlint": "^1.43.0",
     "semantic-release": "^25.0.3",
     "tsx": "^4.19.0",
     "turbo": "^2.8.1",
@@ -45,12 +48,16 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "@biomejs/biome",
       "esbuild",
+      "oxfmt",
+      "oxlint",
       "sharp"
     ]
   },
   "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "dependencies": {
     "geist": "^1.5.1"
   },
