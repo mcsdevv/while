@@ -6,7 +6,7 @@
     "dev": "PORT=3001 tsx ../../scripts/dev-with-port-fallback.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "find . -type f \\( -name '*.ts' -o -name '*.tsx' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' | xargs oxlint",
+    "lint": "find . -type f \\( -name '*.ts' -o -name '*.tsx' \\) -not -path '*/node_modules/*' -not -path '*/.next/*' -print0 | xargs -0 oxlint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

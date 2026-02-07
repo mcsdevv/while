@@ -154,8 +154,10 @@ describe("FieldMappingStep", () => {
     const createCall = fetchMock.mock.calls.find(
       ([url, init]) => String(url) === "/api/setup/notion/property" && init?.method === "POST",
     );
-    // oxlint-disable-next-line no-unsafe-optional-chaining -- test asserts call exists above
-    const body = JSON.parse((createCall?.[1] as RequestInit).body as string);
+    if (!createCall) {
+      throw new Error("Expected POST /api/setup/notion/property to have been called.");
+    }
+    const body = JSON.parse((createCall[1] as RequestInit).body as string);
     expect(body).toEqual({ name: "Location", type: "rich_text" });
 
     await waitFor(() =>
