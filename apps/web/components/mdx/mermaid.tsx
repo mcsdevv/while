@@ -83,6 +83,6 @@ export function Mermaid({ chart }: { chart: string }) {
     );
   }
 
-  // biome-ignore lint/security/noDangerouslySetInnerHtml: Mermaid outputs SVG from trusted, static MDX content.
+  // oxlint-disable-next-line react/no-danger -- Mermaid outputs SVG from trusted, static MDX content.
   return <div className="my-6 overflow-x-auto" dangerouslySetInnerHTML={{ __html: svg ?? "" }} />;
 }

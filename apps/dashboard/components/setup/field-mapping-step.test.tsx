@@ -39,14 +39,8 @@ vi.mock("@while/ui", () => ({
   DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   DialogTitle: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   Input: (props: React.InputHTMLAttributes<HTMLInputElement>) => <input {...props} />,
-  Label: ({
-    children,
-    ...props
-  }: {
-    children: React.ReactNode;
-    [key: string]: unknown;
-  }) => (
-    // biome-ignore lint/a11y/noLabelWithoutControl: test stub
+  Label: ({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }) => (
+    // oxlint-disable-next-line jsx_a11y/label-has-associated-control -- test stub
     <label {...props}>{children}</label>
   ),
   Select: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -160,6 +154,7 @@ describe("FieldMappingStep", () => {
     const createCall = fetchMock.mock.calls.find(
       ([url, init]) => String(url) === "/api/setup/notion/property" && init?.method === "POST",
     );
+    // oxlint-disable-next-line no-unsafe-optional-chaining -- test asserts call exists above
     const body = JSON.parse((createCall?.[1] as RequestInit).body as string);
     expect(body).toEqual({ name: "Location", type: "rich_text" });
 
