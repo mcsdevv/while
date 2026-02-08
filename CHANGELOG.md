@@ -1,3 +1,10 @@
+# [1.33.0](https://github.com/mcsdevv/while/compare/v1.32.0...v1.33.0) (2026-02-08)
+
+
+### Features
+
+* **dashboard:** Change app title to "While Dashboard" ([#287](https://github.com/mcsdevv/while/issues/287)) ([6a015d6](https://github.com/mcsdevv/while/commit/6a015d68f235d33b443f687762e90174adaa08b8))
+
 # [1.32.0](https://github.com/mcsdevv/while/compare/v1.31.1...v1.32.0) (2026-02-03)
 
 
